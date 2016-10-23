@@ -46,7 +46,7 @@ class lhcHandler(BaseHTTPRequestHandler):
 			self.send_header('Content-type',"text/plain")
 			self.end_headers()
 			self.bot.dropDatabase(''.join(query_components["id"]))
-			self.wfile.write('{"error":true,"msg":"Database was dropped"}')
+			self.wfile.write('{"error":false,"msg":"Database was dropped"}')
 	 		return 
 	 		
 	 	if 'qd' in query_components:
