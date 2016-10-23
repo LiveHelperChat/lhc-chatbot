@@ -40,6 +40,14 @@ class lhcHandler(BaseHTTPRequestHandler):
 			self.end_headers()
 			self.wfile.write('{"error":true,"msg":"Invalid secret hash"}')
 	 		return 
+	 	
+	 	if 'drop' in query_components:
+	 		self.send_response(200)
+			self.send_header('Content-type',"text/plain")
+			self.end_headers()
+			self.bot.dropDatabase(''.join(query_components["id"]))
+			self.wfile.write('{"error":true,"msg":"Database was dropped"}')
+	 		return 
 	 		
 	 	if 'qd' in query_components:
 	 		try:

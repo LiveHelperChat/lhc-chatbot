@@ -91,5 +91,11 @@ class lhcChatBot:
 		bot.storage.remove(question)
 		bot.storage.read_only = True
 	
+	def dropDatabase(self, instanceId):
+		bot = self.getBot(instanceId)		
+		bot.storage.drop()
+		if instanceId in self.botInstance:			
+			del self.botInstance[instanceId]
+	
 	def showBot(self):
 		print "show bot"	
