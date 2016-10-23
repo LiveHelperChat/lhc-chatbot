@@ -1,0 +1,36 @@
+{
+    "tables": {        
+        "lhc_lhcchatbot_question": [
+            {
+                "field": "id",
+                "type": "bigint(20)",
+                "null": "NO",
+                "key": "PRI",
+                "default": null,
+                "extra": "auto_increment"
+            },
+            {
+                "field": "question",
+                "type": "text",
+                "null": "NO",
+                "key": "",
+                "default": null,
+                "extra": ""
+            },
+            {
+                "field": "answer",
+                "type": "text",
+                "null": "NO",
+                "key": "",
+                "default": null,
+                "extra": ""
+            }
+        ]
+    },  
+    "tables_data": {    },
+    "tables_data_identifier": {    },
+    "tables_indexes" : {    },
+    "tables_create": {
+    	"lhc_lhcchatbot_question" : "CREATE TABLE `lhc_lhcchatbot_question` (`id` bigint(20) NOT NULL AUTO_INCREMENT, `question` text NOT NULL, `answer` text NOT NULL,  PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;"
+    }
+}

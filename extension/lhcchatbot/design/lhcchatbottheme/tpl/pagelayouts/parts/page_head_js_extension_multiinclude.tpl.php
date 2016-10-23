@@ -1,0 +1,1 @@
+<script type="text/javascript" language="javascript" src="<?php echo erLhcoreClassDesign::designJS('js/lhcchatbot.js');?>"></script>

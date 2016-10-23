@@ -1,0 +1,1 @@
+CREATE TABLE `lhc_lhcchatbot_question` (`id` bigint(20) NOT NULL AUTO_INCREMENT, `question` text NOT NULL, `answer` text NOT NULL,  PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
