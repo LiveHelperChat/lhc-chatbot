@@ -79,7 +79,9 @@ class erLhcoreClassExtensionLHCChatBotValidator
             $answer = $api->getAnswer($msg->msg);
             
             if ($answer['error'] == false) {
-                $suggestions[$msg->chat_id][] = $answer['msg'];
+                if (!isset($suggestions[$msg->chat_id]) || !in_array($answer['msg'], $suggestions[$msg->chat_id])) {
+                    $suggestions[$msg->chat_id][] = $answer['msg'];
+                }
             }
         }
         
