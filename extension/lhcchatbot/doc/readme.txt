@@ -1,6 +1,6 @@
 ChatterBot extension for Live Helper Chat
 
-1. Copy osticket folder to extension folder so it should look like
+1. Copy lhcchatbot folder to extension folder so it should look like
 extension/lhcchatbot
 
 2. Execute install.sql script on your database
