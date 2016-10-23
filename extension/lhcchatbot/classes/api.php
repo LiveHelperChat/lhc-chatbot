@@ -74,4 +74,13 @@ class LHCChatBot {
 	    
 	    return $response;	    
 	}
+
+	public function dropDatabase()
+	{
+	    $response = $this->executeRequest(array(
+	        'drop' => true
+	    ));
+	    
+	    return $response;	    
+	}
 }
