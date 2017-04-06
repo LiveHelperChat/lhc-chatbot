@@ -49,8 +49,7 @@ class erLhcoreClassModelLHCChatBotQuestion {
                 }
                 return $this->question_items_snapshot;
                 break;
-	        default:
-
+	        
             case 'question_items':
                 $this->question_items = explode("\n", trim($this->question));
                 return $this->question_items;
