@@ -58,9 +58,9 @@ class lhcChatBot:
 			return self.botInstance[instanceId]
 	
 		self.botInstance[instanceId] = ChatBot('Terminal',
-		    storage_adapter='chatterbot.adapters.storage.MongoDatabaseAdapter',
+		    storage_adapter='chatterbot.storage.MongoDatabaseAdapter',
 		    logic_adapters=[
-		        'chatterbot.adapters.logic.ClosestMatchAdapter'
+		        'chatterbot.logic.BestMatch'
 		    ],
 		    filters=[
 		        'chatterbot.filters.RepetitiveResponseFilter'
