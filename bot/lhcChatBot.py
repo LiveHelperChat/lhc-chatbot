@@ -43,7 +43,6 @@ class lhcChatBot:
 		if len(self.botInstance) > 3:						
 			key = self.botInstance._keys.popleft()
 			del self.botInstance._data[key]
-			print key
 	
 	def getBot(self, instanceId, context = "0"):
 	
