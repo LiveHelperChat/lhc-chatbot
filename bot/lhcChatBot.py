@@ -60,11 +60,15 @@ class lhcChatBot:
 		self.botInstance[instanceId] = ChatBot('Terminal',
 		    storage_adapter='chatterbot.storage.MongoDatabaseAdapter',
 		    logic_adapters=[
-		        'chatterbot.logic.BestMatch'
-		    ],
-		    filters=[
-		        'chatterbot.filters.RepetitiveResponseFilter'
-		    ],
+		        {
+		            'import_path': 'chatterbot.logic.BestMatch'
+		        },
+		        {
+		            'import_path': 'chatterbot.logic.LowConfidenceAdapter',
+		            'threshold': 0.70,
+		            'default_response': 'notfound'
+		        }
+		    ],		    
 		    read_only=True,
 		    database=self.settings['DATABASE_PREFIX'] + "-" + instanceId
 			)
