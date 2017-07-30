@@ -39,19 +39,26 @@ class lhcHandler(BaseHTTPRequestHandler):
 			self.send_header('Content-type',"text/plain")
 			self.end_headers()
 			self.wfile.write('{"error":true,"msg":"Invalid secret hash"}')
-	 		return 
-	 	
+	 		return
+	 		
+	 	if 'ct' not in query_components:
+			 		self.send_response(200)
+					self.send_header('Content-type',"text/plain")
+					self.end_headers()
+					self.wfile.write('{"error":true,"msg":"Context [ct] has to be provided"}')
+		 			return
+		 			
 	 	if 'drop' in query_components:
 	 		self.send_response(200)
 			self.send_header('Content-type',"text/plain")
 			self.end_headers()
-			self.bot.dropDatabase(''.join(query_components["id"]))
+			self.bot.dropDatabase(''.join(query_components["id"]), ''.join(query_components["ct"]))
 			self.wfile.write('{"error":false,"msg":"Database was dropped"}')
 	 		return 
 	 		
 	 	if 'qd' in query_components:
 	 		try:
-				self.bot.deleteQuestion(''.join(query_components["id"]),''.join(query_components["qd"]));
+				self.bot.deleteQuestion(''.join(query_components["id"]), ''.join(query_components["qd"]), ''.join(query_components["ct"]));
 				self.send_response(200)
 				self.send_header('Content-type',"text/plain")
 				self.end_headers()
@@ -63,7 +70,7 @@ class lhcHandler(BaseHTTPRequestHandler):
 	 		
 	 	if 'qq' in query_components and 'qa' in query_components:
 	 		try:
-				self.bot.addAnswer(''.join(query_components["id"]),''.join(query_components["qq"]),''.join(query_components["qa"]));
+				self.bot.addAnswer(''.join(query_components["id"]), ''.join(query_components["qq"]), ''.join(query_components["qa"]), ''.join(query_components["ct"]));
 				self.send_response(200)
 				self.send_header('Content-type',"text/plain")
 				self.end_headers()
@@ -74,11 +81,11 @@ class lhcHandler(BaseHTTPRequestHandler):
 				self.send_error(404,'File Not Found: %s' % self.path)
 	 
 		if 'q' in query_components:
-			try:	
+			try:
 				self.send_response(200)
 				self.send_header('Content-type',"text/plain")
 				self.end_headers()
-				self.wfile.write(json.dumps({'error':False,'msg':self.bot.getAnswer(''.join(query_components["id"]),''.join(query_components["q"])).text}))  
+				self.wfile.write(json.dumps({'error':False,'msg':self.bot.getAnswer(''.join(query_components["id"]),''.join(query_components["q"]),''.join(query_components["ct"])).text}))  
 				return
 	
 			except IOError:
