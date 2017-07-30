@@ -38,6 +38,11 @@ class erLhcoreClassExtensionLhcchatbot
             'instanceDestroyed'
         ));
         
+        $dispatcher->listen('department.modified', array(
+            $this,
+            'departmentModified'
+        ));
+        
     }
     
     /**
@@ -52,6 +57,57 @@ class erLhcoreClassExtensionLhcchatbot
         erLhcoreClassUpdate::doTablesUpdate(json_decode(file_get_contents('extension/lhcchatbot/doc/structure.json'), true));
     }
 
+    /**
+     * Executed then department is modified
+     * 
+     * @param array $params
+     */
+    public function departmentModified($params)
+    {
+        $department = $params['department'];
+        
+        $db = ezcDbInstance::get();
+        
+        $stmt = $db->prepare("SELECT context_id FROM lhc_lhcchatbot_context_link_department WHERE department_id = :department_id");
+        $stmt->bindValue(':department_id',$department->id,PDO::PARAM_INT);
+        $stmt->execute();
+        $contextIds = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        
+        $newIds = isset($_POST['context_id']) && is_array($_POST['context_id']) ? $_POST['context_id'] : array();
+               
+        $newContext = array_diff($newIds, $contextIds);
+                
+        foreach ($newContext as $id) {
+            $contextLinkDepartment = new erLhcoreClassModelLHCChatBotContextLinkDepartment();
+            $contextLinkDepartment->context_id = $id;
+            $contextLinkDepartment->department_id = $department->id;
+            $contextLinkDepartment->saveThis();
+        }
+        
+        $deleteContext = array_diff($contextIds, $newIds);
+        
+        if (!empty($deleteContext)) {
+            $contextDepartments = erLhcoreClassModelLHCChatBotContextLinkDepartment::getList(array('filterin' => array('context_id' => $deleteContext),'filter' => array('department_id' => $department->id)));
+            foreach ($contextDepartments as $contextDepartment) {
+                $contextDepartment->removeThis();
+            }
+        }
+    }
+
+    public static function getDepartmentContext($department) {
+        if (is_numeric($department->id)) {
+            $db = ezcDbInstance::get();
+            
+            $stmt = $db->prepare("SELECT context_id FROM lhc_lhcchatbot_context_link_department WHERE department_id = :department_id");
+            $stmt->bindValue(':department_id',$department->id,PDO::PARAM_INT);
+            $stmt->execute();
+            
+            return $stmt->fetchAll(PDO::FETCH_COLUMN);
+        }
+        
+        return array();        
+    }
+    
     /**
      * Used only in automated hosting enviroment
      */
@@ -111,6 +167,8 @@ class erLhcoreClassExtensionLhcchatbot
     {
         $classesAutoload = array(
             'erLhcoreClassModelLHCChatBotQuestion' => 'extension/lhcchatbot/classes/erlhcoreclassmodellhcchatbotquestion.php',
+            'erLhcoreClassModelLHCChatBotContext' => 'extension/lhcchatbot/classes/erlhcoreclassmodellhcchatbotcontext.php',
+            'erLhcoreClassModelLHCChatBotContextLinkDepartment' => 'extension/lhcchatbot/classes/erlhcoreclassmodellhcchatbotcontextlinkdepartment.php',
             'erLhcoreClassExtensionLHCChatBotValidator' => 'extension/lhcchatbot/classes/erlhcoreclasslhcchatbotvalidator.php',
             'LHCChatBot' => 'extension/lhcchatbot/classes/api.php',
         );

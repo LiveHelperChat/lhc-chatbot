@@ -24,13 +24,72 @@
                 "key": "",
                 "default": null,
                 "extra": ""
+            },
+            {
+                "field": "context_id",
+                "type": "int(11)",
+                "null": "NO",
+                "key": "",
+                "default": null,
+                "extra": ""
+            }
+        ],
+        "lhc_lhcchatbot_context": [
+            {
+                "field": "id",
+                "type": "int(11)",
+                "null": "NO",
+                "key": "PRI",
+                "default": null,
+                "extra": "auto_increment"
+            },
+            {
+                "field": "name",
+                "type": "varchar(50)",
+                "null": "NO",
+                "key": "",
+                "default": null,
+                "extra": ""
+            }
+        ],
+        "lhc_lhcchatbot_context_link_department": [
+            {
+                "field": "id",
+                "type": "int(11)",
+                "null": "NO",
+                "key": "PRI",
+                "default": null,
+                "extra": "auto_increment"
+            },
+            {
+                "field": "context_id",
+                "type": "int(11)",
+                "null": "NO",
+                "key": "",
+                "default": null,
+                "extra": ""
+            },
+            {
+                "field": "department_id",
+                "type": "int(11)",
+                "null": "NO",
+                "key": "",
+                "default": null,
+                "extra": ""
             }
         ]
     },  
     "tables_data": {    },
     "tables_data_identifier": {    },
-    "tables_indexes" : {    },
+    "tables_indexes" : {
+    	"lhc_lhcchatbot_question" : {
+    		"new" : {"context_id" : "ALTER TABLE `lhc_lhcchatbot_question` ADD INDEX `context_id` (`context_id`);"},
+    		"old" : []
+    	}
+    },
     "tables_create": {
-    	"lhc_lhcchatbot_question" : "CREATE TABLE `lhc_lhcchatbot_question` (`id` bigint(20) NOT NULL AUTO_INCREMENT, `question` text NOT NULL, `answer` text NOT NULL,  PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;"
+    	"lhc_lhcchatbot_question" : "CREATE TABLE `lhc_lhcchatbot_question` (  `id` bigint(20) NOT NULL AUTO_INCREMENT,  `question` text NOT NULL,  `answer` text NOT NULL,  `context_id` int(11) NOT NULL,  PRIMARY KEY (`id`),  KEY `context_id` (`context_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
+    	"lhc_lhcchatbot_context" : "CREATE TABLE `lhc_lhcchatbot_context` ( `id` int(11) NOT NULL AUTO_INCREMENT, `name` varchar(50) NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
+    	"lhc_lhcchatbot_context_link_department" : "CREATE TABLE `lhc_lhcchatbot_context_link_department` (  `id` int(11) NOT NULL AUTO_INCREMENT,  `context_id` int(11) NOT NULL,  `department_id` int(11) NOT NULL,  PRIMARY KEY (`id`),  KEY `department_id` (`department_id`),  KEY `context_id` (`context_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;"
     }
 }

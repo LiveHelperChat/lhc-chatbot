@@ -27,7 +27,17 @@ $ViewList['list'] = array(
     'functions' => array('use')
 );
 
+$ViewList['listcontext'] = array(
+    'params' => array(),
+    'functions' => array('use')
+);
+
 $ViewList['new'] = array(
+    'params' => array(),
+    'functions' => array('use')
+);
+
+$ViewList['newcontext'] = array(
     'params' => array(),
     'functions' => array('use')
 );
@@ -37,7 +47,18 @@ $ViewList['edit'] = array(
     'functions' => array('use')
 );
 
+$ViewList['editcontext'] = array(
+    'params' => array('id'),
+    'functions' => array('use')
+);
+
 $ViewList['delete'] = array(
+    'params' => array('id'),
+    'uparams' => array('csfr'),
+    'functions' => array('use')
+);
+
+$ViewList['deletecontext'] = array(
     'params' => array('id'),
     'uparams' => array('csfr'),
     'functions' => array('use')

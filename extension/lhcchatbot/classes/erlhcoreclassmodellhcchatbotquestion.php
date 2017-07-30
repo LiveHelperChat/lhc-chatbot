@@ -17,7 +17,8 @@ class erLhcoreClassModelLHCChatBotQuestion {
 		$stateArray = array(
             'id' => $this->id,
             'question' => $this->question,
-            'answer' => $this->answer
+            'answer' => $this->answer,
+            'context_id' => $this->context_id
 		);
 
 		return $stateArray;
@@ -34,6 +35,7 @@ class erLhcoreClassModelLHCChatBotQuestion {
     	    $this->snapshot = array(
     	        'question' => $this->question,
     	        'answer' => $this->answer,
+    	        'context' => $this->context_id
     	    );
 	    }
 	}
@@ -42,6 +44,14 @@ class erLhcoreClassModelLHCChatBotQuestion {
 	{
 	    switch ($var) {
 	
+	        case 'context':
+	            $this->context = '';
+	            if ($this->context_id > 0) {
+	                $this->context = erLhcoreClassModelLHCChatBotContext::fetch($this->context_id);
+	            }
+	            return $this->context;
+	            break;
+	            
             case 'question_items_snapshot':
                 $this->question_items_snapshot = array();
                 if (isset($this->snapshot['question'])) {
@@ -63,6 +73,7 @@ class erLhcoreClassModelLHCChatBotQuestion {
 	public $snapshot = array();
 	
 	public $id = null;
+	public $context_id = 0;
 	public $question = '';
 	public $answer = '';
 }

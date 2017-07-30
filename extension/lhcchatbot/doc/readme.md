@@ -18,4 +18,6 @@ set your
  
 5. Login to back office and clear cache.
  
-6. In left menu you will see ChatBot item. Just create new questions answers and suggested answers based on user messages will appear automatically
+6. In left menu you will see ChatBot item. 
+
+7. Just create new questions answers and suggested answers based on user messages will appear automatically.

@@ -19,4 +19,9 @@ $def->properties['answer']->columnName   = 'answer';
 $def->properties['answer']->propertyName = 'answer';
 $def->properties['answer']->propertyType = ezcPersistentObjectProperty::PHP_TYPE_STRING;
 
+$def->properties['context_id'] = new ezcPersistentObjectProperty();
+$def->properties['context_id']->columnName   = 'context_id';
+$def->properties['context_id']->propertyName = 'context_id';
+$def->properties['context_id']->propertyType = ezcPersistentObjectProperty::PHP_TYPE_INT;
+
 return $def;
