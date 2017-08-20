@@ -1,0 +1,25 @@
+{
+    "name": "livehelperchat/chatbot",
+    "version": "1.0",
+    "description": "Elastic Search Support for Live Helper Chat",
+    "type": "project",
+    "homepage": "http://ivehelperchat.com",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Live helper Chat",
+            "homepage": "http://ivehelperchat.com"
+        }
+    ],
+    "support": {
+        "email": "remdex@mgmail.com"      
+    },
+    "require": {       
+        "elasticsearch/elasticsearch": "~5.0",
+        "aws/aws-sdk-php": "3.x"
+    },
+    "minimum-stability": "dev",       
+    "config": {
+        "vendor-dir": "vendor"
+    }
+}

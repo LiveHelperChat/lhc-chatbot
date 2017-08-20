@@ -77,6 +77,16 @@
                 "default": null,
                 "extra": ""
             }
+        ],
+        "lhc_lhcchatbot_index": [
+            {
+                "field": "chat_id",
+                "type": "bigint(20)",
+                "null": "NO",
+                "key": "UNI",
+                "default": null,
+                "extra": ""
+            }
         ]
     },  
     "tables_data": {    },
@@ -90,6 +100,7 @@
     "tables_create": {
     	"lhc_lhcchatbot_question" : "CREATE TABLE `lhc_lhcchatbot_question` (  `id` bigint(20) NOT NULL AUTO_INCREMENT,  `question` text NOT NULL,  `answer` text NOT NULL,  `context_id` int(11) NOT NULL,  PRIMARY KEY (`id`),  KEY `context_id` (`context_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
     	"lhc_lhcchatbot_context" : "CREATE TABLE `lhc_lhcchatbot_context` ( `id` int(11) NOT NULL AUTO_INCREMENT, `name` varchar(50) NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
-    	"lhc_lhcchatbot_context_link_department" : "CREATE TABLE `lhc_lhcchatbot_context_link_department` (  `id` int(11) NOT NULL AUTO_INCREMENT,  `context_id` int(11) NOT NULL,  `department_id` int(11) NOT NULL,  PRIMARY KEY (`id`),  KEY `department_id` (`department_id`),  KEY `context_id` (`context_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;"
+    	"lhc_lhcchatbot_context_link_department" : "CREATE TABLE `lhc_lhcchatbot_context_link_department` (  `id` int(11) NOT NULL AUTO_INCREMENT,  `context_id` int(11) NOT NULL,  `department_id` int(11) NOT NULL,  PRIMARY KEY (`id`),  KEY `department_id` (`department_id`),  KEY `context_id` (`context_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
+        "lhc_lhcchatbot_index" : "CREATE TABLE `lhc_lhcchatbot_index` (  `chat_id` bigint(20) unsigned NOT NULL,  UNIQUE KEY `chat_id` (`chat_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8"
     }
 }
