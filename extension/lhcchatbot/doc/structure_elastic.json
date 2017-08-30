@@ -20,7 +20,13 @@
 		"lh_chatbot_question": {
 			"match_count": {
 				"type": "integer"
-			}, 
+			},
+			"confirmed": {
+				"type": "integer"
+			},
+			"cbot_question_id": {
+				"type": "integer"
+			},
 			"question": {
 				"type": "text"
 			},

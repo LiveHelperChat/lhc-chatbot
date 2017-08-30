@@ -7,23 +7,21 @@ $question =  erLhcoreClassModelESChatbotQuestion::fetch($Params['user_parameters
 if (ezcInputForm::hasPostData()) {
 
     if (isset($_POST['Cancel_action'])) {
-        erLhcoreClassModule::redirect('lhcchatbot/list');
+        erLhcoreClassModule::redirect('elasticsearchbot/list');
         exit ;
     }
 
-    $Errors = erLhcoreClassExtensionLHCChatBotValidator::validate($question);
+    $Errors = erLhcoreClassExtensionLHCChatBotValidator::validateElasticQuestion($question);
 
     if (count($Errors) == 0) {
         try {
-            erLhcoreClassExtensionLHCChatBotValidator::publishQuestion($question);
 
-            erLhcoreClassModule::redirect('lhcchatbot/list');
-            exit;
+            erLhcoreClassExtensionLHCChatBotValidator::publishElasticQuestion($question);
 
+            $tpl->set('updated',true);
         } catch (Exception $e) {
             $tpl->set('errors',array($e->getMessage()));
         }
-
     } else {
         $tpl->set('errors',$Errors);
     }

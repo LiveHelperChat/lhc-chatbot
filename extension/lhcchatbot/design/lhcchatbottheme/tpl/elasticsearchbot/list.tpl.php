@@ -8,16 +8,20 @@
             <tr>
                 <th width="98%"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('elasticsearch/admin','Question')?></th>
                 <th width="1%" nowrap="nowrap"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('elasticsearch/admin','Match count')?></th>
-                <?php /*<th width="1%"></th>*/ ?>
+                <th width="1%" nowrap="nowrap"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('elasticsearch/admin','Confirmed')?></th>
+                <th width="1%" nowrap="nowrap"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('elasticsearch/admin','Index time')?></th>
+                <th width="1%"></th>
             </tr>
         </thead>
         <?php foreach ($items as $item) : ?>
             <tr>
                 <td><a href="#" onclick="lhc.previewChat(<?php echo $item->chat_id?>)"><i class="material-icons">info_outline</i></a> <a href="<?php echo erLhcoreClassDesign::baseurl('elasticsearchbot/viewquestion')?>/<?php echo $item->id?>"> <?php echo htmlspecialchars($item->question)?></a></td>
                 <td><?php echo htmlspecialchars($item->match_count)?></td>
-                <?php /*<td>
-                    <a class="btn btn-danger btn-xs csfr-required" onclick="return confirm('<?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('kernel/messages','Are you sure?');?>')" href="<?php echo erLhcoreClassDesign::baseurl('elasticsearch/delete')?>/<?php echo $item->id?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('user/userlist','Delete');?></a>
-                </td>*/ ?>
+                <td><?php echo htmlspecialchars($item->confirmed == 1 ? 'Yes' : 'No')?></td>
+                <td nowrap=""><?php echo htmlspecialchars($item->itime_front)?></td>
+                <td>
+                    <a class="btn btn-danger btn-xs csfr-required" onclick="return confirm('<?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('kernel/messages','Are you sure?');?>')" href="<?php echo erLhcoreClassDesign::baseurl('lhelasticsearchbot/delete')?>/<?php echo $item->id?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('user/userlist','Delete');?></a>
+                </td>
             </tr>
         <?php endforeach; ?>
     </table>

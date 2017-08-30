@@ -26,6 +26,29 @@ $fieldsSearch['chat_id'] = array (
     )
 );
 
+$fieldsSearch['confirmed'] = array (
+    'type' => 'text',
+    'trans' => 'Confirmed',
+    'required' => false,
+    'valid_if_filled' => false,
+    'filter_type' => 'like',
+    'filter_table_field' => 'Confirmed',
+    'validation_definition' => new ezcInputFormDefinitionElement (
+        ezcInputFormDefinitionElement::OPTIONAL, 'int', array('min_range' => 0)
+    )
+);
+
+$fieldsSearch['sort'] = array (
+    'type' => 'text',
+    'trans' => 'Confirmed',
+    'required' => false,
+    'valid_if_filled' => false,
+    'filter_type' => 'like',
+    'filter_table_field' => 'sort',
+    'validation_definition' => new ezcInputFormDefinitionElement (
+        ezcInputFormDefinitionElement::OPTIONAL, 'string'
+    )
+);
 
 $fieldSortAttr = array (
     'field'      => false,

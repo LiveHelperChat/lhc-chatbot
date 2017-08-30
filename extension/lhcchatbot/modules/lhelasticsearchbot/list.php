@@ -27,6 +27,34 @@ if ($filterParams['input_form']->chat_id != '') {
     $sparams['body']['query']['bool']['must'][]['term']['chat_id'] = $filterParams['input_form']->chat_id;
 }
 
+$sort = array(
+    'itime' => array(
+        'order' => 'desc'
+    )
+);
+
+if ($filterParams['input_form']->confirmed === 1) {
+    $sparams['body']['query']['bool']['must'][]['term']['confirmed'] = 1;
+} elseif ($filterParams['input_form']->confirmed === 0) {
+    $sparams['body']['query']['bool']['must'][]['term']['confirmed'] = 0;
+}
+
+if ($filterParams['input_form']->sort != '') {
+    if ($filterParams['input_form']->sort == 'new') {
+        $sort = array(
+            'itime' => array(
+                'order' => 'desc'
+            )
+        );
+    } elseif ($filterParams['input_form']->sort == 'match_count') {
+        $sort = array(
+            'match_count' => array(
+                'order' => 'desc'
+            )
+        );
+    }
+}
+
 $append = erLhcoreClassSearchHandler::getURLAppendFromInput($filterParams['input_form']);
 
 $pages = new lhPaginator();
@@ -40,11 +68,7 @@ if ($pages->items_total > 0) {
         'offset' => $pages->low,
         'limit' => $pages->items_per_page,
         'body' => array_merge(array(
-            'sort' => array(
-                'itime' => array(
-                    'order' => 'desc'
-                )
-            )
+            'sort' => $sort
         ), $sparams['body'])
     )));
 }

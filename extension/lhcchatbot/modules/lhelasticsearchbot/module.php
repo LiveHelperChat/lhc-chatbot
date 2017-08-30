@@ -19,6 +19,12 @@ $ViewList['elastic'] = array(
 
 $ViewList['list'] = array(
     'params' => array(),
+    'uparams' => array('sort','confirmed'),
+    'functions' => array('configure')
+);
+
+$ViewList['delete'] = array(
+    'params' => array(),
     'uparams' => array(),
     'functions' => array('configure')
 );

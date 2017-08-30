@@ -41,7 +41,45 @@ class erLhcoreClassExtensionLHCChatBotValidator
 
         return $Errors;
     }
-    
+
+    public static function validateElasticQuestion(erLhcoreClassModelESChatbotQuestion & $question)
+    {
+        $definition = array(
+            'question' => new ezcInputFormDefinitionElement(
+                ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
+            ),
+            'answer' => new ezcInputFormDefinitionElement(
+                ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
+            ),
+            'context_id' => new ezcInputFormDefinitionElement(
+                ezcInputFormDefinitionElement::OPTIONAL, 'int', array('min_range' => 1)
+            )
+        );
+
+        $form = new ezcInputForm( INPUT_POST, $definition );
+        $Errors = array();
+
+        $question->cbot_question->snapshot();
+
+        if ( $form->hasValidData( 'question' ) && $form->question != '' ) {
+            $question->cbot_question->question = $form->question;
+        } else {
+            $Errors[] =  erTranslationClassLhTranslation::getInstance()->getTranslation('xmppservice/operatorvalidator','Please enter question!');
+        }
+
+        if ( $form->hasValidData( 'answer' ) && $form->answer != '') {
+            $question->cbot_question->answer = $form->answer;
+        } else {
+            $Errors[] =  erTranslationClassLhTranslation::getInstance()->getTranslation('xmppservice/operatorvalidator','Please enter answer!');
+        }
+
+        if ( $form->hasValidData( 'context_id' ) ) {
+            $question->cbot_question->context_id = $form->context_id;
+        } else {
+            $question->cbot_question->context_id = 0; // Track back what happens then context is reset/assigned
+        }
+    }
+
     public static function validateContext(erLhcoreClassModelLHCChatBotContext & $context)
     {
         $definition = array(
@@ -62,6 +100,27 @@ class erLhcoreClassExtensionLHCChatBotValidator
         return $Errors;
     }
 
+    /**
+     * @desc publish question based on Elastic Search Question
+     *
+     * @param erLhcoreClassModelESChatbotQuestion $question
+     */
+    public static function publishElasticQuestion(erLhcoreClassModelESChatbotQuestion & $question)
+    {
+        $chatbotQuestion = $question->cbot_question;
+
+        self::publishQuestion($chatbotQuestion);
+
+        $question->confirmed = 1;
+        $question->cbot_question_id = $chatbotQuestion->id;
+        $question->saveThis();
+    }
+
+    /**
+     * @desc publish question based on Chatbot Question
+     *
+     * @param erLhcoreClassModelLHCChatBotQuestion $question
+     */
     public static function publishQuestion(erLhcoreClassModelLHCChatBotQuestion & $question)
     {
         // Save question
