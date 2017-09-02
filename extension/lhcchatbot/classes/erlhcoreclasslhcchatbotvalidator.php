@@ -148,7 +148,7 @@ class erLhcoreClassExtensionLHCChatBotValidator
         
         foreach ($question->question_items as $q)
         {
-            $api->removeQuestion(trim($q), $q->context_id);
+            $api->removeQuestion(trim($q), $question->context_id);
         }
         
         $question->removeThis();
