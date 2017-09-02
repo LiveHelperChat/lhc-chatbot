@@ -24,8 +24,8 @@ for ($i = 0; $i < 100; $i++) {
         }
 
         // Delete indexed chat's records
-        /*$stmt = $db->prepare('DELETE FROM lhc_lhcchatbot_index WHERE chat_id IN (' . implode(',', $chatsId) . ')');
-        $stmt->execute();*/
+        $stmt = $db->prepare('DELETE FROM lhc_lhcchatbot_index WHERE chat_id IN (' . implode(',', $chatsId) . ')');
+        $stmt->execute();
 
     } else {
         break;
