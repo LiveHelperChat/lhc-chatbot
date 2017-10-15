@@ -8,7 +8,7 @@
 
 <table cellpadding="0" cellspacing="0" class="table" width="100%">
     <thead>
-        <tr>   
+        <tr>
             <th><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Question');?></th>
             <th><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Answer');?></th>
             <th><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Context');?></th>
@@ -18,8 +18,8 @@
     <?php foreach ($items as $item) : ?>
     <tr>
         <td><?php echo htmlspecialchars($item->question)?></td>
-        <td><?php echo htmlspecialchars($item->answer)?></td>        
-        <td><?php echo htmlspecialchars($item->context)?></td>        
+        <td><?php echo htmlspecialchars($item->answer)?></td>
+        <td><?php echo htmlspecialchars($item->context)?></td>
         <td nowrap>
           <div class="btn-group" role="group" aria-label="..." style="width:60px;">
             <a class="btn btn-default btn-xs" href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/edit')?>/<?php echo $item->id?>" ><i class="material-icons mr-0">&#xE254;</i></a>

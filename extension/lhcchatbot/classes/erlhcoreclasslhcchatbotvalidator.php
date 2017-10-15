@@ -41,7 +41,67 @@ class erLhcoreClassExtensionLHCChatBotValidator
 
         return $Errors;
     }
-    
+
+    public static function validateElasticQuestion(erLhcoreClassModelESChatbotQuestion & $question)
+    {
+        $definition = array(
+            'question' => new ezcInputFormDefinitionElement(
+                ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
+            ),
+            'answer' => new ezcInputFormDefinitionElement(
+                ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
+            ),
+            'context_id' => new ezcInputFormDefinitionElement(
+                ezcInputFormDefinitionElement::OPTIONAL, 'int', array('min_range' => 1)
+            ),
+            'answerAdd' => new ezcInputFormDefinitionElement(
+                ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw', null, FILTER_REQUIRE_ARRAY
+            ),
+            'context_idAdd' => new ezcInputFormDefinitionElement(
+                ezcInputFormDefinitionElement::OPTIONAL, 'int', null, FILTER_REQUIRE_ARRAY
+            ),
+            'context_questionId' => new ezcInputFormDefinitionElement(
+                ezcInputFormDefinitionElement::OPTIONAL, 'int', null, FILTER_REQUIRE_ARRAY
+            ),
+        );
+
+        $form = new ezcInputForm( INPUT_POST, $definition );
+        $Errors = array();
+
+        $question->cbot_question->snapshot();
+
+        $questionsAnswers = array();
+        if ( $form->hasValidData( 'answerAdd' ) ) {
+            foreach ($form->answerAdd as $key => $answer) {
+                $questionsAnswers[] = array(
+                    'name' => $answer,
+                    'context' => $form->context_idAdd[$key],
+                    'id' => $form->context_questionId[$key]
+                );
+            }
+        }
+
+        $question->cbot_question_array = $questionsAnswers;
+
+        if ( $form->hasValidData( 'question' ) && $form->question != '' ) {
+            $question->cbot_question->question = $form->question;
+        } else {
+            $Errors[] =  erTranslationClassLhTranslation::getInstance()->getTranslation('xmppservice/operatorvalidator','Please enter question!');
+        }
+
+        if ( $form->hasValidData( 'answer' ) && $form->answer != '') {
+            $question->cbot_question->answer = $form->answer;
+        } else {
+            $Errors[] =  erTranslationClassLhTranslation::getInstance()->getTranslation('xmppservice/operatorvalidator','Please enter answer!');
+        }
+
+        if ( $form->hasValidData( 'context_id' ) ) {
+            $question->cbot_question->context_id = $form->context_id;
+        } else {
+            $question->cbot_question->context_id = 0; // Track back what happens then context is reset/assigned
+        }
+    }
+
     public static function validateContext(erLhcoreClassModelLHCChatBotContext & $context)
     {
         $definition = array(
@@ -62,6 +122,91 @@ class erLhcoreClassExtensionLHCChatBotValidator
         return $Errors;
     }
 
+    public static function deleteProposedQuestion(erLhcoreClassModelESChatbotQuestion & $question)
+    {
+        if ($question->cbot_question_id > 0) {
+            self::deleteQuestion($question->cbot_question);
+        }
+
+        foreach ($question->cbot_question_objects as $questionAnswer) {
+            self::deleteQuestion($questionAnswer);
+        }
+
+        $question->removeThis();
+    }
+
+    /**
+     * @desc publish question based on Elastic Search Question
+     *
+     * @param erLhcoreClassModelESChatbotQuestion $question
+     */
+    public static function publishElasticQuestion(erLhcoreClassModelESChatbotQuestion & $question)
+    {
+        // Find answers to remove first
+        $updatedQuestions = array();
+        $newQuestions = array();
+        $idExisting = array();
+
+        foreach ($question->cbot_question_array as $key => $item) {
+            if ($item['id'] > 0) {
+                $idExisting[] = $item['id'];
+                $updatedQuestions[$item['id']] = $item;
+            }
+
+            if ($item['id'] == 0) {
+                $item['key'] = $key;
+                $newQuestions[] = $item;
+            }
+        }
+
+        // Find which questions has to be removed
+        $toRemove = array_diff($question->cbot_question_ids, $idExisting);
+
+        foreach ($toRemove as $questionId) {
+            $questionAnswer = erLhcoreClassModelLHCChatBotQuestion::fetch($questionId);
+            self::deleteQuestion($questionAnswer);
+        }
+
+        // Find all questions which were updated and updated them
+        foreach ($question->cbot_question_ids as $questionId) {
+            if (key_exists($questionId, $updatedQuestions)){
+                $questionAnswer = erLhcoreClassModelLHCChatBotQuestion::fetch($questionId);
+                $questionAnswer->snapshot();
+
+                $questionAnswer->question = $question->question;
+                $questionAnswer->answer = $updatedQuestions[$questionId]['name'];
+                $questionAnswer->context_id = $updatedQuestions[$questionId]['context'];
+                self::publishQuestion($questionAnswer);
+            }
+        }
+
+        foreach ($newQuestions as $newQuestion) {
+            $questionAnswer = new erLhcoreClassModelLHCChatBotQuestion();
+            $questionAnswer->question = $question->question;
+            $questionAnswer->answer = $newQuestion['name'];
+            $questionAnswer->context_id = $newQuestion['context'];
+            self::publishQuestion($questionAnswer);
+            $idExisting[] = $questionAnswer->id;
+            $question->cbot_question_array[$newQuestion['key']]['id'] = $questionAnswer->id;
+        }
+
+        // Assign other questions and answers
+        $question->cbot_question_ids = $idExisting;
+
+        // Save main question and answer
+        $chatbotQuestion = $question->cbot_question;
+        self::publishQuestion($chatbotQuestion);
+
+        $question->confirmed = 1;
+        $question->cbot_question_id = $chatbotQuestion->id;
+        $question->saveThis();
+    }
+
+    /**
+     * @desc publish question based on Chatbot Question
+     *
+     * @param erLhcoreClassModelLHCChatBotQuestion $question
+     */
     public static function publishQuestion(erLhcoreClassModelLHCChatBotQuestion & $question)
     {
         // Save question
@@ -86,12 +231,12 @@ class erLhcoreClassExtensionLHCChatBotValidator
     {
         // Save question
         $api = erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->getApi();
-        
+
         foreach ($question->question_items as $q)
         {
-            $api->removeQuestion(trim($q), $q->context_id);
+            $api->removeQuestion(trim($q), $question->context_id);
         }
-        
+
         $question->removeThis();
     }
 

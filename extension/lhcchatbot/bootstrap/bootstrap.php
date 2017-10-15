@@ -16,13 +16,17 @@ class erLhcoreClassExtensionLhcchatbot
 
     public function run()
     {
+        include 'extension/lhcchatbot/vendor/autoload.php';
+
         $dispatcher = erLhcoreClassChatEventDispatcher::getInstance();
         
         /**
          * User events
          */
         $dispatcher->listen('chat.syncadmin', array($this, 'syncAdmin'));
-        
+
+        $dispatcher->listen('chat.close', 'erLhcoreClassElasticSearchChatboxIndex::indexChatDelay');
+
         $dispatcher->listen('instance.extensions_structure', array(
             $this,
             'checkStructure'
@@ -171,6 +175,13 @@ class erLhcoreClassExtensionLhcchatbot
             'erLhcoreClassModelLHCChatBotContextLinkDepartment' => 'extension/lhcchatbot/classes/erlhcoreclassmodellhcchatbotcontextlinkdepartment.php',
             'erLhcoreClassExtensionLHCChatBotValidator' => 'extension/lhcchatbot/classes/erlhcoreclasslhcchatbotvalidator.php',
             'LHCChatBot' => 'extension/lhcchatbot/classes/api.php',
+
+            'erLhcoreClassElasticSearchChatbotUpdate'   => 'extension/lhcchatbot/classes/lhelasticsearchupdate.php',
+            'erLhcoreClassElasticChatbotClient'         => 'extension/lhcchatbot/classes/lhelasticsearchclient.php',
+            'erLhcoreClassElasticChatbotTrait'          => 'extension/lhcchatbot/classes/lhelastictrait.php',
+            'erLhcoreClassModelESChatbotQuestion'       => 'extension/lhcchatbot/classes/erlhcoreclassmodeleschatbotquestion.php',
+            'erLhcoreClassModelESChatbotAnswer'         => 'extension/lhcchatbot/classes/erlhcoreclassmodeleschatbotanswer.php',
+            'erLhcoreClassElasticSearchChatboxIndex'    => 'extension/lhcchatbot/classes/lhelasticsearchindex.php',
         );
     
         if (key_exists($className, $classesAutoload)) {
@@ -186,6 +197,27 @@ class erLhcoreClassExtensionLhcchatbot
                
         if ($this->configData['ahosting'] == true && $this->configData['id'] == 0) {
             $this->configData['id'] = $this->instanceManual !== false ? $this->instanceManual->id :  erLhcoreClassInstance::getInstance()->id;
+        }
+    }
+
+    public function __get($var)
+    {
+        switch ($var) {
+
+            case 'settings':
+                $this->settings = include ('extension/lhcchatbot/settings/settings.ini.php');
+                return $this->settings;
+                break;
+
+            case 'settings_personal':
+                $esOptions = erLhcoreClassModelChatConfig::fetch('elasticsearch_options');
+                $this->settings_personal = (array)$esOptions->data;
+                return $this->settings_personal;
+                break;
+
+            default:
+                ;
+                break;
         }
     }
 

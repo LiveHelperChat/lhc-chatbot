@@ -35,7 +35,7 @@ class erLhcoreClassModelLHCChatBotQuestion {
     	    $this->snapshot = array(
     	        'question' => $this->question,
     	        'answer' => $this->answer,
-    	        'context' => $this->context_id
+    	        'context' => $this->context_id,
     	    );
 	    }
 	}

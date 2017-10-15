@@ -1,0 +1,41 @@
+{
+	"types": {
+		"lh_chatbot_answer": {
+			"chat_id": {
+				"type": "long"
+			},
+			"itime": {
+				"type": "date"
+			},
+			"question_id": {
+				"type": "keyword"
+			},
+			"match_count": {
+				"type": "integer"
+			},
+			"answer": {
+				"type": "text"
+			}
+		},
+		"lh_chatbot_question": {
+			"match_count": {
+				"type": "integer"
+			},
+			"confirmed": {
+				"type": "integer"
+			},
+			"cbot_question_id": {
+				"type": "integer"
+			},
+			"question": {
+				"type": "text"
+			},
+			"chat_id": {
+				"type": "long"
+			},
+			"itime": {
+				"type": "date"
+			}
+		}
+	}  
+}

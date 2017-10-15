@@ -20,7 +20,7 @@ class LHCChatBot {
 	{
 	    $urlData['id'] = $this->instanceId;
 	    $urlData['sh'] = $this->secretHash;
-	    
+
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $this->host . '?' . http_build_query($urlData));
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
