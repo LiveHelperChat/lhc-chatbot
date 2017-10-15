@@ -47,6 +47,7 @@ $tpl->set('items', erLhcoreClassModelESChatbotAnswer::getList(array(
 )));
 
 $Result['content'] = $tpl->fetch();
+$Result['additional_footer_js'] = '<script src="'.erLhcoreClassDesign::designJS('js/lhc.context.question.ctrl.js').'"></script>';
 
 $Result['path'] = array(
     array (

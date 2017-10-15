@@ -27,6 +27,10 @@ if ($filterParams['input_form']->chat_id != '') {
     $sparams['body']['query']['bool']['must'][]['term']['chat_id'] = $filterParams['input_form']->chat_id;
 }
 
+if ($filterParams['input_form']->department_id != '') {
+    $sparams['body']['query']['bool']['must'][]['term']['dep_ids'] = $filterParams['input_form']->department_id;
+}
+
 $sort = array(
     'itime' => array(
         'order' => 'desc'

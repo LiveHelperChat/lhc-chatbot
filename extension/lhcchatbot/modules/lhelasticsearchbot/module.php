@@ -24,8 +24,8 @@ $ViewList['list'] = array(
 );
 
 $ViewList['delete'] = array(
-    'params' => array(),
-    'uparams' => array(),
+    'params' => array('id'),
+    'uparams' => array('csfr'),
     'functions' => array('configure')
 );
 

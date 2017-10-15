@@ -80,10 +80,14 @@ class erLhcoreClassElasticSearchChatboxIndex
                             $questionMatched->itime = time()*1000;
                             $questionMatched->match_count = 1;
                             $questionMatched->chat_id = $chat->id;
+                            $questionMatched->dep_ids[] = (int)$chat->dep_id;
                             $questionMatched->saveThis();
                         } else {
                             $questionMatched->chat_id = $chat->id;
                             $questionMatched->match_count++;
+                            if (!in_array($chat->dep_id, $questionMatched->dep_ids)){
+                                $questionMatched->dep_ids[] = (int)$chat->dep_id;
+                            }
                             $questionMatched->saveThis();
                         }
 
@@ -112,6 +116,7 @@ class erLhcoreClassElasticSearchChatboxIndex
                             $answerMatched->answer = $answer;
                             $answerMatched->match_count = 1;
                             $answerMatched->question_id = $questionMatched->id;
+                            $answerMatched->dep_id = (int)$chat->dep_id;
                             $answerMatched->saveThis();
                         } else {
                             $answerMatched->match_count++;

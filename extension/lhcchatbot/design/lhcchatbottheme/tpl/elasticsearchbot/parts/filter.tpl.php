@@ -3,8 +3,6 @@
 
 	<div class="row">
 
-
-
 		<div class="col-md-2">
 		  <div class="form-group">
 			<label><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('bracket/lists/filter','Chat ID');?></label>
@@ -22,6 +20,20 @@
                 </select>
             </div>
         </div>
+
+        <div class="col-md-3">
+            <div class="form-group">
+                <label><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('chat/lists/search_panel','Department');?></label>
+                <?php echo erLhcoreClassRenderHelper::renderCombobox( array (
+                    'input_name'     => 'department_id',
+                    'optional_field' => erTranslationClassLhTranslation::getInstance()->getTranslation('chat/lists/search_panel','Select department'),
+                    'selected_id'    => $input->department_id,
+                    'css_class'      => 'form-control',
+                    'list_function'  => 'erLhcoreClassModelDepartament::getList'
+                )); ?>
+            </div>
+        </div>
+
         <div class="col-md-2">
             <div class="form-group">
                 <label><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('bracket/lists/filter','Sort');?></label>
@@ -31,6 +43,7 @@
                 </select>
             </div>
         </div>
+
 	</div>
 
 
