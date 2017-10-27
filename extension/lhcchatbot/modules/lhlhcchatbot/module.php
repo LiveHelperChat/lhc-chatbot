@@ -24,6 +24,7 @@ $ViewList['suggest'] = array(
 
 $ViewList['list'] = array(
     'params' => array(),
+    'uparams' => array('context_id'),
     'functions' => array('use')
 );
 

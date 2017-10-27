@@ -1,5 +1,7 @@
 <h1 class="attr-header"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Questions and answers');?></h1>
 
+<?php include(erLhcoreClassDesign::designtpl('lhcchatbot/parts/filter.tpl.php')); ?>
+
 <?php if ($pages->items_total > 0) { ?>
 
 <form action="<?php echo $input->form_action,$inputAppend?>" method="post">
