@@ -1,11 +1,16 @@
 .lhcchatbot-list li{
-	background-color:#BFE9F9;
+	background-color: #cccccc;
 	border-radius:3px;
 	margin-right:3px;
 	font-size:12px;
 	cursor:pointer;
 }
 
-.lhcchatbot-list li:hover{
+.lhcchatbot-list li.lhc-new-suggest:hover{
 	background-color:#a6e5fd;
+}
+
+
+.lhcchatbot-list li.lhc-new-suggest{
+	background-color:#BFE9F9;
 }

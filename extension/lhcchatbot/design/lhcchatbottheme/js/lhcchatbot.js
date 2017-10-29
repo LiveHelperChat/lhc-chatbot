@@ -13,8 +13,10 @@ var lhcChatBot = {
 
 					containerSuggest = $('#suggest-container-' + chat_id).find('ul');
 
+					containerSuggest.find('li').removeClass('lhc-new-suggest');
+
 					$.each(item,function(i, itemSuggest) {
-						containerSuggest.prepend('<li onclick="lhcChatBot.sendSuggest('+chat_id+',$(this))">'+jQuery('<p/>').text(itemSuggest).html()+'</li>');
+						containerSuggest.prepend('<li class="lhc-new-suggest" onclick="lhcChatBot.sendSuggest('+chat_id+',$(this))">'+jQuery('<p/>').text(itemSuggest).html()+'</li>');
 					});
 
 					containerSuggest.find('li:gt(4)').remove();
