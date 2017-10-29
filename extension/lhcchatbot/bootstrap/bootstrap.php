@@ -46,7 +46,14 @@ class erLhcoreClassExtensionLhcchatbot
             $this,
             'departmentModified'
         ));
-        
+
+        // Elastic Search store statistic regarding was bot used in particular chat
+        $dispatcher->listen('system.getelasticstructure', 'erLhcoreClassElasticSearchChatboxIndex::getElasticStructure');
+        $dispatcher->listen('elasticsearch.indexchat', 'erLhcoreClassElasticSearchChatboxIndex::indexChat');
+        $dispatcher->listen('elasticsearch.getstate', 'erLhcoreClassElasticSearchChatboxIndex::getState');
+
+        $dispatcher->listen('statistic.valid_tabs', 'erLhcoreClassElasticSearchChatboxIndex::appendStatisticTab');
+        $dispatcher->listen('statistic.process_tab', 'erLhcoreClassElasticSearchChatboxIndex::processTab');
     }
     
     /**

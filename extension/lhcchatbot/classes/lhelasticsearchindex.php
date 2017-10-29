@@ -128,11 +128,137 @@ class erLhcoreClassElasticSearchChatboxIndex
         }
     }
 
+    public static function indexChat($params)
+    {
+        $db = ezcDbInstance::get();
+        $stmt = $db->prepare("SELECT chat_id FROM lhc_lhcchatbot_used WHERE chat_id = :chat_id");
+        $stmt->bindParam(':chat_id',$params['chat']->chat_id);
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $stmt->execute();
+        $chatData = $stmt->fetch();
+
+        if (isset($chatData['chat_id']) && is_numeric($chatData['chat_id'])) {
+            $botWasUsed = 1;
+        } else {
+            $botWasUsed = 0;
+        }
+
+        $params['chat']->lhc_bot_used = (int)$botWasUsed;
+    }
+
+    /**
+     * @desc Update elastic search structure
+     *
+     * @param array $params
+     */
+    public static function getElasticStructure($params)
+    {
+        $params['structure']['chat']['types']['lh_chat']['lhc_bot_used'] = array('type' => 'integer');
+    }
+
+    /**
+     * @param array $params
+     *
+     * @desc used by elastic search plugin to set attribute
+     */
+    public static function getState($params)
+    {
+        if (isset($params['chat']->lhc_bot_used) && is_numeric($params['chat']->lhc_bot_used) && $params['chat']->lhc_bot_used == 1) {
+            $params['state']['lhc_bot_used'] = 1;
+        } else {
+            $params['state']['lhc_bot_used'] = 0;
+        }
+    }
+
+    /*
+     * @desc Used then chat is closed
+     * */
     public static function indexChatDelay($params)
     {
         $db = ezcDbInstance::get();
         $stmt = $db->prepare('INSERT IGNORE INTO lhc_lhcchatbot_index (`chat_id`) VALUES (:chat_id)');
         $stmt->bindValue(':chat_id', $params['chat']->id, PDO::PARAM_STR);
         $stmt->execute();
+    }
+
+    /**
+     * Appends statistic tab as valid option
+     *
+     * @param array $params
+     */
+    public static function appendStatisticTab($params) {
+        $params['valid_tabs'][] = 'botusage';
+    }
+
+    /**
+     * Process this option
+     *
+     * @param array $paramsExecution
+     */
+    public static function processTab($paramsExecution) {
+
+        $Params = $paramsExecution['params'];
+
+        if ($Params['user_parameters_unordered']['tab'] == 'botusage')
+        {
+            if (isset($_GET['doSearch'])) {
+                $filterParams = erLhcoreClassSearchHandler::getParams(array('customfilterfile' => 'extension/lhcchatbot/classes/filter/botusage.php', 'format_filter' => true, 'use_override' => true, 'uparams' => $Params['user_parameters_unordered']));
+            } else {
+                $filterParams = erLhcoreClassSearchHandler::getParams(array('customfilterfile' => 'extension/lhcchatbot/classes/filter/botusage.php', 'format_filter' => true, 'uparams' => $Params['user_parameters_unordered']));
+            }
+
+            $elasticSearchHandler = erLhcoreClassElasticClient::getHandler();
+
+            $sparams = array();
+            $sparams['index'] = erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionElasticsearch')->settings['index'];
+            $sparams['type'] = erLhcoreClassModelESChat::$elasticType;
+            $sparams['body']['size'] = 0;
+            $sparams['body']['from'] = 0;
+            $sparams['body']['aggs']['chats_over_time']['date_histogram']['field'] = 'time';
+            $sparams['body']['aggs']['chats_over_time']['date_histogram']['interval'] = 'day';
+            $sparams['body']['aggs']['chats_over_time']['aggs']['botusage_aggr']['terms']['field'] = 'lhc_bot_used';
+
+            $dateTime = new DateTime("now");
+            $sparams['body']['aggs']['chats_over_time']['date_histogram']['time_zone'] = $dateTime->getOffset() / 60 / 60;
+
+            $paramsOrig = $filterParams;
+
+            if (! isset($paramsOrig['filter']['filtergte']['time']) && ! isset($paramsOrig['filter']['filterlte']['time'])) {
+                $paramsOrig['filter']['filtergt']['time'] = mktime(0, 0, 0, date('m'), date('d') - 31, date('y'));
+            }
+
+            erLhcoreClassElasticSearchStatistic::formatFilter($paramsOrig['filter'], $sparams);
+
+            $response = $elasticSearchHandler->search($sparams);
+
+            $keyStatus = array(
+                0 => 'bot_unused',
+                1 => 'bot_used'
+            );
+
+            $numberOfChats = array();
+
+            foreach ($response['aggregations']['chats_over_time']['buckets'] as $bucket) {
+                $keyDateUnix = $bucket['key'] / 1000;
+
+                foreach ($bucket['botusage_aggr']['buckets'] as $bucketStatus) {
+                    if (isset($keyStatus[$bucketStatus['key']])) {
+                        $numberOfChats[$keyDateUnix][$keyStatus[$bucketStatus['key']]] = $bucketStatus['doc_count'];
+                    }
+                }
+
+                foreach ($keyStatus as $mustHave) {
+                    if (! isset($numberOfChats[$keyDateUnix][$mustHave])) {
+                        $numberOfChats[$keyDateUnix][$mustHave] = 0;
+                    }
+                }
+            }
+
+            ksort($numberOfChats);
+
+            $tpl = $paramsExecution['tpl'];
+            $tpl->set('input',$filterParams['input_form']);
+            $tpl->set('statistic', $numberOfChats);
+        }
     }
 }
