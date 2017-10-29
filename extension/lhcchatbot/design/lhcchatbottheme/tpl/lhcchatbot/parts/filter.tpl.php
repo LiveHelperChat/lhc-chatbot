@@ -14,6 +14,16 @@
                 )); ?>
             </div>
         </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('chat/lists/search_panel','Sort');?></label>
+                <select class="form-control" name="sort">
+                    <option value="newfirst" <?php $input->sort == 'newfirst' ? print 'selected="selected"' : ''?> >Newest</option>
+                    <option value="oldfirst" <?php $input->sort == 'oldfirst' ? print 'selected="selected"' : ''?> >Oldest</option>
+                    <option value="wasused" <?php $input->sort == 'wasused' ? print 'selected="selected"' : ''?> >Most used</option>
+                </select>
+            </div>
+        </div>
     </div>
 
     <div class="btn-group" role="group" aria-label="...">

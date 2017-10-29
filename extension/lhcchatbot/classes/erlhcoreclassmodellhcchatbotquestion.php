@@ -18,7 +18,8 @@ class erLhcoreClassModelLHCChatBotQuestion {
             'id' => $this->id,
             'question' => $this->question,
             'answer' => $this->answer,
-            'context_id' => $this->context_id
+            'context_id' => $this->context_id,
+            'was_used' => $this->was_used
 		);
 
 		return $stateArray;
@@ -76,4 +77,5 @@ class erLhcoreClassModelLHCChatBotQuestion {
 	public $context_id = 0;
 	public $question = '';
 	public $answer = '';
+	public $was_used = 0;
 }

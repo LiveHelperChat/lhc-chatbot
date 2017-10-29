@@ -22,9 +22,15 @@ $ViewList['suggest'] = array(
     'multiple_arguments' => array ( 'id' )
 );
 
+$ViewList['suggestused'] = array(
+    'params' => array('id'),
+    'uparams' => array(),
+    'functions' => array('use')
+);
+
 $ViewList['list'] = array(
     'params' => array(),
-    'uparams' => array('context_id'),
+    'uparams' => array('context_id','sort'),
     'functions' => array('use')
 );
 

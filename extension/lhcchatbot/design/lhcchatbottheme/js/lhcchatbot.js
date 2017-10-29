@@ -16,7 +16,8 @@ var lhcChatBot = {
 					containerSuggest.find('li').removeClass('lhc-new-suggest');
 
 					$.each(item,function(i, itemSuggest) {
-						containerSuggest.prepend('<li class="lhc-new-suggest" onclick="lhcChatBot.sendSuggest('+chat_id+',$(this))">'+jQuery('<p/>').text(itemSuggest).html()+'</li>');
+						var li = jQuery('<li class="lhc-new-suggest" onclick="lhcChatBot.sendSuggest('+chat_id+',$(this))">'+jQuery('<p/>').text(itemSuggest.a).html()+'</li>').attr('title', jQuery('<p/>').text(itemSuggest.q).html());
+						containerSuggest.prepend(li);
 					});
 
 					containerSuggest.find('li:gt(4)').remove();
@@ -29,6 +30,10 @@ var lhcChatBot = {
 		// Send message
 		$("#CSChatMessage-"+chat_id).val(inst.text());
 		lhinst.addmsgadmin(chat_id);
+
+        $.postJSON(WWW_DIR_JAVASCRIPT  + 'lhcchatbot/suggestused/'+chat_id, {'answer' : inst.text(), 'question' : inst.attr('title')}, function(data) {
+
+		});
 	}
 };
 

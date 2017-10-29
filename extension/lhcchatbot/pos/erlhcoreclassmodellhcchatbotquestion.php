@@ -24,4 +24,9 @@ $def->properties['context_id']->columnName   = 'context_id';
 $def->properties['context_id']->propertyName = 'context_id';
 $def->properties['context_id']->propertyType = ezcPersistentObjectProperty::PHP_TYPE_INT;
 
+$def->properties['was_used'] = new ezcPersistentObjectProperty();
+$def->properties['was_used']->columnName   = 'was_used';
+$def->properties['was_used']->propertyName = 'was_used';
+$def->properties['was_used']->propertyType = ezcPersistentObjectProperty::PHP_TYPE_INT;
+
 return $def;
