@@ -3,8 +3,12 @@ CREATE TABLE `lhc_lhcchatbot_question` (
   `question` text NOT NULL,
   `answer` text NOT NULL,
   `context_id` int(11) NOT NULL,
+  `was_used` int(11) NOT NULL,
+  `confirmed` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
-  KEY `context_id` (`context_id`)
+  KEY `context_id` (`context_id`),
+  KEY `was_used` (`was_used`),
+  KEY `confirmed` (`confirmed`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `lhc_lhcchatbot_context` (

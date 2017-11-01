@@ -43,6 +43,12 @@ if ($filterParams['input_form']->confirmed === 1) {
     $sparams['body']['query']['bool']['must'][]['term']['confirmed'] = 0;
 }
 
+if ($filterParams['input_form']->hidden === 1) {
+    $sparams['body']['query']['bool']['must'][]['term']['hidden'] = 1;
+} elseif ($filterParams['input_form']->hidden === 0) {
+    $sparams['body']['query']['bool']['must'][]['term']['hidden'] = 0;
+}
+
 if ($filterParams['input_form']->sort != '') {
     if ($filterParams['input_form']->sort == 'new') {
         $sort = array(

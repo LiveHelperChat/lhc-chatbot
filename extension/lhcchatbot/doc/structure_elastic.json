@@ -24,6 +24,9 @@
 			"confirmed": {
 				"type": "integer"
 			},
+			"hidden": {
+				"type": "integer"
+			},
 			"cbot_question_id": {
 				"type": "integer"
 			},

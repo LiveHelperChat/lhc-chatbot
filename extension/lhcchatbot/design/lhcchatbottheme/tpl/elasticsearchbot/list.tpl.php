@@ -10,6 +10,7 @@
                 <th width="1%" nowrap="nowrap"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('elasticsearch/admin','Match count')?></th>
                 <th width="1%" nowrap="nowrap"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('elasticsearch/admin','Department IDs')?></th>
                 <th width="1%" nowrap="nowrap"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('elasticsearch/admin','Confirmed')?></th>
+                <th width="1%" nowrap="nowrap"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('elasticsearch/admin','Hidden')?></th>
                 <th width="1%" nowrap="nowrap"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('elasticsearch/admin','Index time')?></th>
                 <th width="1%"></th>
             </tr>
@@ -20,6 +21,7 @@
                 <td><?php echo htmlspecialchars($item->match_count)?></td>
                 <td><?php echo htmlspecialchars(implode(', ', $item->dep_ids))?></td>
                 <td><?php echo htmlspecialchars($item->confirmed == 1 ? 'Yes' : 'No')?></td>
+                <td><?php echo htmlspecialchars($item->hidden == 1 ? 'Yes' : 'No')?></td>
                 <td nowrap=""><?php echo htmlspecialchars($item->itime_front)?></td>
                 <td>
                     <a class="btn btn-danger btn-xs csfr-required" onclick="return confirm('<?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('kernel/messages','Are you sure?');?>')" href="<?php echo erLhcoreClassDesign::baseurl('elasticsearchbot/delete')?>/<?php echo $item->id?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('user/userlist','Delete');?></a>

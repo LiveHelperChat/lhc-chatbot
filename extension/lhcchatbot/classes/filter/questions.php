@@ -38,6 +38,18 @@ $fieldsSearch['confirmed'] = array (
     )
 );
 
+$fieldsSearch['hidden'] = array (
+    'type' => 'text',
+    'trans' => 'hidden',
+    'required' => false,
+    'valid_if_filled' => false,
+    'filter_type' => 'like',
+    'filter_table_field' => 'hidden',
+    'validation_definition' => new ezcInputFormDefinitionElement (
+        ezcInputFormDefinitionElement::OPTIONAL, 'int', array('min_range' => 0)
+    )
+);
+
 $fieldsSearch['department_id'] = array (
     'type' => 'text',
     'trans' => 'Confirmed',

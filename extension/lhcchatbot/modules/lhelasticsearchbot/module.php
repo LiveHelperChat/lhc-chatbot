@@ -19,7 +19,7 @@ $ViewList['elastic'] = array(
 
 $ViewList['list'] = array(
     'params' => array(),
-    'uparams' => array('sort','confirmed'),
+    'uparams' => array('sort','confirmed','hidden'),
     'functions' => array('configure')
 );
 

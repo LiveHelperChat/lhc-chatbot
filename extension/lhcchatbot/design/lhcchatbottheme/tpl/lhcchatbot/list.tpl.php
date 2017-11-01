@@ -15,6 +15,7 @@
             <th><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Answer');?></th>
             <th><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Context');?></th>
             <th><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Was used');?></th>
+            <th><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Confirmed');?></th>
             <th width="1%"></th>
         </tr>
     </thead>
@@ -24,6 +25,7 @@
         <td><?php echo htmlspecialchars($item->answer)?></td>
         <td><?php echo htmlspecialchars($item->context)?></td>
         <td><?php echo htmlspecialchars($item->was_used)?></td>
+        <td><?php echo htmlspecialchars($item->confirmed)?></td>
         <td nowrap>
           <div class="btn-group" role="group" aria-label="..." style="width:60px;">
             <a class="btn btn-default btn-xs" href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/edit')?>/<?php echo $item->id?>" ><i class="material-icons mr-0">&#xE254;</i></a>

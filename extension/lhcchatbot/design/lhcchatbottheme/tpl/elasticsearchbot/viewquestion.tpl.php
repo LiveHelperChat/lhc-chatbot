@@ -24,7 +24,13 @@
 
 <form action="" method="post" ng-controller="ContextQuestionFormCtrl as contextQuestion" ng-init='contextQuestion.answers = <?php echo json_encode($question->cbot_question_array)?>'>
 
-    <p><i class="material-icons<?php $question->confirmed == 1 ? print ' chat-active' : ' chat-unread'?>">&#xE5CA;</i><?php $question->confirmed == 1 ? print '' : print 'Not'?> confirmed -  <small><i>(It will became confirmed once you save question with answer.)</i></small></p>
+    <div class="form-group">
+        <label><input type="checkbox" name="confirmed" value="on" <?php $question->confirmed == 1 ? print 'checked="checked"' : ''; ?> > <?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Confirmed')?></label>
+    </div>
+
+    <div class="form-group">
+        <label><input type="checkbox" name="hidden" value="on" <?php $question->hidden == 1 ? print 'checked="checked"' : ''; ?> > <?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Hidden')?></label>
+    </div>
 
     <div class="form-group">
     <label><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Question');?></label>

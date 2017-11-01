@@ -24,6 +24,9 @@
                 </select>
             </div>
         </div>
+        <div class="col-md-3">
+            <label><input type="checkbox" name="confirmed" <?php echo $input->confirmed === true ? print 'checked="checked"' : ''?> value="on"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('chat/lists/search_panel','Only confirmed');?></label>
+        </div>
     </div>
 
     <div class="btn-group" role="group" aria-label="...">

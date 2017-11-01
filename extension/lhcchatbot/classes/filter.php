@@ -25,6 +25,18 @@ $fieldsSearch['sort'] = array (
     )
 );
 
+$fieldsSearch['confirmed'] = array (
+    'type' => 'text',
+    'trans' => 'Confirmed',
+    'required' => false,
+    'valid_if_filled' => false,
+    'filter_type' => 'filter',
+    'filter_table_field' => 'confirmed',
+    'validation_definition' => new ezcInputFormDefinitionElement (
+        ezcInputFormDefinitionElement::OPTIONAL, 'boolean'
+    )
+);
+
 $fieldSortAttr = array (
     'field'      => 'sort',
     'default'    => 'newfirst',

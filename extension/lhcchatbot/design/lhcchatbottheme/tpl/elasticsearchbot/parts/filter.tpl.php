@@ -44,6 +44,17 @@
             </div>
         </div>
 
+        <div class="col-md-2">
+            <div class="form-group">
+                <label><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('bracket/lists/filter','Show');?></label>
+                <select name="hidden" class="form-control">
+                    <option value="">All</option>
+                    <option value="1" <?php $input->hidden == 1 ? print 'selected="selected"' : '' ?> >Only hidden</option>
+                    <option value="0" <?php $input->hidden === 0 ? print 'selected="selected"' : '' ?> >Only un-hidden</option>
+                </select>
+            </div>
+        </div>
+
 	</div>
 
 

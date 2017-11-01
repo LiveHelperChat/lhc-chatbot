@@ -55,7 +55,7 @@ $Result['path'] = array(
         'title' => erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','ChatBot')
     ),
     array (
-        'url' =>erLhcoreClassDesign::baseurl('elasticsearchbot/list'),
+        'url' =>erLhcoreClassDesign::baseurl('elasticsearchbot/list') . '/(hidden)/0',
         'title' => erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Proposed questions')
     ),
     array (

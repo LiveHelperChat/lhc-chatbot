@@ -63,6 +63,12 @@ class erLhcoreClassExtensionLHCChatBotValidator
             'context_questionId' => new ezcInputFormDefinitionElement(
                 ezcInputFormDefinitionElement::OPTIONAL, 'int', null, FILTER_REQUIRE_ARRAY
             ),
+            'confirmed' => new ezcInputFormDefinitionElement(
+                ezcInputFormDefinitionElement::OPTIONAL, 'boolean'
+            ),
+            'hidden' => new ezcInputFormDefinitionElement(
+                ezcInputFormDefinitionElement::OPTIONAL, 'boolean'
+            ),
         );
 
         $form = new ezcInputForm( INPUT_POST, $definition );
@@ -83,15 +89,27 @@ class erLhcoreClassExtensionLHCChatBotValidator
 
         $question->cbot_question_array = $questionsAnswers;
 
+        if ( $form->hasValidData( 'confirmed' ) && $form->confirmed == true ) {
+            $question->confirmed = 1;
+        } else {
+            $question->confirmed = 0;
+        }
+
+        if ( $form->hasValidData( 'hidden' ) && $form->hidden == true ) {
+            $question->hidden = 1;
+        } else {
+            $question->hidden = 0;
+        }
+
         if ( $form->hasValidData( 'question' ) && $form->question != '' ) {
             $question->cbot_question->question = $form->question;
-        } else {
+        } elseif ($question->confirmed == 1) {
             $Errors[] =  erTranslationClassLhTranslation::getInstance()->getTranslation('xmppservice/operatorvalidator','Please enter question!');
         }
 
         if ( $form->hasValidData( 'answer' ) && $form->answer != '') {
             $question->cbot_question->answer = $form->answer;
-        } else {
+        } elseif ($question->confirmed == 1) {
             $Errors[] =  erTranslationClassLhTranslation::getInstance()->getTranslation('xmppservice/operatorvalidator','Please enter answer!');
         }
 
@@ -100,6 +118,8 @@ class erLhcoreClassExtensionLHCChatBotValidator
         } else {
             $question->cbot_question->context_id = 0; // Track back what happens then context is reset/assigned
         }
+
+        $question->cbot_question->confirmed = $question->confirmed;
     }
 
     public static function validateContext(erLhcoreClassModelLHCChatBotContext & $context)
@@ -169,8 +189,9 @@ class erLhcoreClassExtensionLHCChatBotValidator
 
         // Find all questions which were updated and updated them
         foreach ($question->cbot_question_ids as $questionId) {
-            if (key_exists($questionId, $updatedQuestions)){
+            if (key_exists($questionId, $updatedQuestions)) {
                 $questionAnswer = erLhcoreClassModelLHCChatBotQuestion::fetch($questionId);
+                $questionAnswer->confirmed = $question->confirmed;
                 $questionAnswer->snapshot();
 
                 $questionAnswer->question = $question->question;
@@ -185,6 +206,7 @@ class erLhcoreClassExtensionLHCChatBotValidator
             $questionAnswer->question = $question->question;
             $questionAnswer->answer = $newQuestion['name'];
             $questionAnswer->context_id = $newQuestion['context'];
+            $questionAnswer->confirmed = $question->confirmed;
             self::publishQuestion($questionAnswer);
             $idExisting[] = $questionAnswer->id;
             $question->cbot_question_array[$newQuestion['key']]['id'] = $questionAnswer->id;
@@ -197,7 +219,6 @@ class erLhcoreClassExtensionLHCChatBotValidator
         $chatbotQuestion = $question->cbot_question;
         self::publishQuestion($chatbotQuestion);
 
-        $question->confirmed = 1;
         $question->cbot_question_id = $chatbotQuestion->id;
         $question->saveThis();
     }
@@ -221,7 +242,9 @@ class erLhcoreClassExtensionLHCChatBotValidator
         // Add as new questions
         foreach ($question->question_items as $q)
         {
-            $api->addQuestion(trim($q), trim($question->answer), $question->context_id);
+            if ($question->confirmed == 1) {
+                $api->addQuestion(trim($q), trim($question->answer), $question->context_id);
+            }
         }
 
         $question->saveThis();

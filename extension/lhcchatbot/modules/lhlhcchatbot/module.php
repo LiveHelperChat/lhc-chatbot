@@ -30,7 +30,7 @@ $ViewList['suggestused'] = array(
 
 $ViewList['list'] = array(
     'params' => array(),
-    'uparams' => array('context_id','sort'),
+    'uparams' => array('context_id','sort','confirmed'),
     'functions' => array('use')
 );
 

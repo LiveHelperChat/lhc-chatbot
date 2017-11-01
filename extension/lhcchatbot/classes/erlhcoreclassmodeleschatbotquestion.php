@@ -9,6 +9,7 @@ class erLhcoreClassModelESChatbotQuestion
         $states = array(
             'question' => $this->question,
             'match_count' => $this->match_count,
+            'hidden' => $this->hidden,
             'itime' => $this->itime,
             'chat_id' => $this->chat_id,
             'confirmed' => $this->confirmed,
@@ -96,6 +97,8 @@ class erLhcoreClassModelESChatbotQuestion
     public $cbot_question_id = 0;
 
     public $itime = null;
+
+    public $hidden = 0;
 
     public $dep_ids = [];
 

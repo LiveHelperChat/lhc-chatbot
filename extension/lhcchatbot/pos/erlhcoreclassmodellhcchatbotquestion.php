@@ -29,4 +29,9 @@ $def->properties['was_used']->columnName   = 'was_used';
 $def->properties['was_used']->propertyName = 'was_used';
 $def->properties['was_used']->propertyType = ezcPersistentObjectProperty::PHP_TYPE_INT;
 
+$def->properties['confirmed'] = new ezcPersistentObjectProperty();
+$def->properties['confirmed']->columnName   = 'confirmed';
+$def->properties['confirmed']->propertyName = 'confirmed';
+$def->properties['confirmed']->propertyType = ezcPersistentObjectProperty::PHP_TYPE_INT;
+
 return $def;
