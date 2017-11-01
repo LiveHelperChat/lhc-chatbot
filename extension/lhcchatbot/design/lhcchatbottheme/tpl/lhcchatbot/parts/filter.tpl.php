@@ -24,9 +24,18 @@
                 </select>
             </div>
         </div>
-        <div class="col-md-3">
-            <label><input type="checkbox" name="confirmed" <?php echo $input->confirmed === true ? print 'checked="checked"' : ''?> value="on"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('chat/lists/search_panel','Only confirmed');?></label>
+
+        <div class="col-md-2">
+            <div class="form-group">
+                <label><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('bracket/lists/filter','Status');?></label>
+                <select name="confirmed" class="form-control">
+                    <option value="">All</option>
+                    <option value="1" <?php $input->confirmed == 1 ? print 'selected="selected"' : '' ?> >Confirmed</option>
+                    <option value="0" <?php $input->confirmed === 0 ? print 'selected="selected"' : '' ?> >Unconfirmed</option>
+                </select>
+            </div>
         </div>
+
     </div>
 
     <div class="btn-group" role="group" aria-label="...">

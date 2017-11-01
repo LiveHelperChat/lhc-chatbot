@@ -20,3 +20,7 @@
 			'list_function_params'  => array_merge(array('limit' => '1000000')),
 	)); ?>
 </div>
+
+<div class="form-group">
+    <label><input type="checkbox" name="confirmed" value="on" <?php $question->confirmed == 1 ? print 'checked="checked"' : ''; ?> > <?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Confirmed')?></label>
+</div>

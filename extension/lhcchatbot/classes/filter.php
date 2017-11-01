@@ -33,7 +33,7 @@ $fieldsSearch['confirmed'] = array (
     'filter_type' => 'filter',
     'filter_table_field' => 'confirmed',
     'validation_definition' => new ezcInputFormDefinitionElement (
-        ezcInputFormDefinitionElement::OPTIONAL, 'boolean'
+        ezcInputFormDefinitionElement::OPTIONAL, 'int' , array('min_range' => 0)
     )
 );
 

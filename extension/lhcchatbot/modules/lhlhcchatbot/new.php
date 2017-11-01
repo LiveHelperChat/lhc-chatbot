@@ -36,7 +36,7 @@ $Result['path'] = array(
         'title' => erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','ChatBot')
     ),
     array (
-        'url' =>erLhcoreClassDesign::baseurl('lhcchatbot/list'),
+        'url' =>erLhcoreClassDesign::baseurl('lhcchatbot/list') . '/(confirmed)/1',
         'title' => erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Questions and Answers')        
     ),
     array(

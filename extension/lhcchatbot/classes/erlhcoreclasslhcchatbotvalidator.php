@@ -11,6 +11,9 @@ class erLhcoreClassExtensionLHCChatBotValidator
             'answer' => new ezcInputFormDefinitionElement(
                 ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
             ),
+            'confirmed' => new ezcInputFormDefinitionElement(
+                ezcInputFormDefinitionElement::OPTIONAL, 'boolean'
+            ),
             'context_id' => new ezcInputFormDefinitionElement(
                 ezcInputFormDefinitionElement::OPTIONAL, 'int', array('min_range' => 1)
             )
@@ -37,6 +40,12 @@ class erLhcoreClassExtensionLHCChatBotValidator
             $question->context_id = $form->context_id;
         } else {
             $question->context_id = 0; // Track back what happens then context is reset/assigned
+        }
+
+        if ( $form->hasValidData( 'confirmed' ) && $form->confirmed == true ) {
+            $question->confirmed = 1;
+        } else {
+            $question->confirmed = 0;
         }
 
         return $Errors;
