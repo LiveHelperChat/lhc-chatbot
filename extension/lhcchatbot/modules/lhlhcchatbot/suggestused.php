@@ -25,10 +25,12 @@ try {
         $stmt->execute();
         $dataContext = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
-        // Log that suggestion was used
-        $stmt = $db->prepare("INSERT IGNORE INTO lhc_lhcchatbot_used (chat_id) VALUES (:chat_id)");
-        $stmt->bindValue(':chat_id', $chat->id);
-        $stmt->execute();
+        if (erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->settings['elastic_enabled'] == true) {
+            // Log that suggestion was used
+            $stmt = $db->prepare("INSERT IGNORE INTO lhc_lhcchatbot_used (chat_id) VALUES (:chat_id)");
+            $stmt->bindValue(':chat_id', $chat->id);
+            $stmt->execute();
+        }
 
         if (is_array($dataContext) && !empty($dataContext)){
             $stmt = $db->prepare("UPDATE lhc_lhcchatbot_question SET was_used = was_used + 1 WHERE context_id IN (" . implode(',', $dataContext) . ") AND answer = :answer AND question LIKE (:question)");

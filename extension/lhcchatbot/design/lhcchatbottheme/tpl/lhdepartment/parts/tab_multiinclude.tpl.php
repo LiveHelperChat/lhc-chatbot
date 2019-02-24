@@ -1,1 +1,1 @@
-<li role="presentation"><a href="#lhcchatbot" aria-controls="lhcchatbot" role="tab" data-toggle="tab"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','ChatBot');?></a></li>
+<li role="presentation" class="nav-item"><a class="nav-link" href="#lhcchatbot" aria-controls="lhcchatbot" role="tab" data-toggle="tab"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','ChatBot');?></a></li>

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import logging
-from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
+from http.server import BaseHTTPRequestHandler, HTTPServer
 from os import curdir, sep
 
 # Settings application
@@ -10,8 +10,16 @@ import lhcChatBot as lhcBot
 
 # set utf-8 encoding
 import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
+import imp
+imp.reload(sys)
+
+
+#import logging
+#logger = logging.getLogger()
+
+# Enable info level logging
+#logging.basicConfig(level=logging.CRITICAL)
+
 
 try:
 	#Create a web server and define the handler to manage the
@@ -22,12 +30,12 @@ try:
 	handler.bot.settings = s.database
 	
 	server = HTTPServer(('', s.http['PORT_NUMBER']), handler)
-	print 'Started httpserver on port ' , s.http['PORT_NUMBER']
+	print(('Started httpserver on port ' , s.http['PORT_NUMBER']))
 	
 	#Wait forever for incoming htto requests
 	server.serve_forever()
 
 except KeyboardInterrupt:
-	print '^C received, shutting down the web server'
+	print ('^C received, shutting down the web server')
 	server.socket.close()
 

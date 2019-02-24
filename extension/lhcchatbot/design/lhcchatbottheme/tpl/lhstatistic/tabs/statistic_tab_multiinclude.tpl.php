@@ -1,3 +1,3 @@
-<?php if ( class_exists('erLhcoreClassExtensionElasticsearch') ) : ?>
-<li role="presentation" <?php if ($tab == 'botusage') : ?>class="active"<?php endif;?>><a href="<?php echo erLhcoreClassDesign::baseurl('statistic/statistic')?>/(tab)/botusage" >Bot usage</a></li>
+<?php if ( erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->settings['elastic_enabled'] == true && class_exists('erLhcoreClassExtensionElasticsearch') ) : ?>
+<li role="presentation"  class="nav-item" ><a class="nav-link <?php if ($tab == 'botusage') : ?>active<?php endif;?>" href="<?php echo erLhcoreClassDesign::baseurl('statistic/statistic')?>/(tab)/botusage" >Bot usage</a></li>
 <?php endif; ?>

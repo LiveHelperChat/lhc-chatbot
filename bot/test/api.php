@@ -87,4 +87,14 @@ class LHCChatBot {
 	     
 	    return $response;
 	}
+
+	public function addDatabase($context = 0)
+	{
+	    $response = $this->executeRequest(array(
+	        'adddb' => true,
+	        'ct' => $context
+	    ));
+
+	    return $response;
+	}
 }

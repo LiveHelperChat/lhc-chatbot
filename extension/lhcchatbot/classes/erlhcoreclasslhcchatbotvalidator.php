@@ -291,9 +291,15 @@ class erLhcoreClassExtensionLHCChatBotValidator
         $stmt->bindValue(':context_id',$context->id);
         $stmt->execute();
 
+        $ext = erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot');
+
         // Remove database from bot
         $api = erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->getApi();
         $api->dropDatabase($context->id);
+
+        $db = ezcDbInstance::get();
+        $stmt = $db->prepare("DROP DATABASE `".$ext->settings['database_prefix']."-" . $ext->getId() . "-" . $context->id ."`");
+        $stmt->execute();
 
         // Remove context
         $context->removeThis();       
@@ -357,12 +363,13 @@ class erLhcoreClassExtensionLHCChatBotValidator
 
         foreach ($msgs as $msg) {
             foreach ($combainedData[$msg->chat_id] as $contextId) {
+                if ($contextId > 0 && $msg->msg != '' && strlen($msg->msg) > 4) {
+                    $answer = $api->getAnswer($msg->msg, $contextId);
 
-                $answer = $api->getAnswer($msg->msg, $contextId);
-
-                if ($answer['error'] == false) {
-                    if ($answer['msg'] != 'notfound' && (!isset($suggestions[$msg->chat_id]) || !in_array($answer['msg'], $suggestions[$msg->chat_id]))) {
-                        $suggestions[$msg->chat_id][] = array('a' => $answer['msg'], 'q' => $msg->msg);
+                    if ($answer['error'] == false) {
+                        if ($answer['msg'] != 'notfound' && $answer['confidence'] > 0 && (!isset($suggestions[$msg->chat_id]) || !in_array($answer['msg'], $suggestions[$msg->chat_id]))) {
+                            $suggestions[$msg->chat_id][] = array('a' => $answer['msg'], 'q' => $msg->msg);
+                        }
                     }
                 }
             }

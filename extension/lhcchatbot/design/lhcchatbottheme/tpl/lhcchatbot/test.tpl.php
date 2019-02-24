@@ -21,15 +21,11 @@
     </div>
     
     <?php if (isset($answer)) : ?>
-        <div class="panel panel-default panel-info">
-          <div class="panel-body panel-info">
-            <?php echo htmlspecialchars($answer['msg'])?>
-          </div>
-        </div>
+        <div class="alert alert-info"><i class="material-icons">search</i><?php echo htmlspecialchars($answer['msg'])?> [<?php echo htmlspecialchars($answer['confidence'])?>]</div>
     <?php endif;?>
     
     <div class="btn-group" role="group" aria-label="...">
-		<input type="submit" class="btn btn-default" name="Search" value="<?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('system/buttons','Search');?>"/>
+		<input type="submit" class="btn btn-secondary" name="Search" value="<?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('system/buttons','Search');?>"/>
 	</div>
 
 </form>

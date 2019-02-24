@@ -3,16 +3,18 @@
     <li><a href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/list')?>/(confirmed)/1"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Question')?></a></li>
     <li><a href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/listcontext')?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Context')?></a></li>
     <li><a href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/test')?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Test console')?></a></li>
+    <?php if (erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->settings['elastic_enabled'] == true) : ?>
     <li><a href="<?php echo erLhcoreClassDesign::baseurl('elasticsearchbot/elastic')?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Elastic search console')?></a></li>
     <li><a href="<?php echo erLhcoreClassDesign::baseurl('elasticsearchbot/list')?>/(hidden)/0"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Proposed Questions')?></a></li>
+    <?php endif; ?>
 </ul>
 
+<?php if (erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->settings['elastic_enabled'] == true) : ?>
 <div class="row">
     <div class="col-md-12">
         <div id="status-elastic"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('elasticsearchbot/admin','Comparing current elastic structure, please wait...')?></div>
     </div>
 </div>
-
 <script>
     function updateElasticStructure() {
         $('#elastic-status-checked').hide();
@@ -36,3 +38,5 @@
         });
     })();
 </script>
+
+<?php endif; ?>

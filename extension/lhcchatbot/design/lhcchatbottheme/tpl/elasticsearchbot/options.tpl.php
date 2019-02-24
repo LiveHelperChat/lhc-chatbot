@@ -17,6 +17,6 @@
         <input type="text" class="form-control" name="last_index_msg_id" value="<?php isset($es_options['last_index_msg_id']) ? print $es_options['last_index_msg_id'] : ''?>" />
     </div>
         
-    <input type="submit" class="btn btn-default" name="StoreOptions" value="<?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('system/buttons','Save'); ?>" />
+    <input type="submit" class="btn btn-secondary" name="StoreOptions" value="<?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('system/buttons','Save'); ?>" />
 
 </form>

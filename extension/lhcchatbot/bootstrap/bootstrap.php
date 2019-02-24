@@ -25,8 +25,6 @@ class erLhcoreClassExtensionLhcchatbot
          */
         $dispatcher->listen('chat.syncadmin', array($this, 'syncAdmin'));
 
-        $dispatcher->listen('chat.close', 'erLhcoreClassElasticSearchChatboxIndex::indexChatDelay');
-
         $dispatcher->listen('instance.extensions_structure', array(
             $this,
             'checkStructure'
@@ -48,12 +46,17 @@ class erLhcoreClassExtensionLhcchatbot
         ));
 
         // Elastic Search store statistic regarding was bot used in particular chat
-        $dispatcher->listen('system.getelasticstructure', 'erLhcoreClassElasticSearchChatboxIndex::getElasticStructure');
-        $dispatcher->listen('elasticsearch.indexchat', 'erLhcoreClassElasticSearchChatboxIndex::indexChat');
-        $dispatcher->listen('elasticsearch.getstate', 'erLhcoreClassElasticSearchChatboxIndex::getState');
+        if ($this->settings['elastic_enabled'] == true) {
 
-        $dispatcher->listen('statistic.valid_tabs', 'erLhcoreClassElasticSearchChatboxIndex::appendStatisticTab');
-        $dispatcher->listen('statistic.process_tab', 'erLhcoreClassElasticSearchChatboxIndex::processTab');
+            $dispatcher->listen('chat.close', 'erLhcoreClassElasticSearchChatboxIndex::indexChatDelay');
+
+            $dispatcher->listen('system.getelasticstructure', 'erLhcoreClassElasticSearchChatboxIndex::getElasticStructure');
+            $dispatcher->listen('elasticsearch.indexchat', 'erLhcoreClassElasticSearchChatboxIndex::indexChat');
+            $dispatcher->listen('elasticsearch.getstate', 'erLhcoreClassElasticSearchChatboxIndex::getState');
+
+            $dispatcher->listen('statistic.valid_tabs', 'erLhcoreClassElasticSearchChatboxIndex::appendStatisticTab');
+            $dispatcher->listen('statistic.process_tab', 'erLhcoreClassElasticSearchChatboxIndex::processTab');
+        }
     }
     
     /**
@@ -205,6 +208,11 @@ class erLhcoreClassExtensionLhcchatbot
         if ($this->configData['ahosting'] == true && $this->configData['id'] == 0) {
             $this->configData['id'] = $this->instanceManual !== false ? $this->instanceManual->id :  erLhcoreClassInstance::getInstance()->id;
         }
+    }
+
+    public function getId(){
+        $this->getConfig();
+        return $this->configData['id'];
     }
 
     public function __get($var)

@@ -7,7 +7,7 @@ var lhcChatBot = {
 
 					var containerSuggest = $('#suggest-container-' + chat_id);
 
-					if ($('#suggest-container-' + chat_id).size() == 0) {
+					if ($('#suggest-container-' + chat_id).length == 0) {
 						$('#CSChatMessage-'+chat_id).after('<div id="suggest-container-'+chat_id+'"><ul class="lhcchatbot-list list-inline"></ul></div>');
 					}
 
@@ -16,7 +16,7 @@ var lhcChatBot = {
 					containerSuggest.find('li').removeClass('lhc-new-suggest');
 
 					$.each(item,function(i, itemSuggest) {
-						var li = jQuery('<li class="lhc-new-suggest" onclick="lhcChatBot.sendSuggest('+chat_id+',$(this))">'+jQuery('<p/>').text(itemSuggest.a).html()+'</li>').attr('title', jQuery('<p/>').text(itemSuggest.q).html());
+						var li = jQuery('<li class="lhc-new-suggest list-inline-item pr-1 pl-1" onclick="lhcChatBot.sendSuggest('+chat_id+',$(this))">'+jQuery('<p/>').text(itemSuggest.a).html()+'</li>').attr('title', jQuery('<p/>').text(itemSuggest.q).html());
 						containerSuggest.prepend(li);
 					});
 

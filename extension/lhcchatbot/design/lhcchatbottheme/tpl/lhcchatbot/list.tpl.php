@@ -28,7 +28,7 @@
         <td><?php echo htmlspecialchars($item->confirmed)?></td>
         <td nowrap>
           <div class="btn-group" role="group" aria-label="..." style="width:60px;">
-            <a class="btn btn-default btn-xs" href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/edit')?>/<?php echo $item->id?>" ><i class="material-icons mr-0">&#xE254;</i></a>
+            <a class="btn btn-secondary btn-xs" href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/edit')?>/<?php echo $item->id?>" ><i class="material-icons mr-0">&#xE254;</i></a>
             <a class="btn btn-danger btn-xs csfr-required" onclick="return confirm('<?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('kernel/messages','Are you sure?');?>')" href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/delete')?>/<?php echo $item->id?>" ><i class="material-icons mr-0">&#xE872;</i></a>
           </div>
         </td>
@@ -49,4 +49,4 @@
 <p><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('chat/activechats','Empty...');?></p>
 <?php } ?>
 
-<div><a class="btn btn-default" href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/new')?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','New');?></a></div>
+<div><a class="btn btn-secondary" href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/new')?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','New');?></a></div>

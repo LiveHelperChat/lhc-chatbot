@@ -38,13 +38,13 @@
     </div>
 
     <div class="row">
-        <div class="col-xs-6">
+        <div class="col-6">
             <div class="form-group">
                 <label><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Answer');?></label>
                 <input type="text" class="form-control" name="answer" id="answer-chatbot" value="<?php echo htmlspecialchars($question->cbot_question->answer)?>" />
             </div>
         </div>
-        <div class="col-xs-6">
+        <div class="col-6">
             <div class="form-group">
                 <label><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Context');?></label>
                 <?php echo erLhcoreClassRenderHelper::renderCombobox( array (
@@ -61,13 +61,13 @@
     </div>
 
     <div class="row" ng-repeat="field in contextQuestion.answers">
-        <div class="col-xs-6">
+        <div class="col-6">
             <div class="form-group">
                 <label><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Answer');?></label>
                 <input type="text" ng-model="field.name" class="form-control" name="answerAdd[]" id="answer-chatbot" value="<?php echo htmlspecialchars($question->cbot_question->answer)?>" />
             </div>
         </div>
-        <div class="col-xs-4">
+        <div class="col-4">
             <div class="form-group">
                 <label><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Context');?></label>
                 <?php echo erLhcoreClassRenderHelper::renderCombobox( array (
@@ -82,20 +82,20 @@
                 )); ?>
             </div>
         </div>
-        <div class="col-xs-2">
+        <div class="col-2">
             <label>&nbsp;</label>
 
             <input type="hidden" name="context_questionId[]" value="{{field.id}}">
-            <a href="#" ng-click="contextQuestion.deleteField(field)" class="btn btn-default btn-block">-</a>
+            <a href="#" ng-click="contextQuestion.deleteField(field)" class="btn btn-secondary btn-block">-</a>
         </div>
     </div>
 
     <div class="form-group">
-        <a href="#" class="btn btn-default btn-block" ng-click="contextQuestion.addField()">Add answer</a>
+        <a href="#" class="btn btn-secondary btn-block" ng-click="contextQuestion.addField()">Add answer</a>
     </div>
 
     <div class="btn-group" role="group" aria-label="...">
-        <input type="submit" class="btn btn-default" name="Save_action" value="<?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('system/buttons','Save');?>"/>
+        <input type="submit" class="btn btn-secondary" name="Save_action" value="<?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('system/buttons','Save');?>"/>
     </div>
 
 </form>

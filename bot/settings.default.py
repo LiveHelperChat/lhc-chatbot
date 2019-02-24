@@ -1,5 +1,6 @@
 database = dict(
-    DATABASE_PREFIX = "chatterbot-demo"
+    DATABASE_PREFIX = "chatterbot-demo",
+    DB_URL = "mysql+mysqlconnector://<user>:<pass>@localhost:3306/",
 )
 
 http = dict(

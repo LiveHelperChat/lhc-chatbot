@@ -1,4 +1,6 @@
-<?php 
+<?php
+
+session_write_close();
 
 erLhcoreClassChat::validateFilterIn($Params['user_parameters_unordered']['id']);
 

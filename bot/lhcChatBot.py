@@ -1,8 +1,16 @@
 from chatterbot import ChatBot
 import logging
 from chatterbot.trainers import ListTrainer
-from UserDict import DictMixin
+from chatterbot.comparisons import jaccard_similarity
+from chatterbot.comparisons import SentimentComparison
+from chatterbot.comparisons import SynsetDistance
+from chatterbot.comparisons import LevenshteinDistance
+
+from collections import UserDict
+from collections import MutableMapping as DictMixin
 from collections import deque
+
+jaccard_similarity.SIMILARITY_THRESHOLD=0.5
 
 class odict(DictMixin):
     
@@ -17,7 +25,14 @@ class odict(DictMixin):
                 
     def __getitem__(self, key):
         return self._data[key]
-        
+
+    def __len__(self):
+        return len(self._keys)
+
+    def __iter__(self):
+        for i in self._keys:
+            yield i
+
     def __delitem__(self, key):
         del self._data[key]
         self._keys.remove(key)
@@ -52,22 +67,19 @@ class lhcChatBot:
 			return self.botInstance[instanceId+"-"+context]
 	
 		self.botInstance[instanceId+"-"+context] = ChatBot('Terminal',
-		    storage_adapter='chatterbot.storage.MongoDatabaseAdapter',
+		    storage_adapter='lhc_sql_storage.LiveHelperChatSQLStorageAdapter',
 		    logic_adapters=[
-		        {
-		            'import_path': 'chatterbot.logic.BestMatch'
-		        },
-		        {
-		            'import_path': 'chatterbot.logic.LowConfidenceAdapter',
-		            'threshold': 0.51,
-		            'default_response': 'notfound'
-		        }
-		    ],
+               {
+                "import_path": "best_lhc_match.BestLiveHelperChatMatch",
+                "statement_comparison_function":jaccard_similarity,
+                "default_response": "noreply",
+                "maximum_similarity_threshold" : 0.4
+               }
+            ],
 		    read_only=True,
-		    database=self.settings['DATABASE_PREFIX'] + "-" + instanceId+"-"+context
+		    database_uri=self.settings['DB_URL']+self.settings['DATABASE_PREFIX'] + "-" + instanceId+"-"+context
 			)
-
-		return self.botInstance[instanceId+"-"+context]		
+		return self.botInstance[instanceId+"-"+context]
 
 	def getAnswer(self, instanceId, question, context = "0"):
 		bot = self.getBot(instanceId, context)
@@ -76,8 +88,8 @@ class lhcChatBot:
 	def addAnswer(self, instanceId, question, answer, context = "0"):
 		bot = self.getBot(instanceId, context)
 		bot.storage.read_only = False
-		bot.set_trainer(ListTrainer)				
-		bot.train([
+		trainer = ListTrainer(bot)
+		trainer.train([
 		question,
 		answer
 		])
@@ -94,6 +106,11 @@ class lhcChatBot:
 		bot.storage.drop()
 		if instanceId+"-"+context in self.botInstance:			
 			del self.botInstance[instanceId+"-"+context]
+
+	def addDatabase(self, instanceId, context = "0"):
+		bot = self.getBot(instanceId, context)
+		bot.storage.create_database()
+
 	
 	def showBot(self):
-		print "show bot"	
+		print("show bot")	

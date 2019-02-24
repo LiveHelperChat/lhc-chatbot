@@ -7,6 +7,7 @@ if (!$currentUser->validateCSFRToken($Params['user_parameters_unordered']['csfr'
 
 try {
     $question = erLhcoreClassModelLHCChatBotQuestion::fetch($Params['user_parameters']['id']);
+    
     erLhcoreClassExtensionLHCChatBotValidator::deleteQuestion($question);
 
     erLhcoreClassModule::redirect('lhcchatbot/list');

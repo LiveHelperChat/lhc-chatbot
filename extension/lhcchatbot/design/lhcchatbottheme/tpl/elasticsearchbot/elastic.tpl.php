@@ -12,7 +12,7 @@
 
     <textarea class="form-control" style="font-size:11px" rows="10" name="Query"><?php echo htmlspecialchars($command)?></textarea>
     <br>
-    <input type="submit" name="doSearch" value="<?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('elasticsearch/admin','Submit')?>" class="btn btn-default" />
+    <input type="submit" name="doSearch" value="<?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('elasticsearch/admin','Submit')?>" class="btn btn-secondary" />
 </form>
 <br/>
 <pre style="font-size:11px;">
