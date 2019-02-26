@@ -12,7 +12,7 @@
     <label><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Context');?></label>
     <?php echo erLhcoreClassRenderHelper::renderCombobox( array (
 			'input_name'     => 'context_id',
-			'optional_field' =>  erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','None'),
+			'optional_field' =>  erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','Choose'),
 			'display_name'   => 'name',
             'css_class'      => 'form-control',
 			'selected_id'    => $question->context_id,

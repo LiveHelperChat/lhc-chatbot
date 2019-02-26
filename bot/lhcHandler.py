@@ -97,7 +97,7 @@ class lhcHandler(BaseHTTPRequestHandler):
 				self.send_header('Content-type',"text/plain")
 				self.end_headers()
 				answer = self.bot.getAnswer(''.join(query_components["id"]),''.join(query_components["q"]),''.join(query_components["ct"]))
-				self.wfile.write(json.dumps({'error':False,'confidence':answer.confidence,'msg':answer.text}).encode())
+				self.wfile.write(json.dumps({'error':False,'in_response':answer.in_response_to,'confidence':answer.confidence,'msg':answer.text}).encode())
 				return
 	
 			except IOError:

@@ -39,7 +39,7 @@ class erLhcoreClassExtensionLHCChatBotValidator
         if ( $form->hasValidData( 'context_id' ) ) {
             $question->context_id = $form->context_id;
         } else {
-            $question->context_id = 0; // Track back what happens then context is reset/assigned
+            $Errors[] =  erTranslationClassLhTranslation::getInstance()->getTranslation('xmppservice/operatorvalidator','Please choose context!');
         }
 
         if ( $form->hasValidData( 'confirmed' ) && $form->confirmed == true ) {
@@ -259,6 +259,24 @@ class erLhcoreClassExtensionLHCChatBotValidator
         $question->saveThis();
     }
 
+    /**
+     * @desc Delete records from bot based on report
+     *
+     * @param erLhcoreClassModelLHCChatBotInvalid $question
+     */
+    public static function deleteReport(erLhcoreClassModelLHCChatBotInvalid $question)
+    {
+        // Save question
+        $api = erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->getApi();
+
+        foreach (erLhcoreClassModelLHCChatBotContext::getList() as $context){
+            $api->removeQuestion(trim($question), $context->id);
+        }
+
+        $question->removeThis();
+    }
+
+
     public static function deleteQuestion(erLhcoreClassModelLHCChatBotQuestion & $question)
     {
         // Save question
@@ -368,7 +386,7 @@ class erLhcoreClassExtensionLHCChatBotValidator
 
                     if ($answer['error'] == false) {
                         if ($answer['msg'] != 'notfound' && $answer['confidence'] > 0 && (!isset($suggestions[$msg->chat_id]) || !in_array($answer['msg'], $suggestions[$msg->chat_id]))) {
-                            $suggestions[$msg->chat_id][] = array('a' => $answer['msg'], 'q' => $msg->msg);
+                            $suggestions[$msg->chat_id][] = array('a' => $answer['msg'], 'q' => $msg->msg, 'in_response' => $answer['in_response'], 'aid' => md5($answer['msg']));
                         }
                     }
                 }

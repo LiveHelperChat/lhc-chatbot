@@ -1,4 +1,4 @@
-<form action="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/list')?>" method="get" name="SearchFormRight">
+<form action="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/list')?>" method="get" name="SearchFormRight" class="mb-2">
     <input type="hidden" name="doSearch" value="1">
 
     <div class="row">

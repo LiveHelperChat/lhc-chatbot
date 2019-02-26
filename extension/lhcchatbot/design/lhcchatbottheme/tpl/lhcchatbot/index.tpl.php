@@ -1,6 +1,7 @@
 <h1><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','ChatBot')?></h1>
 <ul>
     <li><a href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/list')?>/(confirmed)/1"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Question')?></a></li>
+    <li><a href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/invalid')?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Invalid questions')?></a></li>
     <li><a href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/listcontext')?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Context')?></a></li>
     <li><a href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/test')?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Test console')?></a></li>
     <?php if (erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->settings['elastic_enabled'] == true) : ?>

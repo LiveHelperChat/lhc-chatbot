@@ -25,3 +25,6 @@ CREATE TABLE `lhc_lhcchatbot_context_link_department` (
   KEY `department_id` (`department_id`),
   KEY `context_id` (`context_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `lhc_lhcchatbot_invalid` ( `id` int(11) NOT NULL AUTO_INCREMENT,  `question` text NOT NULL,  `answer` text NOT NULL, `counter` int(11) NOT NULL,  PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -21,11 +21,12 @@
     </div>
     
     <?php if (isset($answer)) : ?>
-        <div class="alert alert-info"><i class="material-icons">search</i><?php echo htmlspecialchars($answer['msg'])?> [<?php echo htmlspecialchars($answer['confidence'])?>]</div>
+        <div class="alert alert-info"><i class="material-icons">search</i><?php echo htmlspecialchars($answer['msg'])?> [<?php echo htmlspecialchars($answer['confidence'])?>]<br/>
+        <?php echo htmlspecialchars($answer['in_response'])?>
+        </div>
     <?php endif;?>
     
     <div class="btn-group" role="group" aria-label="...">
 		<input type="submit" class="btn btn-secondary" name="Search" value="<?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('system/buttons','Search');?>"/>
 	</div>
-
 </form>

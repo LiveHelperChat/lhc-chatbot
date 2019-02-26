@@ -1,4 +1,5 @@
-from chatterbot import ChatBot
+from lhc_chatbot import ChatBot
+
 import logging
 from chatterbot.trainers import ListTrainer
 from chatterbot.comparisons import jaccard_similarity
