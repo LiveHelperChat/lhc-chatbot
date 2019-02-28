@@ -17,12 +17,18 @@ $ViewList['test'] = array(
 
 $ViewList['suggest'] = array(
     'params' => array(),
-    'uparams' => array('id'),
+    'uparams' => array('id','chat'),
     'functions' => array('use'),
     'multiple_arguments' => array ( 'id' )
 );
 
 $ViewList['suggestused'] = array(
+    'params' => array('id'),
+    'uparams' => array(),
+    'functions' => array('use')
+);
+
+$ViewList['savecombination'] = array(
     'params' => array('id'),
     'uparams' => array(),
     'functions' => array('use')

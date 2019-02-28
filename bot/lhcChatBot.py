@@ -6,6 +6,8 @@ from chatterbot.comparisons import jaccard_similarity
 from chatterbot.comparisons import SentimentComparison
 from chatterbot.comparisons import SynsetDistance
 from chatterbot.comparisons import LevenshteinDistance
+from chatterbot.response_selection import get_random_response
+
 
 from collections import UserDict
 from collections import MutableMapping as DictMixin
@@ -74,7 +76,8 @@ class lhcChatBot:
                 "import_path": "best_lhc_match.BestLiveHelperChatMatch",
                 "statement_comparison_function":jaccard_similarity,
                 "default_response": "noreply",
-                "maximum_similarity_threshold" : 0.4
+                "maximum_similarity_threshold" : 0.4,
+                "response_selection_method": get_random_response
                }
             ],
 		    read_only=True,

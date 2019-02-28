@@ -323,12 +323,16 @@ class erLhcoreClassExtensionLHCChatBotValidator
         $context->removeThis();       
     }
     
-    public static function suggestByIds($ids)
+    public static function suggestByIds($ids = array(), $chatMode = false)
     {
         // Save question
         $api = erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->getApi();
-        
-        $msgs = erLhcoreClassModelmsg::getList(array('filterin' => array('id' => $ids)));
+
+        if ($chatMode == false) {
+            $msgs = erLhcoreClassModelmsg::getList(array('filterin' => array('id' => $ids)));
+        } else {
+            $msgs = erLhcoreClassModelmsg::getList(array('limit' => 3,'sort' => 'id DESC','filter' => array('user_id' => 0),'filterin' => array('chat_id' => $ids)));
+        }
 
         $suggestions = array();
         
@@ -379,14 +383,17 @@ class erLhcoreClassExtensionLHCChatBotValidator
             $combainedData[$chatId] = isset($departmentContext[$departmentId]) ? $departmentContext[$departmentId] : array(0);
         }
 
-        foreach ($msgs as $msg) {
-            foreach ($combainedData[$msg->chat_id] as $contextId) {
-                if ($contextId > 0 && $msg->msg != '' && strlen($msg->msg) > 4) {
-                    $answer = $api->getAnswer($msg->msg, $contextId);
+        for ($i = 0; $i < erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->settings['try_times']; $i++)
+        {
+            foreach ($msgs as $msg) {
+                foreach ($combainedData[$msg->chat_id] as $contextId) {
+                    if ($contextId > 0 && $msg->msg != '' && strlen($msg->msg) > 4) {
+                        $answer = $api->getAnswer($msg->msg, $contextId);
 
-                    if ($answer['error'] == false) {
-                        if ($answer['msg'] != 'notfound' && $answer['confidence'] > 0 && (!isset($suggestions[$msg->chat_id]) || !in_array($answer['msg'], $suggestions[$msg->chat_id]))) {
-                            $suggestions[$msg->chat_id][] = array('a' => $answer['msg'], 'q' => $msg->msg, 'in_response' => $answer['in_response'], 'aid' => md5($answer['msg']));
+                        if ($answer['error'] == false) {
+                            if ($answer['msg'] != 'notfound' && $answer['confidence'] > 0 && (!isset($suggestions[$msg->chat_id]) || !in_array($answer['msg'], $suggestions[$msg->chat_id]))) {
+                                $suggestions[$msg->chat_id][] = array('a' => $answer['msg'], 'q' => $msg->msg, 'in_response' => $answer['in_response'], 'aid' => md5($answer['msg']));
+                            }
                         }
                     }
                 }
