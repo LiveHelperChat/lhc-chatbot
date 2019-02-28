@@ -17,7 +17,7 @@ var lhcChatBot = {
 
                     $.each(item, function (i, itemSuggest) {
                         if ($('#' + chat_id + '-' + itemSuggest.aid).length == 0) {
-                            var li = jQuery('<li class="lhc-new-suggest list-inline-item pl-1 pb-1" ><button id="' + chat_id + '-' + itemSuggest.aid + '" onclick="lhcChatBot.sendSuggest(' + chat_id + ',$(this))" type="button" class="btn btn-xs btn-info text-left">' + jQuery('<p/>').text(itemSuggest.a).html() + '</button> <button type="button" class="btn btn-xs btn-danger" title="' + jQuery('<p/>').text(itemSuggest.in_response).html() + '" onclick="return lhcChatBot.sendNegative(' + chat_id + ',$(this))"><i class="material-icons mr-0 fs11">delete</i></button></li>').attr('title', jQuery('<p/>').text(itemSuggest.q).html());
+                            var li = jQuery('<li class="lhc-new-suggest list-inline-item pl-1 pb-1" ><button id="' + chat_id + '-' + itemSuggest.aid + '" onclick="lhcChatBot.sendSuggest(' + chat_id + ',$(this))" type="button" class="btn btn-sm btn-light text-left">' + jQuery('<p/>').text(itemSuggest.a).html() + '</button> <button type="button" class="btn btn-xs btn-danger" title="' + jQuery('<p/>').text(itemSuggest.in_response).html() + '" onclick="return lhcChatBot.sendNegative(' + chat_id + ',$(this))"><i class="material-icons mr-0 fs11">delete</i></button></li>').attr('title', jQuery('<p/>').text(itemSuggest.q).html());
                             containerSuggest.prepend(li);
                         }
                     });
