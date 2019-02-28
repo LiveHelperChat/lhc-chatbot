@@ -52,7 +52,7 @@ var lhcChatBot = {
     },
 
     addCombination: function (inst, chat_id, event) {
-        inst.parent().append('<form action="" onsubmit="lhcChatBot.saveCombination(' + chat_id + ')"><i>&quot;' + jQuery('<p/>').text(lhcChatBot.selectedText).html() + '&quot;</i><div class="input-group mt-1"><input onclick="event.stopPropagation();" id="combination-chatter-' + chat_id + '" type="text" placeholder="Enter propsed answer" class="form-control form-control-sm" value=""><div class="input-group-prepend"><button onclick="lhcChatBot.saveCombination(' + chat_id + ')" class="btn btn-success btn-sm" type="button">Add</button></div></div></form>')
+        inst.parent().append('<form action="" onsubmit="return lhcChatBot.saveCombination(' + chat_id + ')"><i>&quot;' + jQuery('<p/>').text(lhcChatBot.selectedText).html() + '&quot;</i><div class="input-group mt-1"><input onclick="event.stopPropagation();" id="combination-chatter-' + chat_id + '" type="text" placeholder="Enter proposed answer" class="form-control form-control-sm" value=""><div class="input-group-prepend"><button onclick="lhcChatBot.saveCombination(' + chat_id + ')" class="btn btn-success btn-sm" type="button">Add</button></div></div></form>')
         event.stopPropagation();
         $('#combination-chatter-' + chat_id).focus();
         return false;
