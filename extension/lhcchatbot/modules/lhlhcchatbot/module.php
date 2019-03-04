@@ -7,12 +7,12 @@ $ViewList = array();
 
 $ViewList['index'] = array(
     'params' => array(),
-    'functions' => array('use')
+    'functions' => array('use_admin')
 );
 
 $ViewList['test'] = array(
     'params' => array(),
-    'functions' => array('use')
+    'functions' => array('use_admin')
 );
 
 $ViewList['suggest'] = array(
@@ -43,7 +43,7 @@ $ViewList['suggestinvalid'] = array(
 $ViewList['list'] = array(
     'params' => array(),
     'uparams' => array('context_id','sort','confirmed'),
-    'functions' => array('use')
+    'functions' => array('use_admin')
 );
 
 $ViewList['invalid'] = array(
@@ -54,51 +54,52 @@ $ViewList['invalid'] = array(
 
 $ViewList['listcontext'] = array(
     'params' => array(),
-    'functions' => array('use')
+    'functions' => array('use_admin')
 );
 
 $ViewList['new'] = array(
     'params' => array(),
-    'functions' => array('use')
+    'functions' => array('use_admin')
 );
 
 $ViewList['newcontext'] = array(
     'params' => array(),
-    'functions' => array('use')
+    'functions' => array('use_admin')
 );
 
 $ViewList['edit'] = array(
     'params' => array('id'),
-    'functions' => array('use')
+    'functions' => array('use_admin')
 );
 
 $ViewList['editcontext'] = array(
     'params' => array('id'),
-    'functions' => array('use')
+    'functions' => array('use_admin')
 );
 
 $ViewList['delete'] = array(
     'params' => array('id'),
     'uparams' => array('csfr'),
-    'functions' => array('use')
+    'functions' => array('use_admin')
 );
 
 $ViewList['deletecontext'] = array(
     'params' => array('id'),
     'uparams' => array('csfr'),
-    'functions' => array('use')
+    'functions' => array('use_admin')
 );
 
 $ViewList['deletereport'] = array(
     'params' => array('id'),
     'uparams' => array('csfr'),
-    'functions' => array('use')
+    'functions' => array('use_admin')
 );
 
 $ViewList['deleteall'] = array(
     'params' => array('id'),
     'uparams' => array('csfr'),
-    'functions' => array('use')
+    'functions' => array('use_admin')
 );
 
 $FunctionList['use'] = array('explain' => 'Allow to list questions and answers');
+$FunctionList['use_admin'] = array('explain' => 'Allow to manager bot');
