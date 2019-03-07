@@ -34,15 +34,20 @@ try {
 
             if (!empty($dataContext)) {
 
+                $liveTeach = erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->settings['live_teach'] == true;
+
                 $questionItem = new erLhcoreClassModelLHCChatBotQuestion();
                 $questionItem->counter = 1;
                 $questionItem->question = $question;
                 $questionItem->answer = $answer;
                 $questionItem->context_id = $dataContext[0];
+                $questionItem->confirmed = $liveTeach === true ? 1 : 0;
                 $questionItem->saveThis();
 
-                erLhcoreClassExtensionLHCChatBotValidator::publishQuestion($questionItem);
-                
+                if ($liveTeach == true) {
+                    erLhcoreClassExtensionLHCChatBotValidator::publishQuestion($questionItem);
+                }
+
                 $tpl = erLhcoreClassTemplate::getInstance('lhkernel/alert_success.tpl.php');
                 $tpl->set('msg','Bot trained!');
                 echo json_encode(array('error' => false,'result' => $tpl->fetch()));

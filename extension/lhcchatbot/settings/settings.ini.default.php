@@ -7,6 +7,7 @@ return array(
     'database_prefix' => 'chatterbot-demo',
     'try_times' => 2,                    // How many times send request for the same message. As we are using random response and we want more than one suggestion so this simulates it.
     'ahosting' => false,                 // Are we in automated hosting environment
+    'live_teach' => true,               // Operators suggested combinations should go live instantly
     'elastic_enabled' => false,
     'elastic_settings' => array (
         'host' 			=> 'localhost',//'localhost',
