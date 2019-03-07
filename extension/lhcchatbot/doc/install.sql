@@ -3,6 +3,7 @@ CREATE TABLE `lhc_lhcchatbot_question` (
   `question` text NOT NULL,
   `answer` text NOT NULL,
   `context_id` int(11) NOT NULL,
+  `chat_id` bigint(20) NOT NULL,
   `was_used` int(11) NOT NULL,
   `confirmed` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
@@ -27,4 +28,10 @@ CREATE TABLE `lhc_lhcchatbot_context_link_department` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-CREATE TABLE `lhc_lhcchatbot_invalid` ( `id` int(11) NOT NULL AUTO_INCREMENT,  `question` text NOT NULL,  `answer` text NOT NULL, `counter` int(11) NOT NULL,  PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `lhc_lhcchatbot_invalid` (
+`id` int(11) NOT NULL AUTO_INCREMENT,
+`question` text NOT NULL,
+`answer` text NOT NULL,
+`counter` int(11) NOT NULL,
+`chat_id` bigint(20) NOT NULL,
+PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;

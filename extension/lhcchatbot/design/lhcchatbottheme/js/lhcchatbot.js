@@ -1,4 +1,5 @@
 var lhcChatBot = {
+    unsupported : [],
     syncadmin: function (params,chatMode) {
         if (typeof params.chatbotids !== 'undefined') {
             $.getJSON(WWW_DIR_JAVASCRIPT + 'lhcchatbot/suggest/(id)/' + params.chatbotids.join("/")+'/(chat)/'+(chatMode === true ? 1 : 0), function (data) {
@@ -24,6 +25,12 @@ var lhcChatBot = {
 
                     containerSuggest.find('li:gt(6)').remove();
                 });
+
+                $.each(data.un, function (index,chat_id) {
+                    if (lhcChatBot.unsupported.indexOf(chat_id) === -1) {
+                        lhcChatBot.unsupported.push(chat_id);
+                    }
+                })
             });
         }
     },
@@ -33,7 +40,7 @@ var lhcChatBot = {
             'answer': inst.parent().find('.btn-info').text(),
             'question': inst.attr('title')
         }, function (data) {
-            inst.find('.material-icons').text('check');
+            inst.parent().remove();
         });
         return false;
     },
@@ -82,6 +89,15 @@ ee.addListener('eventSyncAdmin', function (params) {
 });
 
 ee.addListener('quoteAction', function (params, chat_id) {
-    lhcChatBot.selectedText = lhinst.getSelectedTextPlain();
-    params['content'] = params['content'] + ' | <a href="#" onclick="return lhcChatBot.addCombination($(this),' + chat_id + ',event);"><i class="material-icons mr-0">library_add</i></a>'
+    if (lhcChatBot.unsupported.indexOf(chat_id) === -1){
+        lhcChatBot.selectedText = lhinst.getSelectedTextPlain();
+        params['content'] = params['content'] + ' | <a href="#" onclick="return lhcChatBot.addCombination($(this),' + chat_id + ',event);"><i class="material-icons mr-0">library_add</i></a>'
+    }
+});
+
+ee.addListener('removeSynchroChat', function(chat_id) {
+    var index = lhcChatBot.unsupported.indexOf(chat_id)
+    if (index !== -1) {
+        lhcChatBot.unsupported.splice(index,1);
+    }
 });

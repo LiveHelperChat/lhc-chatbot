@@ -402,4 +402,60 @@ class erLhcoreClassExtensionLHCChatBotValidator
 
         return $suggestions;
     }
+
+    public static function getUnsupportedChats($ids = array(), $chatMode = false) {
+
+        if ($chatMode == false) {
+            $msgs = erLhcoreClassModelmsg::getList(array('filterin' => array('id' => $ids)));
+        } else {
+            $msgs = erLhcoreClassModelmsg::getList(array('limit' => 3,'sort' => 'id DESC','filter' => array('user_id' => 0),'filterin' => array('chat_id' => $ids)));
+        }
+
+        // Select messages chat's id
+        $chatsId = array();
+        foreach ($msgs as $msg) {
+            $chatsId[] = $msg->chat_id;
+        }
+
+        if (empty($chatsId)) {
+            return array();
+        }
+
+        $db = ezcDbInstance::get();
+        $stmt = $db->prepare("SELECT dep_id, id FROM lh_chat WHERE id IN (" . implode(',', $chatsId) . ')');
+        $stmt->execute();
+        $dataDepartments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $mappedData = array();
+        $departments = array();
+
+        foreach ($dataDepartments as $chatDepartment) {
+            $mappedData[$chatDepartment['id']] = $chatDepartment['dep_id'];
+            $departments[] = $chatDepartment['dep_id'];
+        }
+
+        if (empty($departments)) {
+            return array();
+        }
+
+        // Select context by departments
+        $stmt = $db->prepare("SELECT department_id FROM lhc_lhcchatbot_context_link_department WHERE department_id IN (" . implode(',', $departments) . ')');
+        $stmt->execute();
+        $dataContext = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Map departments to multiple context
+        $departmentContext = array();
+        foreach ($dataContext as $data) {
+            $departmentContext[] = $data['department_id'];
+        }
+
+        $invalidChatId = array();
+        foreach ($mappedData as $chatId => $departmentId) {
+            if (!in_array($departmentId, $departmentContext)) {
+                $invalidChatId[] = $chatId;
+            }
+        }
+
+        return $invalidChatId;
+    }
 }

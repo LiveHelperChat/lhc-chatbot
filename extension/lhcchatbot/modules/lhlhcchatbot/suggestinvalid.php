@@ -31,6 +31,7 @@ try {
             $invalid->counter = 1;
             $invalid->question = $question;
             $invalid->answer = $answer;
+            $invalid->chat_id = $chat->id;
             $invalid->saveThis();
         }
 

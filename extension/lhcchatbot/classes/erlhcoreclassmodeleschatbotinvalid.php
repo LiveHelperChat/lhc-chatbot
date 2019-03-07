@@ -18,7 +18,8 @@ class erLhcoreClassModelLHCChatBotInvalid {
             'id' => $this->id,
             'question' => $this->question,
             'answer' => $this->answer,
-            'counter' => $this->counter
+            'counter' => $this->counter,
+            'chat_id' => $this->chat_id
         );
 
         return $stateArray;
@@ -33,4 +34,5 @@ class erLhcoreClassModelLHCChatBotInvalid {
     public $question = '';
     public $answer = '';
     public $counter = '';
+    public $chat_id = 0;
 }

@@ -12,7 +12,7 @@ $ViewList['index'] = array(
 
 $ViewList['test'] = array(
     'params' => array(),
-    'functions' => array('use_admin')
+    'functions' => array('use_test')
 );
 
 $ViewList['suggest'] = array(
@@ -46,15 +46,25 @@ $ViewList['list'] = array(
     'functions' => array('use_admin')
 );
 
-$ViewList['invalid'] = array(
-    'params' => array(),
-    'uparams' => array(),
-    'functions' => array('use')
-);
-
 $ViewList['listcontext'] = array(
     'params' => array(),
-    'functions' => array('use_admin')
+    'functions' => array('manage_context')
+);
+
+$ViewList['newcontext'] = array(
+    'params' => array(),
+    'functions' => array('manage_context')
+);
+
+$ViewList['editcontext'] = array(
+    'params' => array('id'),
+    'functions' => array('manage_context')
+);
+
+$ViewList['deletecontext'] = array(
+    'params' => array('id'),
+    'uparams' => array('csfr'),
+    'functions' => array('manage_context')
 );
 
 $ViewList['new'] = array(
@@ -62,17 +72,7 @@ $ViewList['new'] = array(
     'functions' => array('use_admin')
 );
 
-$ViewList['newcontext'] = array(
-    'params' => array(),
-    'functions' => array('use_admin')
-);
-
 $ViewList['edit'] = array(
-    'params' => array('id'),
-    'functions' => array('use_admin')
-);
-
-$ViewList['editcontext'] = array(
     'params' => array('id'),
     'functions' => array('use_admin')
 );
@@ -83,23 +83,26 @@ $ViewList['delete'] = array(
     'functions' => array('use_admin')
 );
 
-$ViewList['deletecontext'] = array(
-    'params' => array('id'),
-    'uparams' => array('csfr'),
-    'functions' => array('use_admin')
-);
-
 $ViewList['deletereport'] = array(
     'params' => array('id'),
     'uparams' => array('csfr'),
-    'functions' => array('use_admin')
+    'functions' => array('manage_invalid')
 );
 
 $ViewList['deleteall'] = array(
     'params' => array('id'),
     'uparams' => array('csfr'),
-    'functions' => array('use_admin')
+    'functions' => array('manage_invalid')
+);
+
+$ViewList['invalid'] = array(
+    'params' => array(),
+    'uparams' => array(),
+    'functions' => array('manage_invalid')
 );
 
 $FunctionList['use'] = array('explain' => 'Allow to list questions and answers');
 $FunctionList['use_admin'] = array('explain' => 'Allow to manager bot');
+$FunctionList['use_test'] = array('explain' => 'Allow operator to use test environment');
+$FunctionList['manage_context'] = array('explain' => 'Allow operator to manage context');
+$FunctionList['manage_invalid'] = array('explain' => 'Allow operator to manage invalid suggestions list');

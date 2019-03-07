@@ -17,7 +17,12 @@
             </thead>
             <?php foreach ($items as $item) : ?>
                 <tr>
-                    <td><?php echo htmlspecialchars($item->question)?></td>
+                    <td>
+                        <?php if ($item->chat_id > 0) : ?>
+                            <a href="#" title="<?php echo $item->chat_id?>" onclick="lhc.previewChat(<?php echo $item->chat_id?>)"><i class="material-icons">chat</i></a>
+                        <?php endif; ?>
+                        <?php echo htmlspecialchars($item->question)?>
+                    </td>
                     <td><?php echo htmlspecialchars($item->answer)?></td>
                     <td><?php echo htmlspecialchars($item->counter)?></td>
                     <td nowrap>

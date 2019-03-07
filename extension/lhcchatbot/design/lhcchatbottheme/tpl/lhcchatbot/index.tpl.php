@@ -1,9 +1,19 @@
 <h1><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Reply Predictions')?></h1>
 <ul>
     <li><a href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/list')?>/(confirmed)/1"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Question')?></a></li>
+
+    <?php if (erLhcoreClassUser::instance()->hasAccessTo('lhlhcchatbot','manage_invalid')) : ?>
     <li><a href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/invalid')?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Invalid questions')?></a></li>
+    <?php endif; ?>
+
+    <?php if (erLhcoreClassUser::instance()->hasAccessTo('lhlhcchatbot','manage_context')) : ?>
     <li><a href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/listcontext')?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Context')?></a></li>
+    <?php endif; ?>
+
+    <?php if (erLhcoreClassUser::instance()->hasAccessTo('lhlhcchatbot','use_test')) : ?>
     <li><a href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/test')?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Test console')?></a></li>
+    <?php endif; ?>
+
     <?php if (erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->settings['elastic_enabled'] == true) : ?>
     <li><a href="<?php echo erLhcoreClassDesign::baseurl('elasticsearchbot/elastic')?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Elastic search console')?></a></li>
     <li><a href="<?php echo erLhcoreClassDesign::baseurl('elasticsearchbot/list')?>/(hidden)/0"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Proposed Questions')?></a></li>
