@@ -11,6 +11,10 @@ foreach (array_reverse($messages) as $msg) {
     }
 }
 
+if (erLhcoreClassUser::instance()->hasAccessTo('lhlhcchatbot','use') == false) {
+    echo "<script>lhcChatBot.disabled = true;</script>";
+}
+
 if (!empty($lhcChatBotLast5Messages)) {
     echo "<script>lhcChatBot.syncadmin({'chatbotids':". json_encode($lhcChatBotLast5Messages) ."})</script>";
 }

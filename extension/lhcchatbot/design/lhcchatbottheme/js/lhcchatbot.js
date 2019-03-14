@@ -1,7 +1,8 @@
 var lhcChatBot = {
+    disabled : false,
     unsupported : [],
     syncadmin: function (params,chatMode) {
-        if (typeof params.chatbotids !== 'undefined') {
+        if (lhcChatBot.disabled == false && typeof params.chatbotids !== 'undefined') {
             $.getJSON(WWW_DIR_JAVASCRIPT + 'lhcchatbot/suggest/(id)/' + params.chatbotids.join("/")+'/(chat)/'+(chatMode === true ? 1 : 0), function (data) {
 
                 $.each(data.sg, function (chat_id, item) {
@@ -85,11 +86,13 @@ var lhcChatBot = {
 };
 
 ee.addListener('eventSyncAdmin', function (params) {
-    lhcChatBot.syncadmin(params,false);
+    if (lhcChatBot.disabled == false) {
+        lhcChatBot.syncadmin(params,false);
+    }
 });
 
 ee.addListener('quoteAction', function (params, chat_id) {
-    if (lhcChatBot.unsupported.indexOf(chat_id) === -1){
+    if (lhcChatBot.unsupported.indexOf(chat_id) === -1 && lhcChatBot.disabled == false) {
         lhcChatBot.selectedText = lhinst.getSelectedTextPlain();
         params['content'] = params['content'] + ' | <a href="#" onclick="return lhcChatBot.addCombination($(this),' + chat_id + ',event);"><i class="material-icons mr-0">library_add</i></a>'
     }
