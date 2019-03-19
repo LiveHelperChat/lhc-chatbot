@@ -1,7 +1,7 @@
 <?php
 
-$Module = array( "name" => "LHCChatBot",
-				 'variable_params' => true );
+$Module = array("name" => "Reply Predictions",
+                'variable_params' => true );
 
 $ViewList = array();
 
