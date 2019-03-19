@@ -34,4 +34,5 @@ CREATE TABLE `lhc_lhcchatbot_invalid` (
 `answer` text NOT NULL,
 `counter` int(11) NOT NULL,
 `chat_id` bigint(20) NOT NULL,
+`context_id` bigint(20) NOT NULL,
 PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;

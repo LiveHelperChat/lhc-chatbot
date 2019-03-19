@@ -392,7 +392,7 @@ class erLhcoreClassExtensionLHCChatBotValidator
 
                         if ($answer['error'] == false) {
                             if ($answer['msg'] != 'notfound' && $answer['confidence'] > 0 && (!isset($suggestions[$msg->chat_id]) || !in_array($answer['msg'], $suggestions[$msg->chat_id]))) {
-                                $suggestions[$msg->chat_id][] = array('a' => $answer['msg'], 'q' => $msg->msg, 'in_response' => $answer['in_response'], 'aid' => md5($answer['msg']));
+                                $suggestions[$msg->chat_id][] = array('a' => $answer['msg'], 'ctx' => $contextId, 'q' => $msg->msg, 'in_response' => $answer['in_response'], 'aid' => md5($answer['msg']));
                             }
                         }
                     }

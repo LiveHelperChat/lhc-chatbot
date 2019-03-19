@@ -19,10 +19,25 @@ class erLhcoreClassModelLHCChatBotInvalid {
             'question' => $this->question,
             'answer' => $this->answer,
             'counter' => $this->counter,
-            'chat_id' => $this->chat_id
+            'chat_id' => $this->chat_id,
+            'context_id' => $this->context_id
         );
 
         return $stateArray;
+    }
+
+    public function __get($var)
+    {
+        switch ($var) {
+
+            case 'context':
+                $this->context = erLhcoreClassModelLHCChatBotContext::fetch($this->context_id);
+                return $this->context;
+                break;
+
+            default:
+                break;
+        }
     }
 
     public function __toString()
@@ -35,4 +50,5 @@ class erLhcoreClassModelLHCChatBotInvalid {
     public $answer = '';
     public $counter = '';
     public $chat_id = 0;
+    public $context_id = 0;
 }

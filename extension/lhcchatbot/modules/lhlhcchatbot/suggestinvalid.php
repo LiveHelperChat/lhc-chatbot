@@ -18,9 +18,16 @@ try {
             throw new Exception('Question not provided!');
         }
 
+        if (isset($_POST['context'])) {
+            $context = $_POST['context'];
+        } else {
+            throw new Exception('Context not provided!');
+        }
+
         $invalid = erLhcoreClassModelLHCChatBotInvalid::findOne(array('filter' => array(
             'question' => $question,
             'answer' => $answer,
+            'context_id' => $context,
         )));
 
         if ($invalid instanceof erLhcoreClassModelLHCChatBotInvalid) {
@@ -32,6 +39,7 @@ try {
             $invalid->question = $question;
             $invalid->answer = $answer;
             $invalid->chat_id = $chat->id;
+            $invalid->context_id = $context;
             $invalid->saveThis();
         }
 

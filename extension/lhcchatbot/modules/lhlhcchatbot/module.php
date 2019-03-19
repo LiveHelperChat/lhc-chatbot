@@ -101,6 +101,12 @@ $ViewList['invalid'] = array(
     'functions' => array('manage_invalid')
 );
 
+$ViewList['editreport'] = array(
+    'params' => array('id'),
+    'uparams' => array(),
+    'functions' => array('manage_invalid')
+);
+
 $FunctionList['use'] = array('explain' => 'Allow to list questions and answers');
 $FunctionList['use_admin'] = array('explain' => 'Allow to manager bot');
 $FunctionList['use_test'] = array('explain' => 'Allow operator to use test environment');

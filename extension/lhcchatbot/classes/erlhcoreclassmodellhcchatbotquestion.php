@@ -1,6 +1,7 @@
 <?php
 
-class erLhcoreClassModelLHCChatBotQuestion {
+class erLhcoreClassModelLHCChatBotQuestion
+{
 
     use erLhcoreClassDBTrait;
 
@@ -12,9 +13,9 @@ class erLhcoreClassModelLHCChatBotQuestion {
 
     public static $dbSortOrder = 'DESC';
 
-	public function getState()
-	{
-		$stateArray = array(
+    public function getState()
+    {
+        $stateArray = array(
             'id' => $this->id,
             'question' => $this->question,
             'answer' => $this->answer,
@@ -22,39 +23,39 @@ class erLhcoreClassModelLHCChatBotQuestion {
             'was_used' => $this->was_used,
             'confirmed' => $this->confirmed,
             'chat_id' => $this->chat_id,
-		);
+        );
 
-		return $stateArray;
-	}
+        return $stateArray;
+    }
 
-	public function __toString()
-	{
-		return $this->answer;
-	}
+    public function __toString()
+    {
+        return $this->answer;
+    }
 
-	public function snapshot()
-	{
-	    if ($this->id > 0) {
-    	    $this->snapshot = array(
-    	        'question' => $this->question,
-    	        'answer' => $this->answer,
-    	        'context' => $this->context_id,
-    	    );
-	    }
-	}
+    public function snapshot()
+    {
+        if ($this->id > 0) {
+            $this->snapshot = array(
+                'question' => $this->question,
+                'answer' => $this->answer,
+                'context' => $this->context_id,
+            );
+        }
+    }
 
-	public function __get($var)
-	{
-	    switch ($var) {
-	
-	        case 'context':
-	            $this->context = '';
-	            if ($this->context_id > 0) {
-	                $this->context = erLhcoreClassModelLHCChatBotContext::fetch($this->context_id);
-	            }
-	            return $this->context;
-	            break;
-	            
+    public function __get($var)
+    {
+        switch ($var) {
+
+            case 'context':
+                $this->context = '';
+                if ($this->context_id > 0) {
+                    $this->context = erLhcoreClassModelLHCChatBotContext::fetch($this->context_id);
+                }
+                return $this->context;
+                break;
+
             case 'question_items_snapshot':
                 $this->question_items_snapshot = array();
                 if (isset($this->snapshot['question'])) {
@@ -62,24 +63,24 @@ class erLhcoreClassModelLHCChatBotQuestion {
                 }
                 return $this->question_items_snapshot;
                 break;
-	        
+
             case 'question_items':
                 $this->question_items = explode("\n", trim($this->question));
                 return $this->question_items;
                 break;
-	        default:
-	            ;
-	            break;
-	    }
-	}
+            default:
+                ;
+                break;
+        }
+    }
 
-	public $snapshot = array();
-	
-	public $id = null;
-	public $context_id = 0;
-	public $question = '';
-	public $answer = '';
-	public $was_used = 0;
-	public $confirmed = 1;
-	public $chat_id = 0;
+    public $snapshot = array();
+
+    public $id = null;
+    public $context_id = 0;
+    public $question = '';
+    public $answer = '';
+    public $was_used = 0;
+    public $confirmed = 1;
+    public $chat_id = 0;
 }

@@ -29,4 +29,9 @@ $def->properties['chat_id']->columnName   = 'chat_id';
 $def->properties['chat_id']->propertyName = 'chat_id';
 $def->properties['chat_id']->propertyType = ezcPersistentObjectProperty::PHP_TYPE_INT;
 
+$def->properties['context_id'] = new ezcPersistentObjectProperty();
+$def->properties['context_id']->columnName   = 'context_id';
+$def->properties['context_id']->propertyName = 'context_id';
+$def->properties['context_id']->propertyType = ezcPersistentObjectProperty::PHP_TYPE_INT;
+
 return $def;

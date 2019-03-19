@@ -116,6 +116,14 @@
                 "key": "",
                 "default": null,
                 "extra": ""
+            },
+            {
+                "field": "context_id",
+                "type": "bigint(20)",
+                "null": "NO",
+                "key": "",
+                "default": null,
+                "extra": ""
             }
         ],
         "lhc_lhcchatbot_context_link_department": [

@@ -38,7 +38,7 @@ $Result['path'] = array(
     ),
     array(
         'url' => erLhcoreClassDesign::baseurl('lhcchatbot/list'),
-        'title' => erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Invalid questions')
+        'title' => erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Invalid questions/answers')
     )
 
 );

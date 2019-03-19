@@ -2,7 +2,7 @@
 
 $tpl = erLhcoreClassTemplate::getInstance('lhcchatbot/editcontext.tpl.php');
 
-$context =  erLhcoreClassModelLHCChatBotContext::fetch($Params['user_parameters']['id']);
+$context = erLhcoreClassModelLHCChatBotContext::fetch($Params['user_parameters']['id']);
 
 if (ezcInputForm::hasPostData()) {
 
@@ -28,7 +28,7 @@ if (ezcInputForm::hasPostData()) {
 }
 
 $tpl->setArray(array(
-        'context' => $context,
+    'context' => $context,
 ));
 
 $Result['content'] = $tpl->fetch();
