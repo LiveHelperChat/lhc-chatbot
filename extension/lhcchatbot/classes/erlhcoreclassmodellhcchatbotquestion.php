@@ -23,6 +23,7 @@ class erLhcoreClassModelLHCChatBotQuestion
             'was_used' => $this->was_used,
             'confirmed' => $this->confirmed,
             'chat_id' => $this->chat_id,
+            'user_id' => $this->user_id,
         );
 
         return $stateArray;
@@ -64,6 +65,15 @@ class erLhcoreClassModelLHCChatBotQuestion
                 return $this->question_items_snapshot;
                 break;
 
+            case 'user':
+                if ($this->user_id > 0) {
+                    $this->user = erLhcoreClassModelUser::fetch($this->user_id);
+                } else {
+                    $this->user = null;
+                }
+                return $this->user;
+                break;
+
             case 'question_items':
                 $this->question_items = explode("\n", trim($this->question));
                 return $this->question_items;
@@ -83,4 +93,5 @@ class erLhcoreClassModelLHCChatBotQuestion
     public $was_used = 0;
     public $confirmed = 1;
     public $chat_id = 0;
+    public $user_id = 0;
 }

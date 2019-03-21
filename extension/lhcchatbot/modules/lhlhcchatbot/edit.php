@@ -31,6 +31,7 @@ if (ezcInputForm::hasPostData()) {
 
 $tpl->setArray(array(
         'question' => $question,
+        'context_ids' => erLhcoreClassExtensionLHCChatBotValidator::getContextFilter($currentUser->getUserID())
 ));
 
 $Result['content'] = $tpl->fetch();

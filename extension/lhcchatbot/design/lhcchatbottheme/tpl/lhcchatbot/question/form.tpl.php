@@ -17,7 +17,7 @@
             'css_class'      => 'form-control',
 			'selected_id'    => $question->context_id,
 			'list_function'  => 'erLhcoreClassModelLHCChatBotContext::getList',
-			'list_function_params'  => array_merge(array('limit' => '1000000')),
+			'list_function_params'  => array_merge(array('limit' => '1000000'),((!empty($context_ids)) ? array('filterin' => array('id' => $context_ids)) : array())),
 	)); ?>
 </div>
 

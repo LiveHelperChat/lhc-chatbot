@@ -2,6 +2,24 @@
 
 class erLhcoreClassExtensionLHCChatBotValidator
 {
+
+    public static function getContextFilter($userId) {
+        $contextId = array();
+        $limit = erLhcoreClassUserDep::parseUserDepartmetnsForFilter($userId);
+        if ($limit !== true) {
+            $items = erLhcoreClassModelLHCChatBotContextLinkDepartment::getList(array('filterin' => array('department_id' => $limit)));
+            if (!empty($items)) {
+                foreach ($items as $item) {
+                    $contextId[] = $item->context_id;
+                }
+            } else {
+                $contextId = array(-1);
+            }
+        }
+
+        return $contextId;
+    }
+
     public static function validate(erLhcoreClassModelLHCChatBotQuestion & $question)
     {
         $definition = array(
@@ -266,7 +284,7 @@ class erLhcoreClassExtensionLHCChatBotValidator
      */
     public static function deleteReport(erLhcoreClassModelLHCChatBotInvalid $question)
     {
-        // Save question
+        // Get API
         $api = erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->getApi();
 
         foreach (erLhcoreClassModelLHCChatBotContext::getList() as $context){
@@ -279,7 +297,7 @@ class erLhcoreClassExtensionLHCChatBotValidator
 
     public static function deleteQuestion(erLhcoreClassModelLHCChatBotQuestion & $question)
     {
-        // Save question
+        // Get API
         $api = erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->getApi();
 
         foreach ($question->question_items as $q)

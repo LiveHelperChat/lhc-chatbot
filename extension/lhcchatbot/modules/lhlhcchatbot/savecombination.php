@@ -43,10 +43,11 @@ try {
                 $questionItem->context_id = $dataContext[0];
                 $questionItem->confirmed = $liveTeach === true ? 1 : 0;
                 $questionItem->chat_id = $chat->id;
+                $questionItem->user_id = erLhcoreClassUser::instance()->getUserID();
                 $questionItem->saveThis();
 
                 if ($liveTeach == true) {
-                    //erLhcoreClassExtensionLHCChatBotValidator::publishQuestion($questionItem);
+                    erLhcoreClassExtensionLHCChatBotValidator::publishQuestion($questionItem);
                 }
 
                 $tpl = erLhcoreClassTemplate::getInstance('lhkernel/alert_success.tpl.php');

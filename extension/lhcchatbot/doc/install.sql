@@ -6,6 +6,7 @@ CREATE TABLE `lhc_lhcchatbot_question` (
   `chat_id` bigint(20) NOT NULL,
   `was_used` int(11) NOT NULL,
   `confirmed` int(11) NOT NULL DEFAULT '1',
+  `user_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `context_id` (`context_id`),
   KEY `was_used` (`was_used`),

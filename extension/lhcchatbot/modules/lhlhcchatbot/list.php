@@ -12,6 +12,12 @@ if (isset($_GET['doSearch'])) {
 
 $append = erLhcoreClassSearchHandler::getURLAppendFromInput($filterParams['input_form']);
 
+$contextIds = erLhcoreClassExtensionLHCChatBotValidator::getContextFilter($currentUser->getUserID());
+
+if (!empty($contextIds)) {
+    $filterParams['filter']['filterin']['context_id'] = $contextIds;
+}
+
 $pages = new lhPaginator();
 $pages->items_total = erLhcoreClassModelLHCChatBotQuestion::getCount($filterParams['filter']);
 $pages->translationContext = 'chat/pendingchats';
@@ -28,6 +34,7 @@ $filterParams['input_form']->form_action = erLhcoreClassDesign::baseurl('lhcchat
 $tpl->set('input',$filterParams['input_form']);
 $tpl->set('inputAppend',$append);
 $tpl->set('current_user_id',$currentUser->getUserID());
+$tpl->set('context_ids',$contextIds);
 
 $Result['content'] = $tpl->fetch();
 

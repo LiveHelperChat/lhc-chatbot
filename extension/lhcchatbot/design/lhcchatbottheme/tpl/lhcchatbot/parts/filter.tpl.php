@@ -10,7 +10,8 @@
                     'optional_field' => erTranslationClassLhTranslation::getInstance()->getTranslation('chat/lists/search_panel','Select context'),
                     'selected_id'    => $input->context_id,
                     'css_class'      => 'form-control',
-                    'list_function'  => 'erLhcoreClassModelLHCChatBotContext::getList'
+                    'list_function'  => 'erLhcoreClassModelLHCChatBotContext::getList',
+                    'list_function_params' => ((!empty($context_ids)) ? array('filterin' => array('id' => $context_ids)) : array())
                 )); ?>
             </div>
         </div>
