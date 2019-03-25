@@ -19,7 +19,7 @@ var lhcChatBot = {
 
                     $.each(item, function (i, itemSuggest) {
                         if ($('#' + chat_id + '-' + itemSuggest.aid).length == 0) {
-                            var li = jQuery('<li class="lhc-new-suggest list-inline-item pl-1 pb-1" ><button type="button" class="btn btn-sm btn-light" title="Prefill message field" data-title="' + jQuery('<p/>').text(itemSuggest.a).html() + '" onclick="return lhcChatBot.prefill(' + chat_id + ',$(this))"><i class="material-icons mr-0 fs11">edit</i></button> <button id="' + chat_id + '-' + itemSuggest.aid + '" onclick="lhcChatBot.sendSuggest(' + chat_id + ',$(this))" type="button" class="btn btn-sm btn-light btn-send-success text-left">' + jQuery('<p/>').text(itemSuggest.a).html() + '</button> <button type="button" data-ctx="' + itemSuggest.ctx + '" class="btn btn-xs btn-danger" title="' + jQuery('<p/>').text(itemSuggest.in_response).html() + '" onclick="return lhcChatBot.sendNegative(' + chat_id + ',$(this))"><i class="material-icons mr-0 fs11">delete</i></button></li>').attr('title', jQuery('<p/>').text(itemSuggest.q).html());
+                            var li = jQuery('<li class="lhc-new-suggest list-inline-item pl-1 pb-1" ><button type="button" class="btn btn-sm btn-light" title="Prefill message field" data-ctx="' + itemSuggest.ctx + '" data-title="' + jQuery('<p/>').text(itemSuggest.a).html() + '" onclick="return lhcChatBot.prefill(' + chat_id + ',$(this))"><i class="material-icons mr-0 fs11">edit</i></button> <button id="' + chat_id + '-' + itemSuggest.aid + '" onclick="lhcChatBot.sendSuggest(' + chat_id + ',$(this))" type="button" data-ctx="' + itemSuggest.ctx + '" class="btn btn-sm btn-light btn-send-success text-left">' + jQuery('<p/>').text(itemSuggest.a).html() + '</button> <button type="button" data-ctx="' + itemSuggest.ctx + '" class="btn btn-xs btn-danger" title="' + jQuery('<p/>').text(itemSuggest.in_response).html() + '" onclick="return lhcChatBot.sendNegative(' + chat_id + ',$(this))"><i class="material-icons mr-0 fs11">delete</i></button></li>').attr('title', jQuery('<p/>').text(itemSuggest.q).html());
                             containerSuggest.prepend(li);
                         }
                     });
@@ -39,12 +39,20 @@ var lhcChatBot = {
     prefill : function(chat_id,inst)
     {
         $("#CSChatMessage-" + chat_id).val(inst.attr('data-title'));
+
+        $.postJSON(WWW_DIR_JAVASCRIPT + 'lhcchatbot/suggestused/' + chat_id, {
+            'answer': inst.attr('data-title'),
+            'question': inst.parent().attr('title'),
+            'context_id': inst.attr('data-ctx')
+        }, function (data) {
+
+        });
     },
 
     sendNegative: function (chat_id, inst) {
         $.postJSON(WWW_DIR_JAVASCRIPT + 'lhcchatbot/suggestinvalid/' + chat_id, {
             'answer': inst.parent().find('.btn-send-success').text(),
-            'question': inst.attr('title'),
+            'question': inst.attr('data-question'),
             'context': inst.attr('data-ctx')
         }, function (data) {
             inst.parent().remove();
@@ -59,7 +67,8 @@ var lhcChatBot = {
 
         $.postJSON(WWW_DIR_JAVASCRIPT + 'lhcchatbot/suggestused/' + chat_id, {
             'answer': inst.text(),
-            'question': inst.attr('title')
+            'question': inst.parent().attr('title'),
+            'context_id': inst.attr('data-ctx')
         }, function (data) {
 
         });

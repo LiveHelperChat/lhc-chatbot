@@ -18,12 +18,13 @@ try {
             throw new Exception('Question not provided!');
         }
 
-        $db = ezcDbInstance::get();
+        if (isset($_POST['context_id'])) {
+            $context_id = $_POST['context_id'];
+        } else {
+            throw new Exception('Context not provided!');
+        }
 
-        $stmt = $db->prepare("SELECT context_id FROM lhc_lhcchatbot_context_link_department WHERE department_id = :dep_id");
-        $stmt->bindValue(':dep_id', $chat->dep_id);
-        $stmt->execute();
-        $dataContext = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        $db = ezcDbInstance::get();
 
         if (erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->settings['elastic_enabled'] == true) {
             // Log that suggestion was used
@@ -32,11 +33,34 @@ try {
             $stmt->execute();
         }
 
-        if (is_array($dataContext) && !empty($dataContext)){
-            $stmt = $db->prepare("UPDATE lhc_lhcchatbot_question SET was_used = was_used + 1 WHERE context_id IN (" . implode(',', $dataContext) . ") AND answer = :answer AND question LIKE (:question)");
+        if (is_numeric($context_id)){
+            $stmt = $db->prepare("SELECT id FROM lhc_lhcchatbot_question WHERE context_id = :context_id AND answer = :answer AND question LIKE (:question)");
             $stmt->bindValue(':answer', $answer, PDO::PARAM_STR);
             $stmt->bindValue(':question', '%' . $question . '%', PDO::PARAM_STR);
+            $stmt->bindValue(':context_id', $context_id, PDO::PARAM_STR);
             $stmt->execute();
+
+            $id = $stmt->fetchColumn();
+
+            if (is_numeric($id)){
+                $stmt = $db->prepare("UPDATE lhc_lhcchatbot_question SET was_used = was_used + 1 WHERE id = :id");
+                $stmt->bindValue(':id', $id, PDO::PARAM_STR);
+                $stmt->execute();
+            } else {
+                $id = 0;
+            }
+
+            $stmt = $db->prepare("INSERT INTO lhc_lhcchatbot_use (question,answer,context_id,question_id,dep_id,chat_id,user_id,ctime) VALUES (:question,:answer,:context_id,:question_id,:dep_id,:chat_id,:user_id,:ctime)");
+            $stmt->bindValue(':question', $question);
+            $stmt->bindValue(':answer', $answer);
+            $stmt->bindValue(':context_id', $context_id);
+            $stmt->bindValue(':question_id', (int)$id);
+            $stmt->bindValue(':dep_id', $chat->dep_id);
+            $stmt->bindValue(':chat_id', $chat->id);
+            $stmt->bindValue(':user_id', $currentUser->getUserID());
+            $stmt->bindValue(':ctime', time());
+            $stmt->execute();
+
         } else {
             throw new Exception('Context could not be found!');
         }

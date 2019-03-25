@@ -181,6 +181,7 @@ class erLhcoreClassExtensionLhcchatbot
     {
         $classesAutoload = array(
             'erLhcoreClassModelLHCChatBotQuestion' => 'extension/lhcchatbot/classes/erlhcoreclassmodellhcchatbotquestion.php',
+            'erLhcoreClassModelLHCChatBotUse' => 'extension/lhcchatbot/classes/erlhcoreclassmodellhcchatbotuse.php',
             'erLhcoreClassModelLHCChatBotInvalid' => 'extension/lhcchatbot/classes/erlhcoreclassmodeleschatbotinvalid.php',
             'erLhcoreClassModelLHCChatBotContext' => 'extension/lhcchatbot/classes/erlhcoreclassmodellhcchatbotcontext.php',
             'erLhcoreClassModelLHCChatBotContextLinkDepartment' => 'extension/lhcchatbot/classes/erlhcoreclassmodellhcchatbotcontextlinkdepartment.php',
