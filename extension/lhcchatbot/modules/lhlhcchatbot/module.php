@@ -112,3 +112,4 @@ $FunctionList['use_admin'] = array('explain' => 'Allow to manager bot');
 $FunctionList['use_test'] = array('explain' => 'Allow operator to use test environment');
 $FunctionList['manage_context'] = array('explain' => 'Allow operator to manage context');
 $FunctionList['manage_invalid'] = array('explain' => 'Allow operator to manage invalid suggestions list');
+$FunctionList['live_teach'] = array('explain' => 'Suggested combination by operator will go live instantly');

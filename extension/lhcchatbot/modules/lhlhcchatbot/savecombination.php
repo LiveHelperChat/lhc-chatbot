@@ -34,7 +34,7 @@ try {
 
             if (!empty($dataContext)) {
 
-                $liveTeach = erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->settings['live_teach'] == true;
+                $liveTeach = $currentUser->hasAccessTo('lhlhcchatbot','live_teach') || erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->settings['live_teach'] == true;
 
                 $questionItem = new erLhcoreClassModelLHCChatBotQuestion();
                 $questionItem->counter = 1;
