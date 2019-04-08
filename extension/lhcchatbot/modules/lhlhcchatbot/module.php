@@ -97,8 +97,8 @@ $ViewList['deleteall'] = array(
 
 $ViewList['invalid'] = array(
     'params' => array(),
-    'uparams' => array(),
-    'functions' => array('manage_invalid')
+    'uparams' => array('context_id'),
+    'functions' => array('manage_invalid','sort')
 );
 
 $ViewList['editreport'] = array(
