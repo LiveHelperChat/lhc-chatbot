@@ -1,7 +1,6 @@
 from chatterbot.storage import StorageAdapter
 from sqlalchemy.pool import Pool, NullPool
 
-
 class LiveHelperChatSQLStorageAdapter(StorageAdapter):
     """
     The SQLStorageAdapter allows ChatterBot to store conversation
@@ -33,9 +32,7 @@ class LiveHelperChatSQLStorageAdapter(StorageAdapter):
         if not self.database_uri:
             self.database_uri = 'sqlite:///db.sqlite3'
 
-        # Modified
         self.engine = create_engine(self.database_uri, convert_unicode=True, poolclass=NullPool)
-        #self.engine = create_engine(self.database_uri, convert_unicode=True, max_overflow=10, pool_size=5)
 
         if self.database_uri.startswith('sqlite://'):
             from sqlalchemy.engine import Engine
@@ -192,8 +189,9 @@ class LiveHelperChatSQLStorageAdapter(StorageAdapter):
             kwargs['search_text'] = self.tagger.get_bigram_pair_string(kwargs['text'])
 
         if 'search_in_response_to' not in kwargs:
-            if kwargs.get('in_response_to'):
-                kwargs['search_in_response_to'] = self.tagger.get_bigram_pair_string(kwargs['in_response_to'])
+            in_response_to = kwargs.get('in_response_to')
+            if in_response_to:
+                kwargs['search_in_response_to'] = self.tagger.get_bigram_pair_string(in_response_to)
 
         statement = Statement(**kwargs)
 
@@ -232,15 +230,10 @@ class LiveHelperChatSQLStorageAdapter(StorageAdapter):
 
         for statement in statements:
 
-            statement_model_object = Statement(
-                text=statement.text,
-                search_text=statement.search_text,
-                conversation=statement.conversation,
-                persona=statement.persona,
-                in_response_to=statement.in_response_to,
-                search_in_response_to=statement.search_in_response_to,
-                created_at=statement.created_at
-            )
+            statement_data = statement.serialize()
+            tag_data = statement_data.pop('tags', [])
+
+            statement_model_object = Statement(**statement_data)
 
             if not statement.search_text:
                 statement_model_object.search_text = self.tagger.get_bigram_pair_string(statement.text)
@@ -248,15 +241,22 @@ class LiveHelperChatSQLStorageAdapter(StorageAdapter):
             if not statement.search_in_response_to and statement.in_response_to:
                 statement_model_object.search_in_response_to = self.tagger.get_bigram_pair_string(statement.in_response_to)
 
-            for tag_name in statement.tags:
+            new_tags = set(tag_data) - set(create_tags.keys())
+
+            if new_tags:
+                existing_tags = session.query(Tag).filter(
+                    Tag.name.in_(new_tags)
+                )
+
+                for existing_tag in existing_tags:
+                    create_tags[existing_tag.name] = existing_tag
+
+            for tag_name in tag_data:
                 if tag_name in create_tags:
                     tag = create_tags[tag_name]
                 else:
-                    tag = session.query(Tag).filter_by(name=tag_name).first()
-
-                    if not tag:
-                        # Create the tag if it does not exist
-                        tag = Tag(name=tag_name)
+                    # Create the tag if it does not exist
+                    tag = Tag(name=tag_name)
 
                     create_tags[tag_name] = tag
 
@@ -304,7 +304,7 @@ class LiveHelperChatSQLStorageAdapter(StorageAdapter):
             if statement.in_response_to:
                 record.search_in_response_to = self.tagger.get_bigram_pair_string(statement.in_response_to)
 
-            for tag_name in statement.tags:
+            for tag_name in statement.get_tags():
                 tag = session.query(Tag).filter_by(name=tag_name).first()
 
                 if not tag:

@@ -406,11 +406,17 @@ class erLhcoreClassExtensionLHCChatBotValidator
             foreach ($msgs as $msg) {
                 foreach ($combainedData[$msg->chat_id] as $contextId) {
                     if ($contextId > 0 && $msg->msg != '' && strlen($msg->msg) > 4) {
-                        $answer = $api->getAnswer($msg->msg, $contextId);
 
-                        if ($answer['error'] == false) {
-                            if ($answer['msg'] != 'notfound' && $answer['confidence'] > 0 && (!isset($suggestions[$msg->chat_id]) || !in_array($answer['msg'], $suggestions[$msg->chat_id]))) {
-                                $suggestions[$msg->chat_id][] = array('a' => $answer['msg'], 'ctx' => $contextId, 'q' => $msg->msg, 'in_response' => $answer['in_response'], 'aid' => md5($answer['msg']));
+                        $msgSearch = trim(preg_replace('#([\x{2B50}-\x{2B55}]|[\x{23F0}-\x{23F3}]|[\x{231A}-\x{231B}]|[\x{1F600}-\x{1F64F}]|[\x{1F910}-\x{1F9FF}]|[\x{1F300}-\x{1F5FF}]|[\x{1F680}-\x{1F6FF}]|[\x{2600}-\x{26FF}]|[\x{2700}-\x{27BF}])#u','', $msg->msg));
+
+                        if ($msgSearch != '')
+                        {
+                            $answer = $api->getAnswer($msgSearch, $contextId);
+
+                            if ($answer['error'] == false) {
+                                if ($answer['msg'] != 'notfound' && $answer['confidence'] > 0 && (!isset($suggestions[$msg->chat_id]) || !in_array($answer['msg'], $suggestions[$msg->chat_id]))) {
+                                    $suggestions[$msg->chat_id][] = array('a' => $answer['msg'], 'ctx' => $contextId, 'q' => $msg->msg, 'in_response' => $answer['in_response'], 'aid' => md5($answer['msg']));
+                                }
                             }
                         }
                     }

@@ -2,7 +2,6 @@ import logging
 from chatterbot.storage import StorageAdapter
 from chatterbot.logic import LogicAdapter
 from chatterbot.search import IndexedTextSearch
-from chatterbot.conversation import Statement
 from chatterbot import utils
 
 
@@ -59,9 +58,11 @@ class ChatBot(object):
             self.initialize()
 
     def get_initialization_functions(self):
-        initialization_functions = utils.get_initialization_functions(
+        initialization_functions = set()
+
+        initialization_functions.update(utils.get_initialization_functions(
             self, 'storage.tagger'
-        )
+        ))
 
         for search_algorithm in self.search_algorithms.values():
             search_algorithm_functions = utils.get_initialization_functions(
@@ -75,7 +76,7 @@ class ChatBot(object):
         """
         Do any work that needs to be done before the chatbot can process responses.
         """
-        for function in self.get_initialization_functions().values():
+        for function in self.get_initialization_functions():
             function()
 
     def get_response(self, statement=None, **kwargs):
@@ -85,11 +86,26 @@ class ChatBot(object):
         :param statement: An statement object or string.
         :returns: A response to the input.
         :rtype: Statement
+
+        :param additional_response_selection_parameters: Parameters to pass to the
+            chat bot's logic adapters to control response selection.
+        :type additional_response_selection_parameters: dict
+
+        :param persist_values_to_response: Values that should be saved to the response
+            that the chat bot generates.
+        :type persist_values_to_response: dict
         """
+        Statement = self.storage.get_object('statement')
+
         additional_response_selection_parameters = kwargs.pop('additional_response_selection_parameters', {})
+
+        persist_values_to_response = kwargs.pop('persist_values_to_response', {})
 
         if isinstance(statement, str):
             kwargs['text'] = statement
+
+        if isinstance(statement, dict):
+            kwargs.update(statement)
 
         if statement is None and 'text' not in kwargs:
             raise self.ChatBotException(
@@ -97,36 +113,47 @@ class ChatBot(object):
                 'argument is required. Neither was provided.'
             )
 
-        if hasattr(statement, 'text'):
-            data = statement.serialize()
-            data.update(kwargs)
-            kwargs = data
+        if hasattr(statement, 'serialize'):
+            kwargs.update(**statement.serialize())
 
-        if isinstance(statement, dict):
-            statement.update(kwargs)
-            kwargs = statement
+        tags = kwargs.pop('tags', [])
 
-        input_statement = Statement(**kwargs)
+        text = kwargs.pop('text')
+
+        input_statement = Statement(text=text, **kwargs)
+
+        input_statement.add_tags(*tags)
 
         # Preprocess the input statement
         for preprocessor in self.preprocessors:
             input_statement = preprocessor(input_statement)
 
+        # Make sure the input statement has its search text saved
+
+        if not input_statement.search_text:
+            input_statement.search_text = self.storage.tagger.get_bigram_pair_string(input_statement.text)
+
+        if not input_statement.search_in_response_to and input_statement.in_response_to:
+            input_statement.search_in_response_to = self.storage.tagger.get_bigram_pair_string(input_statement.in_response_to)
+
         response = self.generate_response(input_statement, additional_response_selection_parameters)
 
-        # Learn that the user's input was a valid response to the chat bot's previous output
-        previous_statement = self.get_latest_response(input_statement.conversation)
+        # Update any response data that needs to be changed
+        if persist_values_to_response:
+            for response_key in persist_values_to_response:
+                response_value = persist_values_to_response[response_key]
+                if response_key == 'tags':
+                    input_statement.add_tags(*response_value)
+                    response.add_tags(*response_value)
+                else:
+                    setattr(input_statement, response_key, response_value)
+                    setattr(response, response_key, response_value)
 
         if not self.read_only:
-            self.learn_response(input_statement, previous_statement)
+            self.learn_response(input_statement)
 
             # Save the response generated for the input
-            self.storage.create(
-                text=response.text,
-                in_response_to=response.in_response_to,
-                conversation=response.conversation,
-                persona=response.persona
-            )
+            self.storage.create(**response.serialize())
 
         return response
 
@@ -136,6 +163,8 @@ class ChatBot(object):
 
         :param input_statement: The input statement to be processed.
         """
+        Statement = self.storage.get_object('statement')
+
         results = []
         result = None
         max_confidence = -1
@@ -201,14 +230,24 @@ class ChatBot(object):
 
         return response
 
-    def learn_response(self, statement, previous_statement):
+    def learn_response(self, statement, previous_statement=None):
         """
         Learn that the statement provided is a valid response.
         """
+        if not previous_statement:
+            previous_statement = statement.in_response_to
+
+        if not previous_statement:
+            previous_statement = self.get_latest_response(statement.conversation)
+            if previous_statement:
+                previous_statement = previous_statement.text
+
         previous_statement_text = previous_statement
 
-        if previous_statement is not None:
-            previous_statement_text = previous_statement.text
+        if not isinstance(previous_statement, (str, type(None), )):
+            statement.in_response_to = previous_statement.text
+        elif isinstance(previous_statement, str):
+            statement.in_response_to = previous_statement
 
         self.logger.info('Adding "{}" as a response to "{}"'.format(
             statement.text,
@@ -216,12 +255,7 @@ class ChatBot(object):
         ))
 
         # Save the input statement
-        return self.storage.create(
-            text=statement.text,
-            in_response_to=previous_statement_text,
-            conversation=statement.conversation,
-            tags=statement.tags
-        )
+        return self.storage.create(**statement.serialize())
 
     def get_latest_response(self, conversation):
         """
