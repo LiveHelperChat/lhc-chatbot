@@ -50,7 +50,6 @@ var lhcChatBot = {
     },
 
     sendNegative: function (chat_id, inst) {
-        console.log('here');
         $.postJSON(WWW_DIR_JAVASCRIPT + 'lhcchatbot/suggestinvalid/' + chat_id, {
             'answer': inst.parent().find('.btn-send-success').text(),
             'question': inst.attr('title'),
