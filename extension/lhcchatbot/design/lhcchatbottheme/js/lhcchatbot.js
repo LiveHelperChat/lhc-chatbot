@@ -10,7 +10,7 @@ var lhcChatBot = {
                     var containerSuggest = $('#suggest-container-' + chat_id);
 
                     if ($('#suggest-container-' + chat_id).length == 0) {
-                        $('#CSChatMessage-' + chat_id).after('<div id="suggest-container-' + chat_id + '"><ul class="lhcchatbot-list list-inline"></ul></div>');
+                        $('#CSChatMessage-' + chat_id).parent().after('<div id="suggest-container-' + chat_id + '"><ul class="lhcchatbot-list list-inline"></ul></div>');
                     }
 
                     containerSuggest = $('#suggest-container-' + chat_id).find('ul');
