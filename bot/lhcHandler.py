@@ -63,6 +63,13 @@ class lhcHandler(BaseHTTPRequestHandler):
 			self.bot.addDatabase(''.join(query_components["id"]), ''.join(query_components["ct"]))
 			self.wfile.write('{"error":false,"msg":"Database was created"}'.encode())
 			return
+			
+		if 'ping' in query_components:
+			self.send_response(200)
+			self.send_header('Content-type',"text/plain")
+			self.end_headers()
+			self.wfile.write('pong'.encode())
+			return
 
 		if 'qd' in query_components:
 			try:
