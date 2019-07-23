@@ -13,6 +13,7 @@
         <tr>
             <th><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Question');?></th>
             <th><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Answer');?></th>
+            <th><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','User');?></th>
             <th><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Context');?></th>
             <th><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Was used');?></th>
             <th><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Confirmed');?></th>
@@ -33,6 +34,9 @@
             <?php echo htmlspecialchars($item->question)?>
         </td>
         <td><?php echo htmlspecialchars($item->answer)?></td>
+        <td>
+            <?php echo htmlspecialchars($item->user)?>
+        </td>
         <td><?php echo htmlspecialchars($item->context)?></td>
         <td><?php echo htmlspecialchars($item->was_used)?></td>
         <td><?php echo htmlspecialchars($item->confirmed)?></td>
