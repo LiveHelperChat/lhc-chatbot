@@ -109,7 +109,14 @@ ee.addListener('eventSyncAdmin', function (params) {
 ee.addListener('quoteAction', function (params, chat_id) {
     if (lhcChatBot.unsupported.indexOf(chat_id) === -1 && lhcChatBot.disabled == false) {
         lhcChatBot.selectedText = lhinst.getSelectedTextPlain();
-        params['content'] = params['content'] + ' | <a href="#" onclick="return lhcChatBot.addCombination($(this),' + chat_id + ',event);"><i class="material-icons mr-0">library_add</i></a>'
+        var contentOriginal = params['content']();
+        params['content'] = function(){ return contentOriginal + ' | <a href="#" id="add-suggestion-popover-'+chat_id+'"><i class="material-icons mr-0">library_add</i></a>' }
+        // Add event listener
+        setTimeout(function(){
+            $('#add-suggestion-popover-'+chat_id).click(function (event){
+                lhcChatBot.addCombination($(this), chat_id, event);
+            });
+        },400);
     }
 });
 
