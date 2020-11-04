@@ -25,6 +25,10 @@ var lhcChatBot = {
                     });
 
                     containerSuggest.find('li:gt(6)').remove();
+
+                    // Adjust scroll by the height of container
+                    $('#messagesBlock-'+chat_id).prop('scrollTop',$('#messagesBlock-'+chat_id).prop('scrollTop')+$('#suggest-container-'+chat_id).height());
+
                 });
 
                 $.each(data.un, function (index,chat_id) {
