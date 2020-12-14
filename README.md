@@ -1,5 +1,3 @@
-# Live Helper Chat official plugin for ChatterBot
-
 Automatic suggestions for an operators. AI powered by DeepPavlov.
 
 ## Install instructions
