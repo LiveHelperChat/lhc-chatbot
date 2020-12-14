@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  faq:
+    build: ./Dockerfiles/deep
+    environment:
+      - LHC_API=${LHC_API}
+    container_name: deeppavlov-lhcchatbot
+    image: remdex/deeppavlov-lhcchatbot:latest
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./Dockerfiles/deep/data:/base/deep
+      - ./Dockerfiles/deep/config:/base/config
+      - "./Dockerfiles/deep/train/${LHC_TRAIN_FILE}:/base/train/train.csv"
+    networks:
+      - code-network
+    restart: always
+networks:
+  code-network:
+    driver: bridge

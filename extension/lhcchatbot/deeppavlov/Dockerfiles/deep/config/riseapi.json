@@ -1,0 +1,165 @@
+{
+  "dataset_reader": {
+    "class_name": "faq_reader",
+    "x_col_name": "Question",
+    "y_col_name": "Answer",
+    "data_path": "./train/file.csv"
+  },
+  "dataset_iterator": {
+    "class_name": "data_learning_iterator"
+  },
+  "chainer": {
+    "in": "q",
+    "in_y": "y",
+    "pipe": [
+      {
+        "class_name": "str_lower",
+        "id": "lower",
+        "in": ["q"],
+        "out": ["x_lower"]
+      },
+      {
+        "class_name": "nltk_moses_tokenizer",
+        "id": "tokenizer",
+        "in": ["x_lower"],
+        "out": ["x_tokens"]
+      },
+      {
+        "ref": "tokenizer",
+        "in": ["y"],
+        "out": ["y_tokens"]
+      },
+      {
+        "fit_on": ["x_tokens", "y_tokens"],
+        "in": ["x_tokens"],
+        "out": ["tokens_candidates"],
+        "class_name": "spelling_error_model",
+        "window": 1,
+        "candidates_count": 4,
+        "dictionary": {
+          "class_name": "deeppavlov.vocabs.typos:Wiki100KDictionary",
+          "data_dir": "{DOWNLOADS_PATH}/vocabs"
+        },
+        "save_path": "{MODELS_PATH}/error_model/error_model.tsv"
+      },
+      {
+        "class_name": "deeppavlov.models.spelling_correction.electors.kenlm_elector:KenlmElector",
+        "in": ["tokens_candidates"],
+        "out": ["y_predicted_tokens"],
+        "load_path": "{DOWNLOADS_PATH}/language_models/en_wiki_no_punkt.arpa.binary"
+      },
+      {
+        "ref": "tokenizer",
+        "in": ["y_predicted_tokens"],
+        "out": ["y_predicted"]
+      },
+      {
+        "class_name": "stream_spacy_tokenizer",
+        "in": "y_predicted",
+        "id": "my_tokenizer",
+        "lemmas": true,
+        "out": "q_token_lemmas"
+      },
+      {
+        "ref": "my_tokenizer",
+        "in": "q_token_lemmas",
+        "out": "q_lem"
+      },
+      {
+        "in": [
+          "q_lem"
+        ],
+        "out": [
+          "q_vect"
+        ],
+        "fit_on": [
+          "q_lem"
+        ],
+        "id": "tfidf_vec",
+        "class_name": "sklearn_component",
+        "save_path": "{MODELS_PATH}/faq/mipt/en_mipt_faq_v4/tfidf.pkl",
+        "load_path": "{MODELS_PATH}/faq/mipt/en_mipt_faq_v4/tfidf.pkl",
+        "model_class": "sklearn.feature_extraction.text:TfidfVectorizer",
+        "infer_method": "transform"
+      },
+      {
+        "id": "answers_vocab",
+        "class_name": "simple_vocab",
+        "fit_on": [
+          "y"
+        ],
+        "save_path": "{MODELS_PATH}/faq/mipt/en_mipt_faq_v4/en_mipt_answers.dict",
+        "load_path": "{MODELS_PATH}/faq/mipt/en_mipt_faq_v4/en_mipt_answers.dict",
+        "in": "y",
+        "out": "y_ids"
+      },
+      {
+        "in": "q_vect",
+        "fit_on": [
+          "q_vect",
+          "y_ids"
+        ],
+        "out": [
+          "y_pred_proba"
+        ],
+        "class_name": "sklearn_component",
+        "main": true,
+        "save_path": "{MODELS_PATH}/faq/mipt/en_mipt_faq_v4/logreg.pkl",
+        "load_path": "{MODELS_PATH}/faq/mipt/en_mipt_faq_v4/logreg.pkl",
+        "model_class": "sklearn.linear_model:LogisticRegression",
+        "infer_method": "predict_proba",
+        "C": 1000,
+        "penalty": "l2"
+      },
+      {
+        "in": "y_pred_proba",
+        "out": "y_pred_ids",
+        "class_name": "proba2labels",
+        "max_proba": true,
+        "top_n": 2,
+        "confident_threshold": 0.15
+      },
+      {
+        "in": "y_pred_ids",
+        "out": "y_pred_answers",
+        "ref": "answers_vocab"
+      }
+    ],
+    "out": [
+      "y_pred_answers",
+      "y_pred_proba",
+      "y_pred_ids",
+      "y_predicted"
+    ]
+  },
+  "train": {
+    "evaluation_targets": [],
+    "class_name": "fit_trainer"
+  },
+  "metadata": {
+    "variables": {
+      "ROOT_PATH": "/base/deep",
+      "DOWNLOADS_PATH": "{ROOT_PATH}/downloads",
+      "MODELS_PATH": "{ROOT_PATH}/models"
+    },
+    "requirements": [
+      "{DEEPPAVLOV_PATH}/requirements/spacy.txt",
+      "{DEEPPAVLOV_PATH}/requirements/en_core_web_sm.txt",
+      "{DEEPPAVLOV_PATH}/requirements/spelling.txt"
+    ],
+    "download": [
+      {
+        "url": "http://files.deeppavlov.ai/faq/mipt/en_mipt_faq_v4.tar.gz",
+        "subdir": "{MODELS_PATH}/faq/mipt"
+      },
+      {
+        "url": "http://files.deeppavlov.ai/deeppavlov_data/error_model.tar.gz",
+        "subdir": "{MODELS_PATH}"
+      },
+      {
+        "url": "http://files.deeppavlov.ai/lang_models/en_wiki_no_punkt.arpa.binary.gz",
+        "subdir": "{DOWNLOADS_PATH}/language_models"
+      }
+    ]
+  }
+}

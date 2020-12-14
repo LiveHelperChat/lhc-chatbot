@@ -18,6 +18,12 @@ try {
             throw new Exception('Question not provided!');
         }
 
+        if (isset($_POST['aid'])) {
+            $aid = $_POST['aid'];
+        } else {
+            throw new Exception('Answer ID has to be provided!');
+        }
+
         if (isset($_POST['context'])) {
             $context = $_POST['context'];
         } else {
@@ -25,8 +31,7 @@ try {
         }
 
         $invalid = erLhcoreClassModelLHCChatBotInvalid::findOne(array('filter' => array(
-            'question' => $question,
-            'answer' => $answer,
+            'hash' => $aid,
             'context_id' => $context,
         )));
 
@@ -35,6 +40,7 @@ try {
             $invalid->saveThis();
         } else {
             $invalid = new erLhcoreClassModelLHCChatBotInvalid();
+            $invalid->hash = $aid;
             $invalid->counter = 1;
             $invalid->question = $question;
             $invalid->answer = $answer;

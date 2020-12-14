@@ -34,4 +34,9 @@ $def->properties['context_id']->columnName   = 'context_id';
 $def->properties['context_id']->propertyName = 'context_id';
 $def->properties['context_id']->propertyType = ezcPersistentObjectProperty::PHP_TYPE_INT;
 
+$def->properties['hash'] = new ezcPersistentObjectProperty();
+$def->properties['hash']->columnName   = 'hash';
+$def->properties['hash']->propertyName = 'hash';
+$def->properties['hash']->propertyType = ezcPersistentObjectProperty::PHP_TYPE_STRING;
+
 return $def;

@@ -2,7 +2,6 @@
 
 class erLhcoreClassExtensionLHCChatBotValidator
 {
-
     public static function getContextFilter($userId) {
         $contextId = array();
         $limit = erLhcoreClassUserDep::parseUserDepartmetnsForFilter($userId);
@@ -154,6 +153,9 @@ class erLhcoreClassExtensionLHCChatBotValidator
         $definition = array(
             'name' => new ezcInputFormDefinitionElement(
                 ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
+            ),
+            'host' => new ezcInputFormDefinitionElement(
+                ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
             )
         );
 
@@ -164,6 +166,12 @@ class erLhcoreClassExtensionLHCChatBotValidator
             $context->name = $form->name;
         } else {
             $Errors[] =  erTranslationClassLhTranslation::getInstance()->getTranslation('xmppservice/operatorvalidator','Please enter name!');
+        }
+
+        if ( $form->hasValidData( 'host' ) && $form->host != '' ) {
+            $context->host = $form->host;
+        } else {
+            $Errors[] =  erTranslationClassLhTranslation::getInstance()->getTranslation('xmppservice/operatorvalidator','Please enter host!');
         }
         
         return $Errors;
@@ -257,23 +265,6 @@ class erLhcoreClassExtensionLHCChatBotValidator
      */
     public static function publishQuestion(erLhcoreClassModelLHCChatBotQuestion & $question)
     {
-        // Save question
-        $api = erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->getApi();
-
-        // Remove questions if there was changes
-        foreach ($question->question_items_snapshot as $q)
-        {
-            $api->removeQuestion(trim($q), isset($question->snapshot['context']) ? $question->snapshot['context'] : 0);
-        }
-        
-        // Add as new questions
-        foreach ($question->question_items as $q)
-        {
-            if ($question->confirmed == 1) {
-                $api->addQuestion(trim($q), trim($question->answer), $question->context_id);
-            }
-        }
-
         $question->saveThis();
     }
 
@@ -284,11 +275,8 @@ class erLhcoreClassExtensionLHCChatBotValidator
      */
     public static function deleteReport(erLhcoreClassModelLHCChatBotInvalid $question)
     {
-        // Get API
-        $api = erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->getApi();
-
-        foreach (erLhcoreClassModelLHCChatBotContext::getList() as $context){
-            $api->removeQuestion(trim($question), $context->id);
+        foreach (erLhcoreClassModelLHCChatBotQuestion::getList(array('filter' => array('hash' => $question->hash, 'context_id' => $question->context_id))) as $item) {
+            $item->removeThis();
         }
 
         $question->removeThis();
@@ -297,14 +285,6 @@ class erLhcoreClassExtensionLHCChatBotValidator
 
     public static function deleteQuestion(erLhcoreClassModelLHCChatBotQuestion & $question)
     {
-        // Get API
-        $api = erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->getApi();
-
-        foreach ($question->question_items as $q)
-        {
-            $api->removeQuestion(trim($q), $question->context_id);
-        }
-
         $question->removeThis();
     }
 
@@ -327,16 +307,6 @@ class erLhcoreClassExtensionLHCChatBotValidator
         $stmt->bindValue(':context_id',$context->id);
         $stmt->execute();
 
-        $ext = erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot');
-
-        // Remove database from bot
-        $api = erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->getApi();
-        $api->dropDatabase($context->id);
-
-        $db = ezcDbInstance::get();
-        $stmt = $db->prepare("DROP DATABASE `".$ext->settings['database_prefix']."-" . $ext->getId() . "-" . $context->id ."`");
-        $stmt->execute();
-
         // Remove context
         $context->removeThis();       
     }
@@ -349,7 +319,7 @@ class erLhcoreClassExtensionLHCChatBotValidator
         if ($chatMode == false) {
             $msgs = erLhcoreClassModelmsg::getList(array('filterin' => array('id' => $ids)));
         } else {
-            $msgs = erLhcoreClassModelmsg::getList(array('limit' => 3,'sort' => 'id DESC','filter' => array('user_id' => 0),'filterin' => array('chat_id' => $ids)));
+            $msgs = erLhcoreClassModelmsg::getList(array('limit' => 3, 'sort' => 'id DESC','filter' => array('user_id' => 0),'filterin' => array('chat_id' => $ids)));
         }
 
         $suggestions = array();
@@ -405,17 +375,24 @@ class erLhcoreClassExtensionLHCChatBotValidator
         {
             foreach ($msgs as $msg) {
                 foreach ($combainedData[$msg->chat_id] as $contextId) {
-                    if ($contextId > 0 && $msg->msg != '' && strlen($msg->msg) > 4) {
+                    if ($contextId > 0 && $msg->msg != '' && strlen($msg->msg) >= 2) {
 
                         $msgSearch = trim(preg_replace('#([\x{2B50}-\x{2B55}]|[\x{23F0}-\x{23F3}]|[\x{231A}-\x{231B}]|[\x{1F600}-\x{1F64F}]|[\x{1F910}-\x{1F9FF}]|[\x{1F300}-\x{1F5FF}]|[\x{1F680}-\x{1F6FF}]|[\x{2600}-\x{26FF}]|[\x{2700}-\x{27BF}])#u','', $msg->msg));
 
                         if ($msgSearch != '')
                         {
-                            $answer = $api->getAnswer($msgSearch, $contextId);
+                            $contextObject = erLhcoreClassModelLHCChatBotContext::fetch($contextId);
 
-                            if ($answer['error'] == false) {
-                                if ($answer['msg'] != 'notfound' && $answer['confidence'] > 0 && (!isset($suggestions[$msg->chat_id]) || !in_array($answer['msg'], $suggestions[$msg->chat_id]))) {
-                                    $suggestions[$msg->chat_id][] = array('a' => $answer['msg'], 'ctx' => $contextId, 'q' => $msg->msg, 'in_response' => $answer['in_response'], 'aid' => md5($answer['msg']));
+                            $answer = self::getAnswer($contextObject->host, $msgSearch);
+
+                            if ($answer['found'] == true) {
+                                if ($answer['confidence'] > 0 && (!isset($suggestions[$msg->chat_id]) || !in_array($answer['msg'], $suggestions[$msg->chat_id]))) {
+
+                                    $answerObj = erLhcoreClassModelLHCChatBotQuestion::findOne(array('filter' => array('hash' => $answer['msg'])));
+
+                                    if ($answerObj instanceof erLhcoreClassModelLHCChatBotQuestion) {
+                                        $suggestions[$msg->chat_id][] = array('a' => $answerObj->answer, 'ctx' => $contextId, 'q' => $msg->msg, 'in_response' => $answer['in_response'], 'aid' => $answer['msg']);
+                                    }
                                 }
                             }
                         }
@@ -425,6 +402,44 @@ class erLhcoreClassExtensionLHCChatBotValidator
         }
 
         return $suggestions;
+    }
+
+    public static function getAnswer($host, $question)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['q' => [$question]]));
+        curl_setopt($ch, CURLOPT_URL, $host);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+        @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+
+        $content = curl_exec($ch);
+
+        if (curl_errno($ch)) {
+            $http_error = curl_error($ch);
+        }
+
+        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        $contentJSON = json_decode($content, true);
+
+        $response = ['found' => false, 'msg' => '', 'confidence' => 0];
+
+        if (is_array($contentJSON)) {
+            if (isset($contentJSON[0][0][0])){
+                $response['found'] = true;
+                $response['in_response'] = $question;
+                $response['msg'] = explode('__',$contentJSON[0][0][0])[1];
+                $response['confidence'] = $contentJSON[0][1][$contentJSON[0][2][0]];
+            }
+        }
+
+        return $response;
     }
 
     public static function getUnsupportedChats($ids = array(), $chatMode = false) {

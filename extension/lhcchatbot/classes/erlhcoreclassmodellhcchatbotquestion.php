@@ -18,6 +18,7 @@ class erLhcoreClassModelLHCChatBotQuestion
         $stateArray = array(
             'id' => $this->id,
             'question' => $this->question,
+            'hash' => $this->hash,
             'answer' => $this->answer,
             'context_id' => $this->context_id,
             'was_used' => $this->was_used,
@@ -32,6 +33,11 @@ class erLhcoreClassModelLHCChatBotQuestion
     public function __toString()
     {
         return $this->answer;
+    }
+
+    public function beforeSave()
+    {
+        $this->hash = md5($this->question);
     }
 
     public function snapshot()
@@ -89,6 +95,7 @@ class erLhcoreClassModelLHCChatBotQuestion
     public $id = null;
     public $context_id = 0;
     public $question = '';
+    public $hash = '';
     public $answer = '';
     public $was_used = 0;
     public $confirmed = 1;

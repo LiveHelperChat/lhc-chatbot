@@ -14,4 +14,9 @@ $def->properties['name']->columnName   = 'name';
 $def->properties['name']->propertyName = 'name';
 $def->properties['name']->propertyType = ezcPersistentObjectProperty::PHP_TYPE_STRING;
 
+$def->properties['host'] = new ezcPersistentObjectProperty();
+$def->properties['host']->columnName   = 'host';
+$def->properties['host']->propertyName = 'host';
+$def->properties['host']->propertyType = ezcPersistentObjectProperty::PHP_TYPE_STRING;
+
 return $def;

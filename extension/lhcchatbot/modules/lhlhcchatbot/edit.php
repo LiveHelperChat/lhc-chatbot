@@ -16,7 +16,6 @@ if (ezcInputForm::hasPostData()) {
     if (count($Errors) == 0) {
         try {
             erLhcoreClassExtensionLHCChatBotValidator::publishQuestion($question);
-
             erLhcoreClassModule::redirect('lhcchatbot/list','/(confirmed)/1');
             exit;
 

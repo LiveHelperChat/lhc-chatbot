@@ -18,6 +18,12 @@ try {
             throw new Exception('Question not provided!');
         }
 
+        if (isset($_POST['aid'])) {
+            $aid = $_POST['aid'];
+        } else {
+            throw new Exception('Answer ID not provided!');
+        }
+
         if (isset($_POST['context_id'])) {
             $context_id = $_POST['context_id'];
         } else {
@@ -33,10 +39,9 @@ try {
             $stmt->execute();
         }
 
-        if (is_numeric($context_id)){
-            $stmt = $db->prepare("SELECT id FROM lhc_lhcchatbot_question WHERE context_id = :context_id AND answer = :answer AND question LIKE (:question)");
-            $stmt->bindValue(':answer', $answer, PDO::PARAM_STR);
-            $stmt->bindValue(':question', '%' . $question . '%', PDO::PARAM_STR);
+        if (is_numeric($context_id)) {
+            $stmt = $db->prepare("SELECT id FROM lhc_lhcchatbot_question WHERE context_id = :context_id AND hash = :hash");
+            $stmt->bindValue(':hash', $aid, PDO::PARAM_STR);
             $stmt->bindValue(':context_id', $context_id, PDO::PARAM_STR);
             $stmt->execute();
 

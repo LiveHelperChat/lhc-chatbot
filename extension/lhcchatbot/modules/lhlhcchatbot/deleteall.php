@@ -7,9 +7,10 @@ if (!$currentUser->validateCSFRToken($Params['user_parameters_unordered']['csfr'
 
 try {
     $question = erLhcoreClassModelLHCChatBotInvalid::fetch($Params['user_parameters']['id']);
-    $question->removeThis();
 
     erLhcoreClassExtensionLHCChatBotValidator::deleteReport($question);
+
+    $question->removeThis();
 
     erLhcoreClassModule::redirect('lhcchatbot/invalid');
     exit;
