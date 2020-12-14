@@ -6,7 +6,7 @@ echo "\n==Indexing questions== \n";
 
 foreach (erLhcoreClassModelLHCChatBotContext::getList() as $context)
 {
-    $file = fopen("extension/lhcchatbot/deeppavlov/Dockerfiles/deep/train/train_" . $context->id . ".csv","w");
+    $file = fopen("extension/lhcchatbot/train/train_" . $context->id . ".csv","w");
     fputcsv($file, array("Question","Answer"));
 
     foreach (erLhcoreClassModelLHCChatBotQuestion::getList(array('limit' => false, 'filter' => array('confirmed' => 1, 'context_id' => $context->id))) as $question) {

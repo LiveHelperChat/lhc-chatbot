@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  faq:
+  deeppavlov-lhcchatbot:
     build: ./Dockerfiles/deep
     environment:
       - LHC_API=${LHC_API}
