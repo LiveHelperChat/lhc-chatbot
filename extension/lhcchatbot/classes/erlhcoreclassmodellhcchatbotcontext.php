@@ -16,7 +16,8 @@ class erLhcoreClassModelLHCChatBotContext {
 	{
 		$stateArray = array(
             'id' => $this->id,
-            'name' => $this->name
+            'name' => $this->name,
+            'host' => $this->host,
 		);
 
 		return $stateArray;
@@ -39,4 +40,5 @@ class erLhcoreClassModelLHCChatBotContext {
 	
 	public $id = null;
 	public $name = '';
+	public $host = '';
 }

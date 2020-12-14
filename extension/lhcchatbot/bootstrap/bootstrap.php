@@ -187,7 +187,6 @@ class erLhcoreClassExtensionLhcchatbot
             'erLhcoreClassModelLHCChatBotContextLinkDepartment' => 'extension/lhcchatbot/classes/erlhcoreclassmodellhcchatbotcontextlinkdepartment.php',
             'erLhcoreClassExtensionLHCChatBotValidator' => 'extension/lhcchatbot/classes/erlhcoreclasslhcchatbotvalidator.php',
             'LHCChatBot' => 'extension/lhcchatbot/classes/api.php',
-
             'erLhcoreClassElasticSearchChatbotUpdate'   => 'extension/lhcchatbot/classes/lhelasticsearchupdate.php',
             'erLhcoreClassElasticChatbotClient'         => 'extension/lhcchatbot/classes/lhelasticsearchclient.php',
             'erLhcoreClassElasticChatbotTrait'          => 'extension/lhcchatbot/classes/lhelastictrait.php',

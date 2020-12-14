@@ -14,6 +14,11 @@ $def->properties['question']->columnName   = 'question';
 $def->properties['question']->propertyName = 'question';
 $def->properties['question']->propertyType = ezcPersistentObjectProperty::PHP_TYPE_STRING;
 
+$def->properties['hash'] = new ezcPersistentObjectProperty();
+$def->properties['hash']->columnName   = 'hash';
+$def->properties['hash']->propertyName = 'hash';
+$def->properties['hash']->propertyType = ezcPersistentObjectProperty::PHP_TYPE_STRING;
+
 $def->properties['answer'] = new ezcPersistentObjectProperty();
 $def->properties['answer']->columnName   = 'answer';
 $def->properties['answer']->propertyName = 'answer';

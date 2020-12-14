@@ -4,13 +4,14 @@ $tpl = erLhcoreClassTemplate::getInstance('lhcchatbot/editreport.tpl.php');
 
 $report =  erLhcoreClassModelLHCChatBotInvalid::fetch($Params['user_parameters']['id']);
 
-$question = erLhcoreClassModelLHCChatBotQuestion::findOne(array('filter' => array('answer' => $report->answer, 'context_id' => $report->context_id)));
+$question = erLhcoreClassModelLHCChatBotQuestion::findOne(array('filter' => array('hash' => $report->hash, 'context_id' => $report->context_id)));
 
 if (!($question instanceof erLhcoreClassModelLHCChatBotQuestion)) {
     $question = new erLhcoreClassModelLHCChatBotQuestion();
     $question->context_id = $report->context_id;
     $question->answer = $report->answer;
     $question->question = $report->question;
+    $question->hash = $report->hash;
 }
 
 if (ezcInputForm::hasPostData()) {
@@ -33,12 +34,14 @@ if (ezcInputForm::hasPostData()) {
     if (count($Errors) == 0) {
         try {
 
+            erLhcoreClassExtensionLHCChatBotValidator::publishQuestion($question);
+
             // Update report data
             $report->question = $question->question;
             $report->answer = $question->answer;
+            $report->hash = $question->hash;
             $report->saveThis();
 
-            erLhcoreClassExtensionLHCChatBotValidator::publishQuestion($question);
             erLhcoreClassModule::redirect('lhcchatbot/invalid');
             exit;
 
