@@ -59,9 +59,9 @@ Copy those files to `deeppavlov/Dockerfiles/deep/train` folder of cloned reposit
 
 Navigate to `deeppavlov` and copy `.env.default` to `.env`
 
-Training is always happening on a startup.
+Training is always happening on a docker image startup.
 
-There is a two ways DeepPavlov can work. Wither with spellchecker eiter without.
+There is a two ways DeepPavlov can work. Wither with spellchecker or without.
 
 ### Without spellchecker
 
@@ -73,9 +73,74 @@ There is a two ways DeepPavlov can work. Wither with spellchecker eiter without.
 docker-compose -f docker-compose.yml up
 ```
 
-Run as service once it's build
+Run as service once it's build.
 
 ```shell
 docker-compose -f docker-compose.yml up -d
 ```
 
+To test does it works you can use CURL command
+
+```shell
+curl -X POST "http://localhost:5000/model" -H  "accept: application/json" -H  "Content-Type: application/json" -d "{\"q\":[\"hi\"]}"
+```
+
+### With spellchecker
+
+With spellchecker visitor messages before running against your questions will be checked against spelling errors.
+
+Spellchecker requires these changes.
+
+* Edit `.env` file and change `LHC_API=train_tfidf_logreg_en_faq.json` to `LHC_API=riseapi.json`
+* Navigate to `deeppavlov/Dockerfiles/deep/data/downloads/language_models` and see README.md file content. You will need to download file which is 6GB file size!
+
+### Automating retraining
+
+The Easiest way is just to have some shell which would run daily something like that. This is just an example adopt it to your needs.
+
+```shell
+
+# Export trainings Adjust paths!
+cd `lhc_web/` && /usr/bin/php cron.php -s site_admin -e lhcchatbot -c cron/deeppavlov_train
+
+# Copy trainings. Adjust paths!
+cd ../ && cp extension/lhcchatbot/train/* /deeppavlov/Dockerfiles/deep/train
+
+# Restart docker image
+docker-compose restart deeppavlov-lhcchatbot 
+```
+
+### Supporting more than one context
+
+The easiest way is just to modify `docker-compose.yml` file and add more than one service with different configuration
+
+Possible workflow
+
+* You should modify `ports` sections of `docker-compose.yml`
+* Create a copy of `deeppavlov/Dockerfiles/deep/data` like `deeppavlov/Dockerfiles/deep/data_2`
+* Modify `volumes:` section `- ./Dockerfiles/deep/data:/base/deep` to something like `- ./Dockerfiles/deep/data_2:/base/deep`
+* Modify `volumes:` section `- "./Dockerfiles/deep/train/${LHC_TRAIN_FILE}:/base/train/train.csv"` to something like `- "./Dockerfiles/deep/train/train_2.csv:/base/train/train.csv"`
+* Modify `container_name` from `deeppavlov-lhcchatbot` to `deeppavlov-lhcchatbot-german` as an example
+* Modify `- LHC_API=${LHC_API}` if you are using spellchecker. As most likelu it will not setup for other langauge than english. Put there `train_tfidf_logreg_en_faq.json`
+
+After that don't forget to modify your new context and set host to new url with a new port.
+
+Examples configuration
+
+```yaml
+  deeppavlov-lhcchatbot-german:
+    build: ./Dockerfiles/deep
+    environment:
+      - LHC_API=train_tfidf_logreg_en_faq.json
+    container_name: deeppavlov-lhcchatbot-german
+    image: remdex/deeppavlov-lhcchatbot:latest
+    ports:
+      - "5005:5000"
+    volumes:
+      - ./Dockerfiles/deep/data_2:/base/deep
+      - ./Dockerfiles/deep/config:/base/config
+      - "./Dockerfiles/deep/train/train_9.csv:/base/train/train.csv"
+    networks:
+      - code-network
+    restart: always
+```
