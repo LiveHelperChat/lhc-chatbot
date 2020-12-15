@@ -16,7 +16,7 @@ foreach (erLhcoreClassModelLHCChatBotContext::getList() as $context)
         }
 
         foreach ($question->question_items as $questionString) {
-            if (trim($questionString) != '') {
+            if (trim($questionString) != '' && trim($question->answer) != '') {
                 fputcsv($file, array(trim($questionString),$question->answer.'__'.$question->hash));
             }
         }
