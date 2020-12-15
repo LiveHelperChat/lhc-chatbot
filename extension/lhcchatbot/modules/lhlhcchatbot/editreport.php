@@ -24,9 +24,6 @@ if (ezcInputForm::hasPostData()) {
     if ($question->id === null) { // Let core take care of it
         // Just to modify existing question
         $question->question = $report->question;
-    } else {
-        $api = erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->getApi();
-        $api->removeQuestion($report->question, $question->context_id);
     }
 
     $Errors = erLhcoreClassExtensionLHCChatBotValidator::validate($question);

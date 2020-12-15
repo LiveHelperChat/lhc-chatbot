@@ -14,14 +14,6 @@ if (ezcInputForm::hasPostData()) {
 
             $ext = erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot');
 
-            $db = ezcDbInstance::get();
-            $stmt = $db->prepare("CREATE DATABASE IF NOT EXISTS `".$ext->settings['database_prefix']."-" . $ext->getId() . "-" . $context->id ."` COLLATE 'utf8mb4_unicode_ci'");
-            $stmt->execute();
-
-            // Remove database from bot
-            $api = erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->getApi();
-            $api->addDatabase($context->id);
-
             erLhcoreClassModule::redirect('lhcchatbot/listcontext');
             exit ;
 

@@ -313,9 +313,6 @@ class erLhcoreClassExtensionLHCChatBotValidator
     
     public static function suggestByIds($ids = array(), $chatMode = false)
     {
-        // Save question
-        $api = erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->getApi();
-
         if ($chatMode == false) {
             $msgs = erLhcoreClassModelmsg::getList(array('filterin' => array('id' => $ids)));
         } else {
@@ -411,7 +408,7 @@ class erLhcoreClassExtensionLHCChatBotValidator
         return $suggestions;
     }
 
-    public static function getAnswer($host, $question)
+    public static function getAnswer($host, $question, $debug = false)
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -441,9 +438,13 @@ class erLhcoreClassExtensionLHCChatBotValidator
             if (isset($contentJSON[0][0][0])) {
                 $response['found'] = true;
                 $response['in_response'] = $question;
-                $response['msg'] = explode('__', $contentJSON[0][0][0])[1];
-                if (isset($contentJSON[0][0][1])) {
-                    $response['msg_alt'] = explode('__', $contentJSON[0][0][1])[1];
+                if ($debug === false) {
+                    $response['msg'] = explode('__', $contentJSON[0][0][0])[1];
+                    if (isset($contentJSON[0][0][1])) {
+                        $response['msg_alt'] = explode('__', $contentJSON[0][0][1])[1];
+                    }
+                } else {
+                    $response['msg'] = $contentJSON[0][0];
                 }
             }
         }

@@ -5,8 +5,14 @@ $tpl = erLhcoreClassTemplate::getInstance('lhcchatbot/test.tpl.php');
 if (isset($_GET['question'])) {
     try {
         // Test bot
-        $api = erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->getApi();
-        $tpl->set('answer', $api->getAnswer($_GET['question'], (int)$_GET['context_id']));
+        $context = erLhcoreClassModelLHCChatBotContext::fetch((int)$_GET['context_id']);
+
+        if ($context instanceof erLhcoreClassModelLHCChatBotContext) {
+            $tpl->set('answer', erLhcoreClassExtensionLHCChatBotValidator::getAnswer($context->host, $_GET['question'], true));
+        } else {
+            $tpl->set('answer', 'Invalid context');
+        }
+
     } catch (Exception $e) {
         $tpl->set('answer', $e->getMessage());
     }

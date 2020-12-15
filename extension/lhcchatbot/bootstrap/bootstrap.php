@@ -129,13 +129,6 @@ class erLhcoreClassExtensionLhcchatbot
     {
         // Set subdomain manual, so we avoid calling in cronjob
         $this->instanceManual = $params['instance'];
-        
-        // Drop database
-        try {
-            $this->getApi()->dropDatabase();
-        } catch (Exception $e) {
-            erLhcoreClassLog::write(print_r($e, true));
-        }
     }
     
     /**
@@ -186,7 +179,6 @@ class erLhcoreClassExtensionLhcchatbot
             'erLhcoreClassModelLHCChatBotContext' => 'extension/lhcchatbot/classes/erlhcoreclassmodellhcchatbotcontext.php',
             'erLhcoreClassModelLHCChatBotContextLinkDepartment' => 'extension/lhcchatbot/classes/erlhcoreclassmodellhcchatbotcontextlinkdepartment.php',
             'erLhcoreClassExtensionLHCChatBotValidator' => 'extension/lhcchatbot/classes/erlhcoreclasslhcchatbotvalidator.php',
-            'LHCChatBot' => 'extension/lhcchatbot/classes/api.php',
             'erLhcoreClassElasticSearchChatbotUpdate'   => 'extension/lhcchatbot/classes/lhelasticsearchupdate.php',
             'erLhcoreClassElasticChatbotClient'         => 'extension/lhcchatbot/classes/lhelasticsearchclient.php',
             'erLhcoreClassElasticChatbotTrait'          => 'extension/lhcchatbot/classes/lhelastictrait.php',
@@ -237,15 +229,6 @@ class erLhcoreClassExtensionLhcchatbot
         }
     }
 
-    public function getApi()
-    {
-        $this->getConfig();
-        
-        $api = new LHCChatBot($this->configData['host'], $this->configData['id'], $this->configData['secret_hash']);
-        
-        return $api;
-    }
-    
     public static function getSession()
     {
         if (! isset(self::$persistentSession)) {

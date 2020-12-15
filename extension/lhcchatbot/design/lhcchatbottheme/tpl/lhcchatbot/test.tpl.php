@@ -21,9 +21,16 @@
     </div>
     
     <?php if (isset($answer)) : ?>
-        <div class="alert alert-info"><i class="material-icons">search</i><?php echo htmlspecialchars($answer['msg'])?> [<?php echo htmlspecialchars($answer['confidence'])?>]<br/>
-        <?php echo htmlspecialchars($answer['in_response'])?>
+
+        <div class="alert alert-info">
+        <?php if (is_array($answer)) : ?>
+            <i class="material-icons">search</i><br/>
+            <pre><?php echo json_encode($answer,JSON_PRETTY_PRINT);?></pre>
+        <?php else : ?>
+            <?php echo htmlspecialchars($answer)?>
+        <?php endif; ?>
         </div>
+
     <?php endif;?>
     
     <div class="btn-group" role="group" aria-label="...">
