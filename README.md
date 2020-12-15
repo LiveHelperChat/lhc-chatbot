@@ -1,5 +1,7 @@
 Automatic suggestions for an operators. AI powered by DeepPavlov.
 
+![See image](https://github.com/LiveHelperChat/lhc-chatbot/blob/master/extension/lhcchatbot/doc/quick-response.png?raw=true)
+
 ## Install instructions
 
 * First you have to install extension itself
