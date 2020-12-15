@@ -386,12 +386,19 @@ class erLhcoreClassExtensionLHCChatBotValidator
                             $answer = self::getAnswer($contextObject->host, $msgSearch);
 
                             if ($answer['found'] == true) {
-                                if ($answer['confidence'] > 0 && (!isset($suggestions[$msg->chat_id]) || !in_array($answer['msg'], $suggestions[$msg->chat_id]))) {
+                                if (!isset($suggestions[$msg->chat_id]) || !in_array($answer['msg'], $suggestions[$msg->chat_id])) {
 
                                     $answerObj = erLhcoreClassModelLHCChatBotQuestion::findOne(array('filter' => array('hash' => $answer['msg'])));
-
                                     if ($answerObj instanceof erLhcoreClassModelLHCChatBotQuestion) {
                                         $suggestions[$msg->chat_id][] = array('a' => $answerObj->answer, 'ctx' => $contextId, 'q' => $msg->msg, 'in_response' => $answer['in_response'], 'aid' => $answer['msg']);
+                                    }
+
+                                    // Return top two suggestions
+                                    if (isset($answer['msg_alt'])) {
+                                        $answerObj = erLhcoreClassModelLHCChatBotQuestion::findOne(array('filter' => array('hash' => $answer['msg_alt'])));
+                                        if ($answerObj instanceof erLhcoreClassModelLHCChatBotQuestion) {
+                                            $suggestions[$msg->chat_id][] = array('a' => $answerObj->answer, 'ctx' => $contextId, 'q' => $msg->msg, 'in_response' => $answer['in_response'], 'aid' => $answer['msg_alt']);
+                                        }
                                     }
                                 }
                             }
@@ -428,14 +435,16 @@ class erLhcoreClassExtensionLHCChatBotValidator
 
         $contentJSON = json_decode($content, true);
 
-        $response = ['found' => false, 'msg' => '', 'confidence' => 0];
+        $response = ['found' => false, 'msg' => ''];
 
         if (is_array($contentJSON)) {
-            if (isset($contentJSON[0][0][0])){
+            if (isset($contentJSON[0][0][0])) {
                 $response['found'] = true;
                 $response['in_response'] = $question;
-                $response['msg'] = explode('__',$contentJSON[0][0][0])[1];
-                $response['confidence'] = $contentJSON[0][1][$contentJSON[0][2][0]];
+                $response['msg'] = explode('__', $contentJSON[0][0][0])[1];
+                if (isset($contentJSON[0][0][1])) {
+                    $response['msg_alt'] = explode('__', $contentJSON[0][0][1])[1];
+                }
             }
         }
 
