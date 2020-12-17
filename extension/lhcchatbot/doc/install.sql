@@ -52,6 +52,7 @@ CREATE TABLE `lhc_lhcchatbot_use` (
   `user_id` int(11) NOT NULL,
   `chat_id` bigint(20) NOT NULL,
   `dep_id` int(11) NOT NULL,
+  `type` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `context_id` (`context_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;

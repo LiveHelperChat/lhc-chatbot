@@ -25,6 +25,7 @@ class erLhcoreClassModelLHCChatBotUse
             'chat_id' => $this->chat_id,
             'user_id' => $this->user_id,
             'ctime' => $this->ctime,
+            'type' => $this->type,
         );
 
         return $stateArray;
@@ -66,6 +67,7 @@ class erLhcoreClassModelLHCChatBotUse
 
     public $id = null;
     public $context_id = 0;
+    public $type = 0;
     public $question = '';
     public $answer = '';
     public $question_id = 0;

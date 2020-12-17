@@ -55,7 +55,7 @@ try {
                 $id = 0;
             }
 
-            $stmt = $db->prepare("INSERT INTO lhc_lhcchatbot_use (question,answer,context_id,question_id,dep_id,chat_id,user_id,ctime) VALUES (:question,:answer,:context_id,:question_id,:dep_id,:chat_id,:user_id,:ctime)");
+            $stmt = $db->prepare("INSERT INTO `lhc_lhcchatbot_use` (`question`,`answer`,`context_id`,`question_id`,`dep_id`,`chat_id`,`user_id`,`ctime`,`type`) VALUES (:question,:answer,:context_id,:question_id,:dep_id,:chat_id,:user_id,:ctime,:type)");
             $stmt->bindValue(':question', $question);
             $stmt->bindValue(':answer', $answer);
             $stmt->bindValue(':context_id', $context_id);
@@ -64,6 +64,7 @@ try {
             $stmt->bindValue(':chat_id', $chat->id);
             $stmt->bindValue(':user_id', $currentUser->getUserID());
             $stmt->bindValue(':ctime', time());
+            $stmt->bindValue(':type', isset($_POST['type']) && $_POST['type'] == 1 ? 1 : 0);
             $stmt->execute();
 
         } else {
