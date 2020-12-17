@@ -3,7 +3,7 @@ CREATE TABLE `lhc_lhcchatbot_question` (
   `question` text NOT NULL,
   `answer` text NOT NULL,
   `context_id` int(11) NOT NULL,
-  `chat_id` bigint(20) NOT NULL,
+  `chat_id` bigint(20) NOT NULL DEFAULT '0',
   `was_used` int(11) NOT NULL,
   `hash` varchar(40) NOT NULL,
   `confirmed` int(11) NOT NULL DEFAULT '1',
@@ -38,8 +38,8 @@ CREATE TABLE `lhc_lhcchatbot_invalid` (
 `answer` text NOT NULL,
 `counter` int(11) NOT NULL,
 `hash` varchar(40) NOT NULL,
-`chat_id` bigint(20) NOT NULL,
-`context_id` bigint(20) NOT NULL,
+`chat_id` bigint(20) NOT NULL DEFAULT '0',
+`context_id` bigint(20) NOT NULL DEFAULT '0',
 PRIMARY KEY (`id`), KEY `hash` (`hash`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `lhc_lhcchatbot_use` (
