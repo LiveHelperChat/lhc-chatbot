@@ -96,6 +96,11 @@ var lhcChatBot = {
         }, function (data) {
 
         });
+
+        inst.attr('disabled','disabled').prepend('<span class="material-icons lhc-spin">autorenew</span>');
+        setTimeout(function(){
+            inst.removeAttr('disabled').find('.lhc-spin').remove();
+        },1000);
     },
 
     addCombination: function (inst, chat_id, event) {
