@@ -85,7 +85,8 @@ If you are planning to update constantly auto completion data it makes sense to 
 /usr/bin/php cron.php -s site_admin -e lhcchatbot -c cron/auto_complete
 ```
 
-After above command is execute you will see in `extension/lhcchatbot/train` folder `autocomplete_hash_<dep_id>.json` and `autocomplete_text_<dep_id>.json` files.
+After above command is execute you will see in `extension/lhcchatbot/train` folder `autocomplete_hash_<dep_id>.json` and `autocomplete_text_<dep_id>.json` files. If you wish you can always adjust file manually or just modify script itself.
+
 
 Now run in shell. It will feed auto complete data to MeiliSearch. It will print also `Public Key`
 
@@ -109,6 +110,8 @@ location /msearch/ {
 
 * Start typing your regular sentences, and you will see possible sentence endings at the bottom.
 * To replace all what you typed you can use `#<your search query>` also
+
+![See image](https://github.com/LiveHelperChat/lhc-chatbot/blob/master/extension/lhcchatbot/doc/auto-complete.png?raw=true)
 
 ## DeepPavlov setup
 
