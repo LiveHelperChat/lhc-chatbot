@@ -55,6 +55,61 @@ After that you should see csv file (`train_1.csv` most likely if you have one co
 
 Copy those files to `deeppavlov/Dockerfiles/deep/train` folder of cloned repository.
 
+## MeiliSearch setup
+
+MeiliSearch allows instant auto completion suggestions based on chats history and canned messages.
+
+Navigate to `deeppavlov` and copy `.env.default` to `.env`
+
+Edit `.env` file `LHC_MEILI_SEARCH_MASTER_KEY` value and set your own master key value.
+
+### Start a docker service
+
+Start one time
+
+```shell
+docker-compose -f docker-meilisearch-compose.yml up
+```
+
+Start as a service
+
+```shell
+docker-compose -f docker-meilisearch-compose.yml up -d
+```
+
+### Export data for auto completion
+
+If you are planning to update constantly auto completion data it makes sense to run this command once a week.
+
+```shell
+/usr/bin/php cron.php -s site_admin -e lhcchatbot -c cron/auto_complete
+```
+
+After above command is execute you will see in `extension/lhcchatbot/train` folder `autocomplete_hash_<dep_id>.json` and `autocomplete_text_<dep_id>.json` files.
+
+Now run in shell. It will feed auto complete data to MeiliSearch. It will print also `Public Key`
+
+```shell
+cd extension/lhcchatbot && ./doc/update_autocomplete.sh "http://localhost:7700/" <master_key>
+```
+
+### Configure Live Helper chat
+
+In `Reply Predictions` module you will find menu item called `Auto complete` and set `Public key`. Public key you will get from above command. Auto completion has to be enabled per department. Edit department and enable it in `Reply Predictions` tab.
+
+### Nginx configuration example
+
+```apacheconf
+location /msearch/ {
+    proxy_pass  http://127.0.0.1:7700/;
+}
+```
+
+### How to use?
+
+* Start typing your regular sentences, and you will see possible sentence endings at the bottom.
+* To replace all what you typed you can use `#<your search query>` also
+
 ## DeepPavlov setup
 
 Navigate to `deeppavlov` and copy `.env.default` to `.env`
@@ -67,16 +122,16 @@ There is a two ways DeepPavlov can work. Wither with spellchecker or without.
 
 ```shell
 # Optional to build an image
-# docker-compose -f docker-compose.yml build
+# docker-compose -f docker-do-compose.yml build
 
 # Train and run image
-docker-compose -f docker-compose.yml up
+docker-compose -f docker-dp-compose.yml up
 ```
 
 Run as service once it's build.
 
 ```shell
-docker-compose -f docker-compose.yml up -d
+docker-compose -f docker-dp-compose.yml up -d
 ```
 
 To test does it works you can use CURL command

@@ -13,5 +13,7 @@
     			'list_function_params'  => array_merge(array('limit' => '1000000')),
     	)); ?>
      </div>
-     
+
+     <label><input type="checkbox" name="enable_autocompleter" <?php isset($departament->bot_configuration_array['lhcacmplt']) && $departament->bot_configuration_array['lhcacmplt'] == 1 ? print 'checked="checked"' : '' ?> value="1"> <?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Enable auto completer')?></label>
+
 </div>

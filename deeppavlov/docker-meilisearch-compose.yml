@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  meilisearch-lhcchatbot:
+    image: getmeili/meilisearch
+    ports:
+      - "7700:7700"
+    environment:
+      MEILI_MASTER_KEY: ${LHC_MEILI_SEARCH_MASTER_KEY}
+    volumes:
+      - ./data.ms:/data.ms
+    networks:
+      - code-network
+    restart: always
+networks:
+  code-network:
+    driver: bridge

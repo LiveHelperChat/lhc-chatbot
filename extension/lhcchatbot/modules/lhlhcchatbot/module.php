@@ -107,9 +107,16 @@ $ViewList['editreport'] = array(
     'functions' => array('manage_invalid')
 );
 
+$ViewList['autocompleter'] = array(
+    'params' => array('id'),
+    'uparams' => array(),
+    'functions' => array('manage_completer')
+);
+
 $FunctionList['use'] = array('explain' => 'Allow to list questions and answers');
 $FunctionList['use_admin'] = array('explain' => 'Allow to manager bot');
 $FunctionList['use_test'] = array('explain' => 'Allow operator to use test environment');
 $FunctionList['manage_context'] = array('explain' => 'Allow operator to manage context');
 $FunctionList['manage_invalid'] = array('explain' => 'Allow operator to manage invalid suggestions list');
 $FunctionList['live_teach'] = array('explain' => 'Suggested combination by operator will go live instantly');
+$FunctionList['manage_completer'] = array('explain' => 'Allow operator to change auto completer settings');

@@ -45,6 +45,16 @@ class erLhcoreClassExtensionLhcchatbot
             'departmentModified'
         ));
 
+        $dispatcher->listen('chat.loadinitialdata', array(
+            $this,
+            'loadInitialData'
+        ));
+
+        $dispatcher->listen('chat.loadmainchatdata', array(
+            $this,
+            'loadMainChatData'
+        ));
+
         // Elastic Search store statistic regarding was bot used in particular chat
         if ($this->settings['elastic_enabled'] == true) {
 
@@ -71,6 +81,42 @@ class erLhcoreClassExtensionLhcchatbot
         erLhcoreClassUpdate::doTablesUpdate(json_decode(file_get_contents('extension/lhcchatbot/doc/structure.json'), true));
     }
 
+    public function loadInitialData($params) {
+        $dataValue= erLhcoreClassModelChatConfig::fetch('lhcchatbot_options')->data_value;
+        if (isset($dataValue['enabled']) && $dataValue['enabled'] == true) {
+            $params['lists']['lhcchatbot'] = array(
+                'enabled' => true,
+                'mHost' => $dataValue['msearch_host'],
+                'pKey' => $dataValue['public_key'],
+            );
+        } else {
+           $params['lists']['lhcchatbot'] = array('enabled' => false);
+        }
+    }
+
+    public function loadMainChatData($params) {
+        $dep = $params['chat']->department;
+        if ($dep instanceof erLhcoreClassModelDepartament) {
+            $botConfiguration = $dep->bot_configuration_array;
+            if (isset($botConfiguration['lhcacmplt']) && $botConfiguration['lhcacmplt'] == 1) {
+                $params['data_ext']['lhcchatbot'] = array(
+                    'placeholders' => array(
+                        '{year}' => date('Y'),
+                        '{month}' => date('F'),
+                        '{operator}' => $params['chat']->plain_user_name,
+                        '{nick}' => $params['chat']->nick,
+                        '{firstname}' => $params['chat']->nick,
+                    ),
+                    'index' => 'dep_' . $params['chat']->dep_id
+                );
+
+                // Allow other extensions extend this part
+                // E.g perhaps they have specific placeholders so they can use this function to have their own
+                erLhcoreClassChatEventDispatcher::getInstance()->dispatch('lhcchatbot.autocomplete', array('params' => & $params));
+            }
+        }
+    }
+
     /**
      * Executed then department is modified
      * 
@@ -86,7 +132,22 @@ class erLhcoreClassExtensionLhcchatbot
         $stmt->bindValue(':department_id',$department->id,PDO::PARAM_INT);
         $stmt->execute();
         $contextIds = $stmt->fetchAll(PDO::FETCH_COLUMN);
-        
+
+        $botConfiguration = $department->bot_configuration_array;
+
+        // save auto completer settings
+        if (isset($_POST['enable_autocompleter'])) {
+            $botConfiguration['lhcacmplt'] = 1;
+            $department->bot_configuration_array = $botConfiguration;
+            $department->bot_configuration = json_encode($botConfiguration);
+            $department->updateThis(array('update' => array('bot_configuration')));
+        } elseif (isset($botConfiguration['lhcacmplt'])) {
+            unset($botConfiguration['lhcacmplt']);
+            $department->bot_configuration_array = $botConfiguration;
+            $department->bot_configuration = json_encode($botConfiguration);
+            $department->updateThis(array('update' => array('bot_configuration')));
+        }
+
         $newIds = isset($_POST['context_id']) && is_array($_POST['context_id']) ? $_POST['context_id'] : array();
                
         $newContext = array_diff($newIds, $contextIds);
