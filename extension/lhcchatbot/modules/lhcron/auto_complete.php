@@ -17,6 +17,17 @@ foreach ($list as $item) {
     }
 }
 
+$trainings= ezcBaseFile::findRecursive( 'extension/lhcchatbot/train',array( '@autocomplete_.*\.json@' ) );
+
+foreach ($trainings as $training)
+{
+    if (file_exists($training)) {
+        echo "Removing - ",$training,"\n";
+        @unlink($training);
+    }
+}
+
+// Names database to try detect names in messages
 $name = explode("\n",file_get_contents('extension/lhcchatbot/doc/first_names.all.txt'));
 
 foreach (erLhcoreClassModelDepartament::getList(array('filter' => array('archive' => 0))) as $dep) {
@@ -25,6 +36,12 @@ foreach (erLhcoreClassModelDepartament::getList(array('filter' => array('archive
 
     // type - 0 - canned messages
     $indexCounter = 1;
+
+    // Default placeholders
+    $messagesIndex[md5('{nick}')] = array('id' => $indexCounter++, 'title' => 'nick','question' => '{nick}', 'type' => 0);
+    $messagesIndex[md5('{operator}')] = array('id' => $indexCounter++, 'title' => 'operator', 'question' => '{operator}','type' => 0);
+    $messagesIndex[md5('{year}')] = array('id' => $indexCounter++, 'title' => 'year', 'question' => '{year}','type' => 0);
+    $messagesIndex[md5('{month}')] = array('id' => $indexCounter++, 'title' => 'month', 'question' => '{month}','type' => 0);
 
     $list = erLhcoreClassModelCannedMsg::getList(array('limit' => false, 'filter_custom' => array('(department_id = ' . $dep->id . ' OR department_id = 0) AND user_id = 0')));
     foreach ($list as $item) {

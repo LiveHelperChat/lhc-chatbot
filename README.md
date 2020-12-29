@@ -87,7 +87,6 @@ If you are planning to update constantly auto completion data it makes sense to 
 
 After above command is execute you will see in `extension/lhcchatbot/train` folder `autocomplete_hash_<dep_id>.json` and `autocomplete_text_<dep_id>.json` files. If you wish you can always adjust file manually or just modify script itself.
 
-
 Now run in shell. It will feed auto complete data to MeiliSearch. It will print also `Public Key`
 
 ```shell
@@ -97,6 +96,8 @@ cd extension/lhcchatbot && ./doc/update_autocomplete.sh "http://localhost:7700/"
 ### Configure Live Helper chat
 
 In `Reply Predictions` module you will find menu item called `Auto complete` and set `Public key`. Public key you will get from above command. Auto completion has to be enabled per department. Edit department and enable it in `Reply Predictions` tab.
+
+In messages you can also use placeholders `{nick}`, `{operator}`, `{year}`, `{month}` just start typing any of these keywords.
 
 ### Nginx configuration example
 
