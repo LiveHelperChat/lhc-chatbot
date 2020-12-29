@@ -109,7 +109,7 @@ location /msearch/ {
 
 * Start typing your regular sentences, and you will see possible sentence endings at the bottom.
 * To replace all what you typed you can use `#<your search query>` also
-* In messages you can also use placeholders `{nick}`, `{operator}`, `{year}`, `{month}` just start typing any of these keywords.
+* In messages you can also use placeholders `{nick}`, `{operator}`, `{year}`, `{month}`, `{demail}`, `{email}` just start typing any of these keywords.
   
 ![See image](https://github.com/LiveHelperChat/lhc-chatbot/blob/master/extension/lhcchatbot/doc/auto-complete.png?raw=true)
 

@@ -106,6 +106,8 @@ class erLhcoreClassExtensionLhcchatbot
                         '{operator}' => $params['chat']->plain_user_name,
                         '{nick}' => $params['chat']->nick,
                         '{firstname}' => $params['chat']->nick,
+                        '{email}' => $params['chat']->email,
+                        '{demail}' => $dep->email,
                     ),
                     'index' => 'dep_' . $params['chat']->dep_id
                 );

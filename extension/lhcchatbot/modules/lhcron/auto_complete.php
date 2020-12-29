@@ -42,6 +42,8 @@ foreach (erLhcoreClassModelDepartament::getList(array('filter' => array('archive
     $messagesIndex[md5('{operator}')] = array('id' => $indexCounter++, 'title' => 'operator', 'question' => '{operator}','type' => 0);
     $messagesIndex[md5('{year}')] = array('id' => $indexCounter++, 'title' => 'year', 'question' => '{year}','type' => 0);
     $messagesIndex[md5('{month}')] = array('id' => $indexCounter++, 'title' => 'month', 'question' => '{month}','type' => 0);
+    $messagesIndex[md5('{email}')] = array('id' => $indexCounter++, 'title' => 'email', 'question' => '{email}','type' => 0);
+    $messagesIndex[md5('{demail}')] = array('id' => $indexCounter++, 'title' => 'department email', 'question' => '{demail}','type' => 0);
 
     $list = erLhcoreClassModelCannedMsg::getList(array('limit' => false, 'filter_custom' => array('(department_id = ' . $dep->id . ' OR department_id = 0) AND user_id = 0')));
     foreach ($list as $item) {
