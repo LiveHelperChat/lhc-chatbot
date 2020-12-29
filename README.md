@@ -97,8 +97,6 @@ cd extension/lhcchatbot && ./doc/update_autocomplete.sh "http://localhost:7700/"
 
 In `Reply Predictions` module you will find menu item called `Auto complete` and set `Public key`. Public key you will get from above command. Auto completion has to be enabled per department. Edit department and enable it in `Reply Predictions` tab.
 
-In messages you can also use placeholders `{nick}`, `{operator}`, `{year}`, `{month}` just start typing any of these keywords.
-
 ### Nginx configuration example
 
 ```apacheconf
@@ -111,7 +109,8 @@ location /msearch/ {
 
 * Start typing your regular sentences, and you will see possible sentence endings at the bottom.
 * To replace all what you typed you can use `#<your search query>` also
-
+* In messages you can also use placeholders `{nick}`, `{operator}`, `{year}`, `{month}` just start typing any of these keywords.
+  
 ![See image](https://github.com/LiveHelperChat/lhc-chatbot/blob/master/extension/lhcchatbot/doc/auto-complete.png?raw=true)
 
 ## DeepPavlov setup
