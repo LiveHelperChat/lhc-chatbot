@@ -17,12 +17,21 @@ var lhcChatBot = {
 
     replaceValue : function(elm, chat_id) {
         var valueNext = elm.value.replace('#' + lhcChatBot.lastQuery,'' + elm.chatterBotComplete);
+        var valueOrig = elm.chatterBotComplete;
         Object.keys(lhcChatBot.chatData[chat_id]['placeholders']).forEach(function(key) {
             valueNext = valueNext.replace(key,lhcChatBot.chatData[chat_id]['placeholders'][key])
         });
         elm.value = valueNext;
         elm.chatterBotComplete = null;
         $('#suggest-completer-'+chat_id).text('...');
+
+        $.postJSON(WWW_DIR_JAVASCRIPT + 'lhcchatbot/suggestused/' + chat_id, {
+            'answer': valueOrig,
+            'question': lhcChatBot.lastQuery,
+            'context_id': 0,
+            'aid': '',
+            'type': 3
+        });
     },
 
     appendCompletion : function(elm, chat_id, params) {
@@ -49,6 +58,7 @@ var lhcChatBot = {
         var max = Math.min(...positions);
 
         var sentenes = elm.chatterBotComplete;
+        var senteceOriginal = sentenes;
 
         if (typeof params['full'] === 'undefined' && max > 0) {
             sentenes = elm.chatterBotComplete.substring(0,max + 1);
@@ -66,6 +76,15 @@ var lhcChatBot = {
         });
 
         elm.value = valueNext;
+
+        $.postJSON(WWW_DIR_JAVASCRIPT + 'lhcchatbot/suggestused/' + chat_id, {
+            'answer': lhcChatBot.lastQuery + senteceOriginal,
+            'question': lhcChatBot.lastQuery,
+            'context_id': 0,
+            'aid': '',
+            'type': 2
+        });
+
     },
 
     addListener : function (evt) {

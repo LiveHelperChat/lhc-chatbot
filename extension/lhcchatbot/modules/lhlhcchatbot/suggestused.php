@@ -1,6 +1,7 @@
 <?php
 
 try {
+    session_write_close();
 
     $chat =  erLhcoreClassModelChat::fetch($Params['user_parameters']['id']);
 
@@ -40,19 +41,24 @@ try {
         }
 
         if (is_numeric($context_id)) {
-            $stmt = $db->prepare("SELECT id FROM lhc_lhcchatbot_question WHERE context_id = :context_id AND hash = :hash");
-            $stmt->bindValue(':hash', $aid, PDO::PARAM_STR);
-            $stmt->bindValue(':context_id', $context_id, PDO::PARAM_STR);
-            $stmt->execute();
 
-            $id = $stmt->fetchColumn();
+            $id = 0;
 
-            if (is_numeric($id)){
-                $stmt = $db->prepare("UPDATE lhc_lhcchatbot_question SET was_used = was_used + 1 WHERE id = :id");
-                $stmt->bindValue(':id', $id, PDO::PARAM_STR);
+            if ($context_id > 0) {
+                $stmt = $db->prepare("SELECT id FROM lhc_lhcchatbot_question WHERE context_id = :context_id AND hash = :hash");
+                $stmt->bindValue(':hash', $aid, PDO::PARAM_STR);
+                $stmt->bindValue(':context_id', $context_id, PDO::PARAM_STR);
                 $stmt->execute();
-            } else {
-                $id = 0;
+
+                $id = $stmt->fetchColumn();
+
+                if (is_numeric($id)){
+                    $stmt = $db->prepare("UPDATE lhc_lhcchatbot_question SET was_used = was_used + 1 WHERE id = :id");
+                    $stmt->bindValue(':id', $id, PDO::PARAM_STR);
+                    $stmt->execute();
+                } else {
+                    $id = 0;
+                }
             }
 
             $stmt = $db->prepare("INSERT INTO `lhc_lhcchatbot_use` (`question`,`answer`,`context_id`,`question_id`,`dep_id`,`chat_id`,`user_id`,`ctime`,`type`) VALUES (:question,:answer,:context_id,:question_id,:dep_id,:chat_id,:user_id,:ctime,:type)");
@@ -64,7 +70,7 @@ try {
             $stmt->bindValue(':chat_id', $chat->id);
             $stmt->bindValue(':user_id', $currentUser->getUserID());
             $stmt->bindValue(':ctime', time());
-            $stmt->bindValue(':type', isset($_POST['type']) && $_POST['type'] == 1 ? 1 : 0);
+            $stmt->bindValue(':type', isset($_POST['type']) && in_array((int)$_POST['type'],array(0,1,2,3)) ? (int)$_POST['type'] : 0);
             $stmt->execute();
 
         } else {
