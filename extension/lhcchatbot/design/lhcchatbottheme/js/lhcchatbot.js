@@ -252,6 +252,13 @@ var lhcChatBot = {
 
                 $.each(data.sg, function (chat_id, item) {
 
+                    var messageArea = $('#CSChatMessage-'+chat_id);
+
+                    // Perhaps chat was closed while waiting for resposne
+                    if (messageArea.length == 0) {
+                        return;
+                    }
+
                     var containerSuggest = $('#suggest-container-' + chat_id);
 
                     if ($('#suggest-container-' + chat_id).length == 0) {
@@ -264,7 +271,7 @@ var lhcChatBot = {
 
                     $.each(item, function (i, itemSuggest) {
                         if ($('#' + chat_id + '-' + itemSuggest.aid).length == 0) {
-                            $('#CSChatMessage-'+chat_id).attr('placeholder',itemSuggest.a+' | →')[0].chatterBot = itemSuggest;
+                            messageArea.attr('placeholder',itemSuggest.a+' | →')[0].chatterBot = itemSuggest;
                             var li = jQuery('<li class="list-inline-item pl-1 pb-1 suggestion" ><button type="button" class="btn btn-sm btn-light" title="Prefill message field" data-aid="' + itemSuggest.aid + '" data-ctx="' + itemSuggest.ctx + '" data-title="' + jQuery('<p/>').text(itemSuggest.a).html() + '" onclick="return lhcChatBot.prefill(' + chat_id + ',$(this))"><i class="material-icons mr-0 fs11">edit</i></button> <button id="' + chat_id + '-' + itemSuggest.aid + '" data-aid="' + itemSuggest.aid + '" onclick="lhcChatBot.sendSuggest(' + chat_id + ',$(this))" type="button" data-ctx="' + itemSuggest.ctx + '" data-aid="' + itemSuggest.aid + '" class="btn btn-sm btn-light border border-white btn-send-success text-left">' + jQuery('<p/>').text(itemSuggest.a).html() + '</button> <button type="button" data-aid="' + itemSuggest.aid + '" data-ctx="' + itemSuggest.ctx + '" class="btn btn-xs btn-danger" title="' + jQuery('<p/>').text(itemSuggest.in_response).html() + '" onclick="return lhcChatBot.sendNegative(' + chat_id + ',$(this))"><i class="material-icons mr-0 fs11">delete</i></button></li>').attr('title', jQuery('<p/>').text(itemSuggest.q).html());
                             var completer = $('#suggest-completer-'+chat_id);
                             if (completer.length > 0) {
