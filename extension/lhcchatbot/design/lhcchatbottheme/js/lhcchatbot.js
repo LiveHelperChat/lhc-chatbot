@@ -241,7 +241,7 @@ var lhcChatBot = {
                         $('#suggest-completer-'+chat_id).text('...');
                     }
                 });
-            }, 150);
+            }, 300);
 
         }
     },
