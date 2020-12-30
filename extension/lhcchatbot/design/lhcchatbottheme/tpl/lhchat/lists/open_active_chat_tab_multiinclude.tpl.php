@@ -1,0 +1,1 @@
+<a class="dropdown-item" href="<?php echo erLhcoreClassDesign::baseurl('user/setsetting')?>/lhcchatbot_ac/<?php echo (int)erLhcoreClassModelUserSetting::getSetting('lhcchatbot_ac',1) == 1 ? 0 : 1?>"><i class="material-icons">keyboard</i> <?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('module/cbscheduler', 'On/Off auto complete'); ?></a>

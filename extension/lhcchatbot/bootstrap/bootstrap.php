@@ -83,7 +83,7 @@ class erLhcoreClassExtensionLhcchatbot
 
     public function loadInitialData($params) {
         $dataValue= erLhcoreClassModelChatConfig::fetch('lhcchatbot_options')->data_value;
-        if (isset($dataValue['enabled']) && $dataValue['enabled'] == true) {
+        if (isset($dataValue['enabled']) && $dataValue['enabled'] == true && (int)erLhcoreClassModelUserSetting::getSetting('lhcchatbot_ac',1) == 1) {
             $params['lists']['lhcchatbot'] = array(
                 'enabled' => true,
                 'mHost' => $dataValue['msearch_host'],
