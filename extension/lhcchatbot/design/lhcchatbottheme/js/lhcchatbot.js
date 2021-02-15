@@ -151,6 +151,11 @@ var lhcChatBot = {
                     return;
                 }
 
+                // Chat data is missing already
+                if (typeof lhcChatBot.chatData[chat_id] === 'undefined') {
+                    return;
+                }
+
                 var parts = elm.value.trim().split(' ').splice(-3);
 
                 // Make sure first word does not end with .
