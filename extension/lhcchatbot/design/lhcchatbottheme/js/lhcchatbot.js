@@ -350,7 +350,9 @@ var lhcChatBot = {
 
     sendSuggest: function (chat_id, inst) {
         // Send message
-        $("#CSChatMessage-" + chat_id).val(inst.text());
+        var textarea = $("#CSChatMessage-" + chat_id);
+        textarea.val(inst.text());
+
         lhinst.addmsgadmin(chat_id);
 
         $.postJSON(WWW_DIR_JAVASCRIPT + 'lhcchatbot/suggestused/' + chat_id, {
@@ -366,6 +368,7 @@ var lhcChatBot = {
         setTimeout(function(){
             inst.removeAttr('disabled').find('.lhc-spin').remove();
         },1000);
+        textarea.focus();
     },
 
     addCombination: function (inst, chat_id, event) {
