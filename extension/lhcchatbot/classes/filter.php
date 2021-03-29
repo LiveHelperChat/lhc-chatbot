@@ -37,6 +37,30 @@ $fieldsSearch['confirmed'] = array (
     )
 );
 
+$fieldsSearch['keyword'] = array (
+    'type' => 'text',
+    'trans' => 'Question',
+    'required' => false,
+    'valid_if_filled' => false,
+    'filter_type' => 'like',
+    'filter_table_field' => 'question',
+    'validation_definition' => new ezcInputFormDefinitionElement (
+        ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
+    )
+);
+
+$fieldsSearch['keyword_answer'] = array (
+    'type' => 'text',
+    'trans' => 'Question',
+    'required' => false,
+    'valid_if_filled' => false,
+    'filter_type' => 'like',
+    'filter_table_field' => 'answer',
+    'validation_definition' => new ezcInputFormDefinitionElement (
+        ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
+    )
+);
+
 $fieldSortAttr = array (
     'field'      => 'sort',
     'default'    => 'newfirst',

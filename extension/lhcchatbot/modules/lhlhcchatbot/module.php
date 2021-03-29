@@ -42,7 +42,7 @@ $ViewList['suggestinvalid'] = array(
 
 $ViewList['list'] = array(
     'params' => array(),
-    'uparams' => array('context_id','sort','confirmed'),
+    'uparams' => array('context_id','sort','confirmed','keyword','keyword_answer'),
     'functions' => array('use_admin')
 );
 
