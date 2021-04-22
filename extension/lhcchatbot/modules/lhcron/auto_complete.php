@@ -45,6 +45,12 @@ foreach (erLhcoreClassModelDepartament::getList(array('filter' => array('archive
     $messagesIndex[md5('{email}')] = array('id' => $indexCounter++, 'title' => 'email', 'question' => '{email}','type' => 0);
     $messagesIndex[md5('{demail}')] = array('id' => $indexCounter++, 'title' => 'department email', 'question' => '{demail}','type' => 0);
 
+    erLhcoreClassChatEventDispatcher::getInstance()->dispatch('lhcchatbot.auto_complete', array(
+        'messages' => & $messagesIndex,
+        'index_counter' => & $indexCounter,
+        'dep' => $dep,
+    ));
+
     $list = erLhcoreClassModelCannedMsg::getList(array('limit' => false, 'filter_custom' => array('(department_id = ' . $dep->id . ' OR department_id = 0) AND user_id = 0')));
     foreach ($list as $item) {
 
