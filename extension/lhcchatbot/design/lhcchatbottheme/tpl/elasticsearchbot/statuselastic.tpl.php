@@ -3,7 +3,7 @@
 	<?php include(erLhcoreClassDesign::designtpl('lhkernel/alert_success.tpl.php')); ?>
 </div>
 
-<div class="row" id="elastic-status-checked">
+<div class="row" id="elastic-status-checked" ng-non-bindable>
 	<div class="col-md-12 form-group">
 		
 		<h4><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('system/updateelastic','Elastic structure check')?></h4>

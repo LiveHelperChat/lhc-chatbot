@@ -1,7 +1,7 @@
 <h1><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Test')?></h1>
 <p><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Make sure you have entered some questions')?></p>
 
-<form action="" method="get">
+<form action="" method="get" ng-non-bindable>
 
     <div class="form-group">
         <label><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('xmppservice/form','Question');?></label>

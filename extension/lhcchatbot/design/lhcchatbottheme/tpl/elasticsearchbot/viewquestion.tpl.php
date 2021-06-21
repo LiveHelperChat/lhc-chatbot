@@ -1,11 +1,11 @@
 <h1>View question</h1>
 
-<div class="form-group">
+<div class="form-group" ng-non-bindable>
     <label>View question, base on <a href="#" onclick="lhc.previewChat(<?php echo $question->chat_id?>)"><i class="material-icons">info_outline</i></a> <?php  echo $question->chat_id?> chat</label>
     <input type="text" class="form-control" name="question" value="<?php echo htmlspecialchars($question->question)?>" />
 </div>
 
-<p><b>Departments:</b> <?php echo implode(', ',$question->dep_ids_obj_names); ?></p>
+<p  ng-non-bindable><b>Departments:</b> <?php echo implode(', ',$question->dep_ids_obj_names); ?></p>
 
 <ul class="list-unstyled">
     <?php foreach ($items as $item) : ?>
@@ -22,7 +22,7 @@
     <?php include(erLhcoreClassDesign::designtpl('lhkernel/validation_error.tpl.php'));?>
 <?php endif; ?>
 
-<form action="" method="post" ng-controller="ContextQuestionFormCtrl as contextQuestion" ng-init='contextQuestion.answers = <?php echo json_encode($question->cbot_question_array)?>'>
+<form action=""  ng-non-bindable method="post" ng-controller="ContextQuestionFormCtrl as contextQuestion" ng-init='contextQuestion.answers = <?php echo json_encode($question->cbot_question_array)?>'>
 
     <div class="form-group">
         <label><input type="checkbox" name="confirmed" value="on" <?php $question->confirmed == 1 ? print 'checked="checked"' : ''; ?> > <?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Confirmed')?></label>

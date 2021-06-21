@@ -3,7 +3,7 @@
 <?php include(erLhcoreClassDesign::designtpl('elasticsearchbot/parts/filter.tpl.php')); ?>
 
 <?php if ($pages->items_total > 0): ?>
-    <table class="table">
+    <table class="table" ng-non-bindable>
         <thead>
             <tr>
                 <th width="98%"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('elasticsearch/admin','Question')?></th>

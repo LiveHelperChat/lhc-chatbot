@@ -2,7 +2,7 @@
 
 <?php if ($pages->items_total > 0) { ?>
 
-<form action="<?php echo $input->form_action,$inputAppend?>" method="post">
+<form action="<?php echo $input->form_action,$inputAppend?>" method="post" ng-non-bindable>
 
 <?php include(erLhcoreClassDesign::designtpl('lhkernel/csfr_token.tpl.php'));?>
 

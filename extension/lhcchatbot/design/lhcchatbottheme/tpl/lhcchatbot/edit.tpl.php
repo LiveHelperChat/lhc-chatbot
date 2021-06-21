@@ -4,7 +4,7 @@
 	<?php include(erLhcoreClassDesign::designtpl('lhkernel/validation_error.tpl.php'));?>
 <?php endif; ?>
 
-<form action="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/edit')?>/<?php echo $question->id?>" method="post">
+<form action="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/edit')?>/<?php echo $question->id?>" method="post" ng-non-bindable>
 
 	<?php include(erLhcoreClassDesign::designtpl('lhcchatbot/question/form.tpl.php'));?>
 	

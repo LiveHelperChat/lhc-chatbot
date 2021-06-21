@@ -1,5 +1,5 @@
 <h1><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('elasticsearch/admin','Elastic search console')?></h1>
-<form action="" method="post">
+<form action="" method="post" ng-non-bindable>
     <div class="form-group">
 		<label><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('elasticsearch/admin','Index')?></label> 
 		<input type="text" class="form-control" name="Index" value="<?php echo htmlspecialchars($index)?>">

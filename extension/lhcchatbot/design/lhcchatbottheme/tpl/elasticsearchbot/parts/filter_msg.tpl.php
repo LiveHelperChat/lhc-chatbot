@@ -4,7 +4,7 @@
 </div>
 <?php endif; ?>
 
-<form action="<?php echo erLhcoreClassDesign::baseurl('elasticsearch/list')?>/(tab)/messages#/messages" method="get" name="SearchFormRight">
+<form action="<?php echo erLhcoreClassDesign::baseurl('elasticsearch/list')?>/(tab)/messages#/messages" method="get" name="SearchFormRight" ng-non-bindable>
 	<input type="hidden" name="doSearch" value="1">
 	<div class="row">	
 		<div class="col-md-2">
