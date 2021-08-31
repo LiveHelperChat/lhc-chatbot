@@ -6,6 +6,7 @@ return array(
     'ahosting' => false,                 // Are we in automated hosting environment
     'live_teach' => true,               // Operators suggested combinations should go live instantly
     'elastic_enabled' => false,
+    'secret_hash' => 'secret_hash_to_download_intent',
     'elastic_settings' => array (
         'host' 			=> 'localhost',//'localhost',
         'port' 			=> '9200',
