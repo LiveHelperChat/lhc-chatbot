@@ -16,9 +16,20 @@ foreach (erLhcoreClassModelLHCChatBotContext::getList() as $context)
         }
 
         foreach ($question->question_items as $questionString) {
-            if (trim($questionString) != '' && trim($question->answer) != '') {
-                fputcsv($file, array(trim($questionString),$question->answer.'__'.$question->hash));
+
+            $answer = trim($question->answer);
+
+            if ($answer == '' && $question->canned_id > 0) {
+                $cannedMessage = erLhcoreClassModelCannedMsg::fetch($question->canned_id);
+                if ($cannedMessage instanceof erLhcoreClassModelCannedMsg) {
+                    $answer = $cannedMessage->msg;
+                }
             }
+
+            if (trim($questionString) != '' && $answer != '') {
+                fputcsv($file, array(trim($questionString),$answer.'__'.$question->hash));
+            }
+
         }
     }
 

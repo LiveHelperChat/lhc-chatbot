@@ -6,6 +6,7 @@ CREATE TABLE `lhc_lhcchatbot_question` (
   `chat_id` bigint(20) NOT NULL DEFAULT '0',
   `was_used` int(11) NOT NULL,
   `hash` varchar(40) NOT NULL,
+  `canned_id` int(11) NOT NULL,
   `confirmed` int(11) NOT NULL DEFAULT '1',
   `user_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
@@ -17,6 +18,7 @@ CREATE TABLE `lhc_lhcchatbot_question` (
 
 CREATE TABLE `lhc_lhcchatbot_context` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `meili` tinyint(1) NOT NULL,
   `name` varchar(50) NOT NULL,
   `host` varchar(150) NOT NULL,
   PRIMARY KEY (`id`)

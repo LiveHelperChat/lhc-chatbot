@@ -20,6 +20,7 @@ class erLhcoreClassModelLHCChatBotQuestion
             'question' => $this->question,
             'hash' => $this->hash,
             'answer' => $this->answer,
+            'canned_id' => $this->canned_id,
             'context_id' => $this->context_id,
             'was_used' => $this->was_used,
             'confirmed' => $this->confirmed,
@@ -94,6 +95,7 @@ class erLhcoreClassModelLHCChatBotQuestion
 
     public $id = null;
     public $context_id = 0;
+    public $canned_id = 0;
     public $question = '';
     public $hash = '';
     public $answer = '';

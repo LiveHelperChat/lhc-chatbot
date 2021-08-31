@@ -19,4 +19,9 @@ $def->properties['host']->columnName   = 'host';
 $def->properties['host']->propertyName = 'host';
 $def->properties['host']->propertyType = ezcPersistentObjectProperty::PHP_TYPE_STRING;
 
+$def->properties['meili'] = new ezcPersistentObjectProperty();
+$def->properties['meili']->columnName   = 'meili';
+$def->properties['meili']->propertyName = 'meili';
+$def->properties['meili']->propertyType = ezcPersistentObjectProperty::PHP_TYPE_INT;
+
 return $def;

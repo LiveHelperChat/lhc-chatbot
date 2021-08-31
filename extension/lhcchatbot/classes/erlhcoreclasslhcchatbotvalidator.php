@@ -127,6 +127,9 @@ class erLhcoreClassExtensionLHCChatBotValidator
             ),
             'context_id' => new ezcInputFormDefinitionElement(
                 ezcInputFormDefinitionElement::OPTIONAL, 'int', array('min_range' => 1)
+            ),
+            'canned_id' => new ezcInputFormDefinitionElement(
+                ezcInputFormDefinitionElement::OPTIONAL, 'int', array('min_range' => 1)
             )
         );
 
@@ -141,10 +144,20 @@ class erLhcoreClassExtensionLHCChatBotValidator
             $Errors[] =  erTranslationClassLhTranslation::getInstance()->getTranslation('xmppservice/operatorvalidator','Please enter question!');
         }
 
-        if ( $form->hasValidData( 'answer' ) && $form->answer != '') {
+        if ( $form->hasValidData( 'canned_id' ) ) {
+            $question->canned_id = $form->canned_id;
+        } else {
+            $question->canned_id = 0;
+        }
+
+        if ($form->hasValidData( 'answer' ) && $form->answer != '') {
             $question->answer = $form->answer;
         } else {
-            $Errors[] =  erTranslationClassLhTranslation::getInstance()->getTranslation('xmppservice/operatorvalidator','Please enter answer!');
+            $question->answer = '';
+
+            if ($question->canned_id == 0) {
+                $Errors[] =  erTranslationClassLhTranslation::getInstance()->getTranslation('xmppservice/operatorvalidator','Please enter answer!');
+            }
         }
 
         if ( $form->hasValidData( 'context_id' ) ) {
@@ -152,6 +165,8 @@ class erLhcoreClassExtensionLHCChatBotValidator
         } else {
             $Errors[] =  erTranslationClassLhTranslation::getInstance()->getTranslation('xmppservice/operatorvalidator','Please choose context!');
         }
+
+
 
         if ( $form->hasValidData( 'confirmed' ) && $form->confirmed == true ) {
             $question->confirmed = 1;
@@ -250,6 +265,9 @@ class erLhcoreClassExtensionLHCChatBotValidator
             ),
             'host' => new ezcInputFormDefinitionElement(
                 ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
+            ),
+            'meili' => new ezcInputFormDefinitionElement(
+                ezcInputFormDefinitionElement::OPTIONAL, 'boolean'
             )
         );
 
@@ -266,6 +284,12 @@ class erLhcoreClassExtensionLHCChatBotValidator
             $context->host = $form->host;
         } else {
             $Errors[] =  erTranslationClassLhTranslation::getInstance()->getTranslation('xmppservice/operatorvalidator','Please enter host!');
+        }
+
+        if ( $form->hasValidData( 'meili' ) && $form->meili == true ) {
+            $context->meili = 1;
+        } else {
+            $context->meili = 0;
         }
         
         return $Errors;
