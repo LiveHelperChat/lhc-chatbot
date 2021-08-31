@@ -73,5 +73,14 @@ CREATE TABLE `lhc_lhcchatbot_rasa_intent` (
     KEY      `context_id` (`context_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
-CREATE TABLE `lhc_lhcchatbot_rasa_example` ( `id` int(11) unsigned NOT NULL AUTO_INCREMENT, `active` tinyint(1) unsigned NOT NULL DEFAULT '0', `verified` tinyint(1) unsigned NOT NULL DEFAULT '0', `intent_id` bigint(20) unsigned NOT NULL DEFAULT '0',`hash` varchar(40) NOT NULL, `example` text NOT NULL, PRIMARY KEY (`id`),  KEY `intent_id` (`intent_id`), KEY `active` (`active`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `lhc_lhcchatbot_rasa_example` (
+    `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+    `active` tinyint(1) unsigned NOT NULL DEFAULT '0',
+    `verified` tinyint(1) unsigned NOT NULL DEFAULT '0',
+    `intent_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+    `hash` varchar(40) NOT NULL,
+    `example` text NOT NULL,
+    PRIMARY KEY (`id`),
+    KEY `hash` (`hash`),
+    KEY `intent_id` (`intent_id`),
+    KEY `active` (`active`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -36,7 +36,10 @@ $Result['path'] = array(
         'url' =>erLhcoreClassDesign::baseurl('lhcchatbot/index'),
         'title' => erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Reply Predictions')
     ),
-    array('url' => erLhcoreClassDesign::baseurl('rasaaitraining/list'),'title' => erTranslationClassLhTranslation::getInstance()->getTranslation('department/departments','Rasa AI Intent')),
+    array(
+        'url' => erLhcoreClassDesign::baseurl('rasaaitraining/listexample'),
+        'title' => erTranslationClassLhTranslation::getInstance()->getTranslation('department/departments','Rasa AI Intent Training')
+    ),
     array('title' => erTranslationClassLhTranslation::getInstance()->getTranslation('department/new','New')),
 )
 

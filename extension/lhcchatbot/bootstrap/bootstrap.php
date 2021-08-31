@@ -55,6 +55,11 @@ class erLhcoreClassExtensionLhcchatbot
             'loadMainChatData'
         ));
 
+        $dispatcher->listen('chat.genericbot_chat_command_dispatch_event', array(
+            $this,
+            'outOfScope'
+        ));
+
         // Elastic Search store statistic regarding was bot used in particular chat
         if ($this->settings['elastic_enabled'] == true) {
 
@@ -79,6 +84,22 @@ class erLhcoreClassExtensionLhcchatbot
     public function checkStructure()
     {
         erLhcoreClassUpdate::doTablesUpdate(json_decode(file_get_contents('extension/lhcchatbot/doc/structure.json'), true));
+    }
+
+    // Listen for out of scope avents and log them for future training
+    public function outOfScope($params)
+    {
+        if ($params['action']['content']['payload'] == 'lhcchatbot.out_of_scope' && trim($params['payload_translated']) != '') {
+            
+            $example = new erLhcoreClassModelLHCChatBotRasaExample();
+            $example->example = trim($params['payload_translated']);
+            $example->hash = md5($example->example);
+
+            // save only if we don't have it
+            if (erLhcoreClassModelLHCChatBotRasaExample::getCount(['filter' => ['hash' => $example->hash]]) == 0) {
+                $example->saveThis();
+            }
+        }
     }
 
     public function loadInitialData($params) {

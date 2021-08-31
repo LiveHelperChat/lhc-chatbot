@@ -60,7 +60,7 @@ class erLhcoreClassExtensionLHCChatBotValidator
         if ( $form->hasValidData( 'intent_id' ) ) {
             $item->intent_id = $form->intent_id;
         } else {
-            $Errors[] =  erTranslationClassLhTranslation::getInstance()->getTranslation('xmppservice/operatorvalidator','Please choose an intent!');
+            $item->intent_id = 0;
         }
 
         return $Errors;

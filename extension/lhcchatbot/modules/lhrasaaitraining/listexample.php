@@ -3,10 +3,10 @@
 $tpl = erLhcoreClassTemplate::getInstance( 'lhrasaaitraining/listexample.tpl.php');
 
 if (isset($_GET['doSearch'])) {
-    $filterParams = erLhcoreClassSearchHandler::getParams(array('customfilterfile' => 'extension/lhcchatbot/classes/filter/rasa_intent.php','format_filter' => true, 'use_override' => true, 'uparams' => $Params['user_parameters_unordered']));
+    $filterParams = erLhcoreClassSearchHandler::getParams(array('customfilterfile' => 'extension/lhcchatbot/classes/filter/rasa_example.php','format_filter' => true, 'use_override' => true, 'uparams' => $Params['user_parameters_unordered']));
     $filterParams['is_search'] = true;
 } else {
-    $filterParams = erLhcoreClassSearchHandler::getParams(array('customfilterfile' => 'extension/lhcchatbot/classes/filter/rasa_intent.php','format_filter' => true, 'uparams' => $Params['user_parameters_unordered']));
+    $filterParams = erLhcoreClassSearchHandler::getParams(array('customfilterfile' => 'extension/lhcchatbot/classes/filter/rasa_example.php','format_filter' => true, 'uparams' => $Params['user_parameters_unordered']));
     $filterParams['is_search'] = false;
 }
 

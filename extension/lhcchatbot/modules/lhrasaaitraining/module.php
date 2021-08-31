@@ -11,6 +11,7 @@ $ViewList['list'] = array(
 
 $ViewList['listexample'] = array(
     'params' => array(),
+    'uparams' => array('active','verified'),
     'functions' => array('use_admin')
 );
 
