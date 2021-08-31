@@ -18,6 +18,11 @@
     <li><a href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/autocompleter')?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Auto completer')?></a></li>
     <?php endif; ?>
 
+    <?php if (erLhcoreClassUser::instance()->hasAccessTo('lhrasaaitraining','use_admin')) : ?>
+        <li><a href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/list')?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Rasa AI Intent list')?></a></li>
+        <li><a href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/listexample')?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Rasa AI Intent examples list')?></a></li>
+    <?php endif; ?>
+
     <?php if (erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->settings['elastic_enabled'] == true) : ?>
     <li><a href="<?php echo erLhcoreClassDesign::baseurl('elasticsearchbot/elastic')?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Elastic search console')?></a></li>
     <li><a href="<?php echo erLhcoreClassDesign::baseurl('elasticsearchbot/list')?>/(hidden)/0"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Proposed Questions')?></a></li>

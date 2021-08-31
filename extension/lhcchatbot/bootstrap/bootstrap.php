@@ -248,8 +248,10 @@ class erLhcoreClassExtensionLhcchatbot
             'erLhcoreClassModelESChatbotQuestion'       => 'extension/lhcchatbot/classes/erlhcoreclassmodeleschatbotquestion.php',
             'erLhcoreClassModelESChatbotAnswer'         => 'extension/lhcchatbot/classes/erlhcoreclassmodeleschatbotanswer.php',
             'erLhcoreClassElasticSearchChatboxIndex'    => 'extension/lhcchatbot/classes/lhelasticsearchindex.php',
+            'erLhcoreClassModelLHCChatBotRasaIntent'    => 'extension/lhcchatbot/classes/erlhcoreclassmodellhcchatbotrasaintent.php',
+            'erLhcoreClassModelLHCChatBotRasaExample'    => 'extension/lhcchatbot/classes/erlhcoreclassmodellhcchatbotrasaexample.php',
         );
-    
+
         if (key_exists($className, $classesAutoload)) {
             include_once $classesAutoload[$className];
         }

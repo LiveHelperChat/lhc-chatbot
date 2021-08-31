@@ -10,12 +10,14 @@
     <thead>
         <tr>   
             <th><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Name');?></th>
+            <th><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Rasa training');?></th>
             <th width="1%"></th>
         </tr>
     </thead>
     <?php foreach ($items as $item) : ?>
     <tr>
-        <td><?php echo $item->name?></td>
+        <td><?php echo htmlspecialchars($item->name)?></td>
+        <td><a target="_blank" href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/download')?>/<?php echo $item->id?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Download');?></a> </td>
         <td nowrap>
           <div class="btn-group" role="group" aria-label="..." style="width:60px;">
             <a class="btn btn-secondary btn-xs" href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/editcontext')?>/<?php echo $item->id?>" ><i class="material-icons mr-0">&#xE254;</i></a>

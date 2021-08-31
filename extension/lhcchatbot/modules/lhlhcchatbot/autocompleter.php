@@ -57,7 +57,7 @@ $Result['content'] = $tpl->fetch();
 
 $Result['path'] = array(
     array(
-        'url' => erLhcoreClassDesign::baseurl('lhcinsult/index'),
+        'url' => erLhcoreClassDesign::baseurl('lhcchatbot/index'),
         'title' => erTranslationClassLhTranslation::getInstance()->getTranslation('module/lhcinsult', 'Reply Predictions')
     ),
     array(

@@ -19,6 +19,100 @@ class erLhcoreClassExtensionLHCChatBotValidator
         return $contextId;
     }
 
+    public static function validateExample(erLhcoreClassModelLHCChatBotRasaExample & $item)
+    {
+        $definition = array(
+            'intent_id' => new ezcInputFormDefinitionElement(
+                ezcInputFormDefinitionElement::OPTIONAL, 'int', array('min_range' => 1)
+            ),
+            'example' => new ezcInputFormDefinitionElement(
+                ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
+            ),
+            'verified' => new ezcInputFormDefinitionElement(
+                ezcInputFormDefinitionElement::OPTIONAL, 'boolean'
+            ),
+            'active' => new ezcInputFormDefinitionElement(
+                ezcInputFormDefinitionElement::OPTIONAL, 'boolean'
+            )
+        );
+
+        $form = new ezcInputForm( INPUT_POST, $definition );
+        $Errors = array();
+
+        if ( $form->hasValidData( 'example' ) && $form->example != '' ) {
+            $item->example = $form->example;
+        } else {
+            $Errors[] =  erTranslationClassLhTranslation::getInstance()->getTranslation('xmppservice/operatorvalidator','Please enter an example!');
+        }
+
+        if ( $form->hasValidData( 'active' ) && $form->active == true ) {
+            $item->active = 1;
+        } else {
+            $item->active = 0;
+        }
+
+        if ( $form->hasValidData( 'verified' ) && $form->verified == true ) {
+            $item->verified = 1;
+        } else {
+            $item->verified = 0;
+        }
+
+        if ( $form->hasValidData( 'intent_id' ) ) {
+            $item->intent_id = $form->intent_id;
+        } else {
+            $Errors[] =  erTranslationClassLhTranslation::getInstance()->getTranslation('xmppservice/operatorvalidator','Please choose an intent!');
+        }
+
+        return $Errors;
+    }
+
+    public static function validateIntent(erLhcoreClassModelLHCChatBotRasaIntent & $item)
+    {
+        $definition = array(
+            'intent' => new ezcInputFormDefinitionElement(
+                ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
+            ),
+            'name' => new ezcInputFormDefinitionElement(
+                ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
+            ),
+            'active' => new ezcInputFormDefinitionElement(
+                ezcInputFormDefinitionElement::OPTIONAL, 'boolean'
+            ),
+            'context_id' => new ezcInputFormDefinitionElement(
+                ezcInputFormDefinitionElement::OPTIONAL, 'int', array('min_range' => 1)
+            )
+        );
+
+        $form = new ezcInputForm( INPUT_POST, $definition );
+        $Errors = array();
+
+        if ( $form->hasValidData( 'intent' ) && $form->intent != '' ) {
+            $item->intent = $form->intent;
+        } else {
+            $Errors[] =  erTranslationClassLhTranslation::getInstance()->getTranslation('xmppservice/operatorvalidator','Please enter an intent!');
+        }
+
+        if ( $form->hasValidData( 'name' ) && $form->name != '' ) {
+            $item->name = $form->name;
+        } else {
+            $Errors[] =  erTranslationClassLhTranslation::getInstance()->getTranslation('xmppservice/operatorvalidator','Please enter a name!');
+        }
+
+        if ( $form->hasValidData( 'active' ) && $form->active == true ) {
+            $item->active = 1;
+        } else {
+            $item->active = 0;
+        }
+
+        if ( $form->hasValidData( 'context_id' ) ) {
+            $item->context_id = $form->context_id;
+        } else {
+            $Errors[] =  erTranslationClassLhTranslation::getInstance()->getTranslation('xmppservice/operatorvalidator','Please choose context!');
+        }
+
+        return $Errors;
+    }
+
     public static function validate(erLhcoreClassModelLHCChatBotQuestion & $question)
     {
         $definition = array(

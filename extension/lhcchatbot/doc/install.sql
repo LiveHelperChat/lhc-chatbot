@@ -59,3 +59,17 @@ CREATE TABLE `lhc_lhcchatbot_use` (
 
 CREATE TABLE `lhc_lhcchatbot_index` (  `chat_id` bigint(20) unsigned NOT NULL, UNIQUE KEY `chat_id` (`chat_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 CREATE TABLE `lhc_lhcchatbot_used` (  `chat_id` bigint(20) unsigned NOT NULL, UNIQUE KEY `chat_id` (`chat_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `lhc_lhcchatbot_rasa_intent` (
+    `id`     int(11) NOT NULL AUTO_INCREMENT,
+    `name` varchar(50) NOT NULL,
+    `intent` varchar(50) NOT NULL,
+    `active` tinyint(1) NOT NULL DEFAULT '0',
+    `context_id` int(11) unsigned NOT NULL DEFAULT '0',
+    PRIMARY KEY (`id`),
+    KEY      `active` (`active`),
+    KEY      `context_id` (`context_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `lhc_lhcchatbot_rasa_example` ( `id` int(11) unsigned NOT NULL AUTO_INCREMENT, `active` tinyint(1) unsigned NOT NULL DEFAULT '0', `verified` tinyint(1) unsigned NOT NULL DEFAULT '0', `intent_id` bigint(20) unsigned NOT NULL DEFAULT '0',`hash` varchar(40) NOT NULL, `example` text NOT NULL, PRIMARY KEY (`id`),  KEY `intent_id` (`intent_id`), KEY `active` (`active`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
