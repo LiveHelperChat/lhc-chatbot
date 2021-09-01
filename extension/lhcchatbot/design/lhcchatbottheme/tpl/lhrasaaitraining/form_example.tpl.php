@@ -36,5 +36,5 @@
 
 <div class="form-group" ng-non-bindable>
     <label><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Comment');?></label>
-    <textarea rows="15" cols="" class="form-control form-control-sm" name="comment"><?php echo htmlspecialchars($item->comment)?></textarea>
+    <textarea rows="15" cols="" readonly class="form-control form-control-sm" name="comment"><?php echo htmlspecialchars($item->comment)?></textarea>
 </div>
