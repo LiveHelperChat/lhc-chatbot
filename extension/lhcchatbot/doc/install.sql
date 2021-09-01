@@ -80,6 +80,7 @@ CREATE TABLE `lhc_lhcchatbot_rasa_example` (
     `intent_id` bigint(20) unsigned NOT NULL DEFAULT '0',
     `hash` varchar(40) NOT NULL,
     `example` text NOT NULL,
+    `comment` text NOT NULL,
     PRIMARY KEY (`id`),
     KEY `hash` (`hash`),
     KEY `intent_id` (`intent_id`),

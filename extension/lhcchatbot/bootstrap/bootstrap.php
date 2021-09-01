@@ -90,10 +90,20 @@ class erLhcoreClassExtensionLhcchatbot
     public function outOfScope($params)
     {
         if ($params['action']['content']['payload'] == 'lhcchatbot.out_of_scope' && trim($params['payload_translated']) != '') {
-            
+
+            $payloadArgs = explode('|||',trim($params['payload_translated']));
+
+            $comment = '';
+            if (isset($payloadArgs[2]) && is_numeric($payloadArgs[2])) {
+                $comment = 'Intent: '.$payloadArgs[1]."\nScore: ".$payloadArgs[2];
+            } elseif (isset($payloadArgs[1])) {
+                $comment = $payloadArgs[1];
+            }
+
             $example = new erLhcoreClassModelLHCChatBotRasaExample();
-            $example->example = trim($params['payload_translated']);
+            $example->example = $payloadArgs[0];
             $example->hash = md5($example->example);
+            $example->comment = $comment;
 
             // save only if we don't have it
             if (erLhcoreClassModelLHCChatBotRasaExample::getCount(['filter' => ['hash' => $example->hash]]) == 0) {

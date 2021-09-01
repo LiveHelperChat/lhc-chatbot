@@ -8,11 +8,12 @@
 
         <?php include(erLhcoreClassDesign::designtpl('lhkernel/csfr_token.tpl.php'));?>
 
-        <table cellpadding="0" cellspacing="0" class="table" width="100%">
+        <table cellpadding="0" cellspacing="0" class="table table-sm" width="100%">
             <thead>
             <tr>
                 <th><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Intent');?></th>
                 <th><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Example');?></th>
+                <th><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Comment');?></th>
                 <th><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Active');?></th>
                 <th width="1%"></th>
             </tr>
@@ -28,7 +29,8 @@
                             <?php endif; ?>
                         </a>
                     </td>
-                    <td><?php echo  erLhcoreClassDesign::shrt($item->example, 50, '...', 30)?></td>
+                    <td><?php echo  erLhcoreClassDesign::shrt($item->example, 100, '...', 30)?></td>
+                    <td><?php echo  erLhcoreClassDesign::shrt($item->comment, 100, '...', 30)?></td>
                     <td><?php echo htmlspecialchars($item->active)?></td>
                     <td nowrap>
                         <div class="btn-group" role="group" aria-label="..." style="width:60px;">

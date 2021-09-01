@@ -20,7 +20,8 @@ class erLhcoreClassModelLHCChatBotRasaExample
             'example' => $this->example,
             'hash' => $this->hash,
             'verified' => $this->verified,
-            'active' => $this->active
+            'active' => $this->active,
+            'comment' => $this->comment
         );
 
         return $stateArray;
@@ -51,6 +52,7 @@ class erLhcoreClassModelLHCChatBotRasaExample
     public $id = null;
     public $intent_id = 0;
     public $example = '';
+    public $comment = '';
     public $hash = '';
     public $verified = 0;
     public $active = 0;
