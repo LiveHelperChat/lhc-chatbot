@@ -515,7 +515,7 @@ class erLhcoreClassExtensionLHCChatBotValidator
                             if ($answer['found'] == true) {
                                 if (!isset($suggestions[$msg->chat_id]) || !in_array($answer['msg'], $suggestions[$msg->chat_id])) {
 
-                                    if ($contextObject->meili == 1) {
+                                    if ($contextObject->meili == 1 || class_exists('erLhcoreClassInstance')) {
                                         $answerObj = erLhcoreClassModelLHCChatBotQuestion::findOne(array('filter' => array('id' => $answer['q_id'])));
                                         if ($answerObj instanceof erLhcoreClassModelLHCChatBotQuestion) {
                                             $suggestions[$msg->chat_id][] = array('a' => $answer['msg'], 'ctx' => $contextId, 'q' => $msg->msg, 'in_response' => $answer['in_response'], 'aid' => $answerObj->hash);
