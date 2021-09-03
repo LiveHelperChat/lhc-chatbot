@@ -45,8 +45,6 @@ Edit main application settigns.gile
     * Questions can also be added from left menu `Modules -> Reply predictions`
 * After you have added few questions you can run this command
 
-You have to run before proceeding
-
 ```shell
 /usr/bin/php cron.php -s site_admin -e lhcchatbot -c cron/deeppavlov_train
 ```

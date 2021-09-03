@@ -113,6 +113,10 @@ $ViewList['autocompleter'] = array(
     'functions' => array('manage_completer')
 );
 
+$ViewList['exportsuggestions'] = array(
+    'params' => array(),
+);
+
 $FunctionList['use'] = array('explain' => 'Allow to list questions and answers');
 $FunctionList['use_admin'] = array('explain' => 'Allow to manager bot');
 $FunctionList['use_test'] = array('explain' => 'Allow operator to use test environment');
@@ -120,3 +124,4 @@ $FunctionList['manage_context'] = array('explain' => 'Allow operator to manage c
 $FunctionList['manage_invalid'] = array('explain' => 'Allow operator to manage invalid suggestions list');
 $FunctionList['live_teach'] = array('explain' => 'Suggested combination by operator will go live instantly');
 $FunctionList['manage_completer'] = array('explain' => 'Allow operator to change auto completer settings');
+$FunctionList['download'] = array('explain' => 'Allow operator to download training data');

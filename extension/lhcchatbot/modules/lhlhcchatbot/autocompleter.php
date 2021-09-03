@@ -12,7 +12,13 @@ if ( isset($_POST['StoreOptions']) ) {
         'msearch_host' => new ezcInputFormDefinitionElement(
             ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
         ),
+        'msearch_answer_host' => new ezcInputFormDefinitionElement(
+            ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
+        ),
         'public_key' => new ezcInputFormDefinitionElement(
+            ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
+        ),
+        'public_answer_key' => new ezcInputFormDefinitionElement(
             ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
         ),
         'enabled' => new ezcInputFormDefinitionElement(
@@ -35,10 +41,22 @@ if ( isset($_POST['StoreOptions']) ) {
         $data['public_key'] = '';
     }
 
+    if ($form->hasValidData( 'public_answer_key' )) {
+        $data['public_answer_key'] = $form->public_answer_key;
+    } else {
+        $data['public_answer_key'] = '';
+    }
+
     if ($form->hasValidData( 'msearch_host' )) {
         $data['msearch_host'] = $form->msearch_host;
     } else {
         $data['msearch_host'] = '';
+    }
+
+    if ($form->hasValidData( 'msearch_answer_host' )) {
+        $data['msearch_answer_host'] = $form->msearch_answer_host;
+    } else {
+        $data['msearch_answer_host'] = '';
     }
 
     $lhcchatboOptions->explain = '';

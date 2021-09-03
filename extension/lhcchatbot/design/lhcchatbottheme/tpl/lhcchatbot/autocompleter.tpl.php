@@ -13,13 +13,23 @@
     </div>
 
     <div class="form-group">
-        <label>MeiliSearch address</label>
+        <label>MeiliSearch address (auto completer)</label>
         <input type="text" class="form-control form-control-sm" name="msearch_host" placeholder="E.g /msearch/ http://localhost:7700/" value="<?php isset($lhcchatbot_options['msearch_host']) ? print htmlspecialchars($lhcchatbot_options['msearch_host']) : print ''?>" />
     </div>
 
     <div class="form-group">
-        <label>Public key</label>
+        <label>Public key (auto completer)</label>
         <input type="text" class="form-control form-control-sm" name="public_key" value="<?php isset($lhcchatbot_options['public_key']) ? print htmlspecialchars($lhcchatbot_options['public_key']) : print ''?>" />
+    </div>
+
+    <div class="form-group">
+        <label>MeiliSearch address (answer suggester)</label>
+        <input type="text" class="form-control form-control-sm" name="msearch_answer_host" placeholder="E.g /msearch/ http://localhost:7700/" value="<?php isset($lhcchatbot_options['msearch_answer_host']) ? print htmlspecialchars($lhcchatbot_options['msearch_answer_host']) : print ''?>" />
+    </div>
+
+    <div class="form-group">
+        <label>Public key (answer suggester)</label>
+        <input type="text" class="form-control form-control-sm" name="public_answer_key" value="<?php isset($lhcchatbot_options['public_answer_key']) ? print htmlspecialchars($lhcchatbot_options['public_answer_key']) : print ''?>" />
     </div>
 
     <input type="submit" class="btn btn-secondary" name="StoreOptions" value="<?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('system/buttons','Save'); ?>" />

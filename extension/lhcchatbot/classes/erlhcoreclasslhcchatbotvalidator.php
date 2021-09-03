@@ -486,6 +486,8 @@ class erLhcoreClassExtensionLHCChatBotValidator
             $combainedData[$chatId] = isset($departmentContext[$departmentId]) ? $departmentContext[$departmentId] : array(0);
         }
 
+        $dataValue = erLhcoreClassModelChatConfig::fetch('lhcchatbot_options')->data_value;
+
         for ($i = 0; $i < erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->settings['try_times']; $i++)
         {
             foreach ($msgs as $msg) {
@@ -497,15 +499,33 @@ class erLhcoreClassExtensionLHCChatBotValidator
                         if ($msgSearch != '')
                         {
                             $contextObject = erLhcoreClassModelLHCChatBotContext::fetch($contextId);
-
-                            $answer = self::getAnswer($contextObject->host, $msgSearch);
+                            if ($contextObject->meili == 1) {
+                                $answer = self::getAnswerMeili($contextObject->id, $msgSearch, $dataValue);
+                            } else {
+                                $answer = self::getAnswer($contextObject->host, $msgSearch);
+                            }
 
                             if ($answer['found'] == true) {
                                 if (!isset($suggestions[$msg->chat_id]) || !in_array($answer['msg'], $suggestions[$msg->chat_id])) {
 
-                                    $answerObj = erLhcoreClassModelLHCChatBotQuestion::findOne(array('filter' => array('hash' => $answer['msg'])));
-                                    if ($answerObj instanceof erLhcoreClassModelLHCChatBotQuestion) {
-                                        $suggestions[$msg->chat_id][] = array('a' => $answerObj->answer, 'ctx' => $contextId, 'q' => $msg->msg, 'in_response' => $answer['in_response'], 'aid' => $answer['msg']);
+                                    if ($contextObject->meili == 1) {
+                                        $answerObj = erLhcoreClassModelLHCChatBotQuestion::findOne(array('filter' => array('id' => $answer['q_id'])));
+                                        if ($answerObj instanceof erLhcoreClassModelLHCChatBotQuestion) {
+                                            $suggestions[$msg->chat_id][] = array('a' => $answer['msg'], 'ctx' => $contextId, 'q' => $msg->msg, 'in_response' => $answer['in_response'], 'aid' => $answerObj->hash);
+                                        }
+
+                                        if (isset($answer['q_id_2'])) {
+                                            $answerObj = erLhcoreClassModelLHCChatBotQuestion::findOne(array('filter' => array('id' => $answer['q_id_2'])));
+                                            if ($answerObj instanceof erLhcoreClassModelLHCChatBotQuestion) {
+                                                $suggestions[$msg->chat_id][] = array('a' => $answer['msg_2'], 'ctx' => $contextId, 'q' => $msg->msg, 'in_response' => $answer['in_response'], 'aid' => $answerObj->hash);
+                                            }
+                                        }
+
+                                    } else {
+                                        $answerObj = erLhcoreClassModelLHCChatBotQuestion::findOne(array('filter' => array('hash' => $answer['msg'])));
+                                        if ($answerObj instanceof erLhcoreClassModelLHCChatBotQuestion) {
+                                            $suggestions[$msg->chat_id][] = array('a' => $answerObj->answer, 'ctx' => $contextId, 'q' => $msg->msg, 'in_response' => $answer['in_response'], 'aid' => $answer['msg']);
+                                        }
                                     }
 
                                     // Return top two suggestions
@@ -517,6 +537,7 @@ class erLhcoreClassExtensionLHCChatBotValidator
                                     }
                                 }
                             }
+
                         }
                     }
                 }
@@ -524,6 +545,53 @@ class erLhcoreClassExtensionLHCChatBotValidator
         }
 
         return $suggestions;
+    }
+
+    public static function getAnswerMeili($context, $question, $params) {
+
+        $response = ['found' => false, 'msg' => ''];
+
+        if (
+            isset($params['msearch_answer_host']) && !empty($params['msearch_answer_host']) &&
+            isset($params['public_answer_key']) && !empty($params['public_answer_key'])
+        ) {
+
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 2);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(["limit" => 2, 'q' => $question, "filter" => ['context_id = '.$context]]));
+            curl_setopt($ch, CURLOPT_URL, $params['msearch_answer_host'].'/indexes/lhc_suggest_0/search');
+            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json','X-Meili-API-Key: '.$params['public_answer_key']]);
+            @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+
+            $content = curl_exec($ch);
+
+            if (curl_errno($ch)) {
+                $http_error = curl_error($ch);
+            }
+
+            $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+            $contentJSON = json_decode($content, true);
+
+            if ($httpcode == 200 && isset($contentJSON['hits']) && !empty($contentJSON['hits'])) {
+                $response['found'] = true;
+                $response['in_response'] = $question;
+                $response['msg'] = $contentJSON['hits'][0]['answer'];
+                $response['q_id'] = explode('_',$contentJSON['hits'][0]['id'])[0];
+                if (isset($contentJSON['hits'][1]['id'])){
+                    $response['msg_2'] = $contentJSON['hits'][1]['answer'];
+                    $response['q_id_2'] = explode('_',$contentJSON['hits'][1]['id'])[0];
+                }
+            }
+        }
+
+        return $response;
+
     }
 
     public static function getAnswer($host, $question, $debug = false)
