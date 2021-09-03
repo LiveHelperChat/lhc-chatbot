@@ -10,23 +10,29 @@
     <li><a href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/listcontext')?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Context')?></a></li>
     <?php endif; ?>
 
-    <?php if (erLhcoreClassUser::instance()->hasAccessTo('lhlhcchatbot','use_test')) : ?>
-    <li><a href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/test')?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Test console')?></a></li>
+    <?php if (!class_exists('erLhcoreClassInstance')) : ?>
+
+        <?php if (erLhcoreClassUser::instance()->hasAccessTo('lhlhcchatbot','use_test')) : ?>
+            <li><a href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/test')?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Test console')?></a></li>
+        <?php endif; ?>
+
+        <?php if (erLhcoreClassUser::instance()->hasAccessTo('lhlhcchatbot','manage_completer')) : ?>
+        <li><a href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/autocompleter')?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Auto completer')?></a></li>
+        <?php endif; ?>
+
+        <?php if (erLhcoreClassUser::instance()->hasAccessTo('lhrasaaitraining','use_admin')) : ?>
+            <li><a href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/list')?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Rasa AI Intent list')?></a></li>
+            <li><a href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/listexample')?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Rasa AI Intent examples list')?></a></li>
+        <?php endif; ?>
+
+        <?php if (erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->settings['elastic_enabled'] == true) : ?>
+        <li><a href="<?php echo erLhcoreClassDesign::baseurl('elasticsearchbot/elastic')?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Elastic search console')?></a></li>
+        <li><a href="<?php echo erLhcoreClassDesign::baseurl('elasticsearchbot/list')?>/(hidden)/0"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Proposed Questions')?></a></li>
+        <?php endif; ?>
+
     <?php endif; ?>
 
-    <?php if (erLhcoreClassUser::instance()->hasAccessTo('lhlhcchatbot','manage_completer')) : ?>
-    <li><a href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/autocompleter')?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Auto completer')?></a></li>
-    <?php endif; ?>
 
-    <?php if (erLhcoreClassUser::instance()->hasAccessTo('lhrasaaitraining','use_admin')) : ?>
-        <li><a href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/list')?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Rasa AI Intent list')?></a></li>
-        <li><a href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/listexample')?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Rasa AI Intent examples list')?></a></li>
-    <?php endif; ?>
-
-    <?php if (erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->settings['elastic_enabled'] == true) : ?>
-    <li><a href="<?php echo erLhcoreClassDesign::baseurl('elasticsearchbot/elastic')?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Elastic search console')?></a></li>
-    <li><a href="<?php echo erLhcoreClassDesign::baseurl('elasticsearchbot/list')?>/(hidden)/0"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Proposed Questions')?></a></li>
-    <?php endif; ?>
 </ul>
 
 <?php if (erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->settings['elastic_enabled'] == true) : ?>

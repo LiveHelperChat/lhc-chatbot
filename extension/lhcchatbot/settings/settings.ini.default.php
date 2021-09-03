@@ -6,6 +6,10 @@ return array(
     'ahosting' => false,                // Are we in automated hosting environment
     'live_teach' => true,               // Operators suggested combinations should go live instantly
     'elastic_enabled' => false,
+    'ahosting_settings' => array(
+        'msearch_answer_host' => 'http://localhost:7700/',
+        'public_answer_key' => '',
+    ),
     'secret_hash' => 'secret_hash_to_download_intent',
     'elastic_settings' => array (
         'host' 			=> 'localhost',//'localhost',

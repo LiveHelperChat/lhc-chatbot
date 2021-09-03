@@ -280,18 +280,20 @@ class erLhcoreClassExtensionLHCChatBotValidator
             $Errors[] =  erTranslationClassLhTranslation::getInstance()->getTranslation('xmppservice/operatorvalidator','Please enter name!');
         }
 
-        if ( $form->hasValidData( 'host' ) && $form->host != '' ) {
-            $context->host = $form->host;
-        } else {
-            $Errors[] =  erTranslationClassLhTranslation::getInstance()->getTranslation('xmppservice/operatorvalidator','Please enter host!');
+        if (!class_exists('erLhcoreClassInstance')) {
+            if ( $form->hasValidData( 'host' ) && $form->host != '' ) {
+                $context->host = $form->host;
+            } else {
+                $Errors[] =  erTranslationClassLhTranslation::getInstance()->getTranslation('xmppservice/operatorvalidator','Please enter host!');
+            }
+
+            if ( $form->hasValidData( 'meili' ) && $form->meili == true ) {
+                $context->meili = 1;
+            } else {
+                $context->meili = 0;
+            }
         }
 
-        if ( $form->hasValidData( 'meili' ) && $form->meili == true ) {
-            $context->meili = 1;
-        } else {
-            $context->meili = 0;
-        }
-        
         return $Errors;
     }
 
@@ -486,7 +488,12 @@ class erLhcoreClassExtensionLHCChatBotValidator
             $combainedData[$chatId] = isset($departmentContext[$departmentId]) ? $departmentContext[$departmentId] : array(0);
         }
 
-        $dataValue = erLhcoreClassModelChatConfig::fetch('lhcchatbot_options')->data_value;
+        // Global settings
+        if (class_exists('erLhcoreClassInstance')) {
+            $dataValue = erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->settings['ahosting_settings'];
+        } else {
+            $dataValue = erLhcoreClassModelChatConfig::fetch('lhcchatbot_options')->data_value;
+        }
 
         for ($i = 0; $i < erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->settings['try_times']; $i++)
         {
@@ -499,7 +506,7 @@ class erLhcoreClassExtensionLHCChatBotValidator
                         if ($msgSearch != '')
                         {
                             $contextObject = erLhcoreClassModelLHCChatBotContext::fetch($contextId);
-                            if ($contextObject->meili == 1) {
+                            if ($contextObject->meili == 1 || class_exists('erLhcoreClassInstance')) {
                                 $answer = self::getAnswerMeili($contextObject->id, $msgSearch, $dataValue);
                             } else {
                                 $answer = self::getAnswer($contextObject->host, $msgSearch);
@@ -556,6 +563,8 @@ class erLhcoreClassExtensionLHCChatBotValidator
             isset($params['public_answer_key']) && !empty($params['public_answer_key'])
         ) {
 
+            $inst_id = class_exists('erLhcoreClassInstance') ? erLhcoreClassInstance::$instanceChat->id : 0;
+
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_TIMEOUT, 2);
@@ -563,8 +572,8 @@ class erLhcoreClassExtensionLHCChatBotValidator
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
             curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(["limit" => 2, 'q' => $question, "filter" => ['context_id = '.$context]]));
-            curl_setopt($ch, CURLOPT_URL, $params['msearch_answer_host'].'/indexes/lhc_suggest_0/search');
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['limit' => 2, 'q' => $question, 'filter' => ['context_id = '.$context]]));
+            curl_setopt($ch, CURLOPT_URL, $params['msearch_answer_host'] . '/indexes/lhc_suggest_' . $inst_id . '/search');
             curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json','X-Meili-API-Key: '.$params['public_answer_key']]);
             @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 
@@ -583,7 +592,7 @@ class erLhcoreClassExtensionLHCChatBotValidator
                 $response['in_response'] = $question;
                 $response['msg'] = $contentJSON['hits'][0]['answer'];
                 $response['q_id'] = explode('_',$contentJSON['hits'][0]['id'])[0];
-                if (isset($contentJSON['hits'][1]['id'])){
+                if (isset($contentJSON['hits'][1]['id'])) {
                     $response['msg_2'] = $contentJSON['hits'][1]['answer'];
                     $response['q_id_2'] = explode('_',$contentJSON['hits'][1]['id'])[0];
                 }
