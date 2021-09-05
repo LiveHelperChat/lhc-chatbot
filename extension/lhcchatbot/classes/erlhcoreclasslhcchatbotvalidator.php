@@ -386,6 +386,7 @@ class erLhcoreClassExtensionLHCChatBotValidator
     public static function publishQuestion(erLhcoreClassModelLHCChatBotQuestion & $question)
     {
         $question->saveThis();
+        erLhcoreClassChatEventDispatcher::getInstance()->dispatch('lhcchatbot.publish_question', array('question' => & $question));
     }
 
     /**
@@ -406,6 +407,7 @@ class erLhcoreClassExtensionLHCChatBotValidator
     public static function deleteQuestion(erLhcoreClassModelLHCChatBotQuestion & $question)
     {
         $question->removeThis();
+        erLhcoreClassChatEventDispatcher::getInstance()->dispatch('lhcchatbot.delete_question', array('question' => & $question));
     }
 
     /**
