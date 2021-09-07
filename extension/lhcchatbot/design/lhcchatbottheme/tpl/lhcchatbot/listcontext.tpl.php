@@ -20,8 +20,8 @@
         <td><a target="_blank" href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/download')?>/<?php echo $item->id?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Download');?></a> </td>
         <td nowrap>
           <div class="btn-group" role="group" aria-label="..." style="width:60px;">
-            <a class="btn btn-secondary btn-xs" href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/editcontext')?>/<?php echo $item->id?>" ><i data-icon="edit" class="material-icons mr-0">edit</i></a>
-            <a class="btn btn-danger btn-xs csfr-required" onclick="return confirm('<?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('kernel/messages','Are you sure?');?>')" data-icon="trash" href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/deletecontext')?>/<?php echo $item->id?>" ><i class="material-icons mr-0">&#xE872;</i></a>
+            <a class="btn btn-secondary btn-xs" href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/editcontext')?>/<?php echo $item->id?>" ><i class="material-icons mr-0">edit</i></a>
+            <a class="btn btn-danger btn-xs csfr-required" onclick="return confirm('<?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('kernel/messages','Are you sure?');?>')" href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/deletecontext')?>/<?php echo $item->id?>" ><i class="material-icons mr-0">&#xE872;</i></a>
           </div>
         </td>
     </tr>
