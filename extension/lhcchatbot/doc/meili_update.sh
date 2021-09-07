@@ -29,19 +29,27 @@ printf "\n\n";
 
 echo "[If you do not terminate this script, auto complete update will start in 5 seconds]"
 
-#sleep 5
-
-rm -f train.json
+rm -f train_old.json
+mv train.json train_old.json
 
 wget --no-check-certificate "$3/lhcchatbot/exportsuggestions?secret_hash=$4" -O train.json
+
+if cmp --silent -- "./train.json" "./train_old.json";
+then
+      echo "Training files are identical. Skipping!"
+      exit 1
+fi
+
 
 echo "Removing old data"
 curl -H "X-Meili-API-Key: $2" -X DELETE "$1/indexes/lhc_suggest_$5"
 
 printf "\n";
 
-echo "Creating index"
+printf "Creating index\n"
 curl -H "X-Meili-API-Key: $2" -X POST "$1/indexes" --data "{\"uid\": \"lhc_suggest_$5\" }"
+
+printf "\nSetting searchableAttributes\n";
 
 curl -H "X-Meili-API-Key: $2" -X POST "$1/indexes/lhc_suggest_$5/settings" --data '{
   "searchableAttributes": [
@@ -49,13 +57,17 @@ curl -H "X-Meili-API-Key: $2" -X POST "$1/indexes/lhc_suggest_$5/settings" --dat
   ]
 }'
 
+printf "\nSetting filterable attribute\n";
+
 curl -H "X-Meili-API-Key: $2" -X POST "$1/indexes/lhc_suggest_$5/settings/filterable-attributes" --data '[
       "context_id"
 ]'
 
+printf "\n";
+
 curl -H "X-Meili-API-Key: $2" "$1/indexes/lhc_suggest_$5/settings/filterable-attributes"
 
-echo "Storing new documents as hash completions"
+printf "\nStoring new documents as hash completions\n"
 
 curl -H "X-Meili-API-Key: $2" -X POST "$1/indexes/lhc_suggest_$5/documents" --data "@train.json"
 

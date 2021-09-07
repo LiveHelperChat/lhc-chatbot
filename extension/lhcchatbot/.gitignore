@@ -1,2 +1,4 @@
 composer.phar
 deeppavlov/Dockerfiles/.env
+instance.json
+train_old.json
