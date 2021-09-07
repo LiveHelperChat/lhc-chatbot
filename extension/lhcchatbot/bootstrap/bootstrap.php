@@ -16,8 +16,10 @@ class erLhcoreClassExtensionLhcchatbot
 
     public function run()
     {
-        include 'extension/lhcchatbot/vendor/autoload.php';
-
+        if ($this->settings['elastic_enabled'] == true) {
+            include 'extension/lhcchatbot/vendor/autoload.php';
+        }
+        
         $dispatcher = erLhcoreClassChatEventDispatcher::getInstance();
         
         /**
