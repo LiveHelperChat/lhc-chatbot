@@ -22,7 +22,9 @@
             <?php echo erLhcoreClassRenderHelper::renderCombobox( array (
                 'input_name'     => 'intent_id',
                 'optional_field' =>  erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','Choose'),
-                'display_name'   => 'name',
+                'display_name'   => function($item) {
+                    return $item->name . ' ' . ($item->intent);
+                },
                 'css_class'      => 'form-control form-control-sm',
                 'selected_id'    => $input->intent_id,
                 'list_function'  => 'erLhcoreClassModelLHCChatBotRasaIntent::getList',
