@@ -93,13 +93,19 @@ class erLhcoreClassExtensionLhcchatbot
     {
         if ($params['action']['content']['payload'] == 'lhcchatbot.out_of_scope' && trim($params['payload_translated']) != '') {
 
-            $payloadArgs = explode('|||',trim($params['payload_translated']));
+            $paramsGroup = explode('===',trim($params['payload_translated']));
+
+            $payloadArgs = explode('|||',trim($paramsGroup[0]));
 
             $comment = '';
             if (isset($payloadArgs[2]) && is_numeric($payloadArgs[2])) {
                 $comment = 'Intent: '.$payloadArgs[1]."\nScore: ".$payloadArgs[2];
             } elseif (isset($payloadArgs[1])) {
                 $comment = $payloadArgs[1];
+            }
+
+            if (isset($paramsGroup[1]) && is_numeric($paramsGroup[1])) {
+                $comment .= "\nChat ID: ".$paramsGroup[1];
             }
 
             $example = new erLhcoreClassModelLHCChatBotRasaExample();
