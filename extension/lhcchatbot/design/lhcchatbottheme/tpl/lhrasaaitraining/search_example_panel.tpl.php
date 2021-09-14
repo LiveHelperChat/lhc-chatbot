@@ -17,6 +17,18 @@
                 <option value="0"  <?php if ($input->active === 0) : ?>selected="selected"<?php endif;?>><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','No');?></option>
             </select>
         </div>
+        <div class="col-md-2">
+            <label><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Intent');?></label>
+            <?php echo erLhcoreClassRenderHelper::renderCombobox( array (
+                'input_name'     => 'intent_id',
+                'optional_field' =>  erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','Choose'),
+                'display_name'   => 'name',
+                'css_class'      => 'form-control form-control-sm',
+                'selected_id'    => $input->intent_id,
+                'list_function'  => 'erLhcoreClassModelLHCChatBotRasaIntent::getList',
+                'list_function_params'  => array(),
+            )); ?>
+        </div>
     </div>
     <div class="btn-group" role="group" aria-label="...">
         <input type="submit" name="doSearch" class="btn btn-secondary btn-sm" value="<?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('chat/lists/search_panel','Search');?>" />

@@ -26,6 +26,18 @@ $fieldsSearch['active'] = array (
     )
 );
 
+$fieldsSearch['intent_id'] = array (
+    'type' => 'text',
+    'trans' => 'Chats status',
+    'required' => false,
+    'valid_if_filled' => false,
+    'filter_type' => 'filter',
+    'filter_table_field' => 'intent_id',
+    'validation_definition' => new ezcInputFormDefinitionElement(
+        ezcInputFormDefinitionElement::OPTIONAL, 'int', array( 'min_range' => 1)
+    )
+);
+
 $fieldSortAttr = array (
     'field'      => false,
     'default'    => false,
