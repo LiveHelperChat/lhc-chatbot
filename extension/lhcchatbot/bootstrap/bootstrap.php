@@ -104,8 +104,8 @@ class erLhcoreClassExtensionLhcchatbot
                 $comment = $payloadArgs[1];
             }
 
-            if (isset($paramsGroup[1]) && is_numeric($paramsGroup[1])) {
-                $comment .= "\nChat ID: ".$paramsGroup[1];
+            if (isset($paramsGroup[1]) && is_numeric(trim($paramsGroup[1]))) {
+                $comment .= "\nChat ID: ". trim($paramsGroup[1]);
             }
 
             $example = new erLhcoreClassModelLHCChatBotRasaExample();
