@@ -12,6 +12,13 @@ if (isset($_GET['doSearch'])) {
 
 $append = erLhcoreClassSearchHandler::getURLAppendFromInput($filterParams['input_form']);
 
+if (isset($_GET['ajax']) && isset($_POST['id']) && is_numeric($_POST['id']) && isset($_POST['change_data'])) {
+    $item = erLhcoreClassModelLHCChatBotRasaExample::fetch($_POST['id']);
+    $item->verified = isset($_POST['verified']) && $_POST['verified'] == 'true';
+    $item->active = isset($_POST['active']) && $_POST['active'] == 'true';
+    $item->updateThis(['update' => ['verified','active']]);
+}
+
 $pages = new lhPaginator();
 $pages->items_total = erLhcoreClassModelLHCChatBotRasaExample::getCount($filterParams['filter']);
 $pages->translationContext = 'chat/pendingchats';
@@ -25,8 +32,14 @@ if ($pages->items_total > 0) {
 }
 
 $filterParams['input_form']->form_action = erLhcoreClassDesign::baseurl('rasaaitraining/listexample');
-$tpl->set('input',$filterParams['input_form']);
-$tpl->set('inputAppend',$append);
+$tpl->set('input', $filterParams['input_form']);
+$tpl->set('inputAppend', $append);
+$tpl->set('ajax', isset($_GET['ajax']));
+
+if (isset($_GET['ajax'])) {
+    echo $tpl->fetch();
+    exit;
+}
 
 $Result['content'] = $tpl->fetch();
 
