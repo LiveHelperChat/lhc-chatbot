@@ -24,13 +24,16 @@
                 <?php foreach ($items as $item) : ?>
                     <tr>
                         <td>
-                            <a href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/editexample')?>/<?php echo $item->id?>">
-                                <?php if ($item->intent instanceof erLhcoreClassModelLHCChatBotRasaIntent) : ?>
-                                    <?php echo htmlspecialchars($item->intent->name . ' | ' . $item->intent); ?>
-                                <?php else : ?>
-                                    <?php echo $item->id;?>
-                                <?php endif; ?>
-                            </a>
+                            <button title="Edit intent" data-intent-id="<?php echo $item->intent_id?>" data-id="<?php echo $item->id?>" type="button" id="intent-edit-btn-<?php echo $item->id?>" class="float-left edit-intent btn btn-xs btn-link"><span class="material-icons">&#xE254;</span></button>
+                            <span class="float-left" id="intent-list-<?php echo $item->id?>">
+                                <a href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/editexample')?>/<?php echo $item->id?>">
+                                    <?php if ($item->intent instanceof erLhcoreClassModelLHCChatBotRasaIntent) : ?>
+                                        <?php echo htmlspecialchars($item->intent->name . ' | ' . $item->intent); ?>
+                                    <?php else : ?>
+                                        <?php echo $item->id;?>
+                                    <?php endif; ?>
+                                </a>
+                            </span>
                         </td>
                         <td title="<?php echo htmlspecialchars($item->example)?>"><?php echo erLhcoreClassDesign::shrt($item->example, 100, '...', 30)?></td>
                         <td title="<?php echo htmlspecialchars($item->comment)?>"><?php echo  erLhcoreClassDesign::shrt($item->comment, 100, '...', 30)?></td>
@@ -56,6 +59,22 @@
         </div>
         <?php if ($ajax == false) : ?>
         <script>
+
+        $('#examples-table-rasa').on('change','.intent-item-edit', function() {
+            var exampleId = $(this).attr('data-id');
+            $.post('<?php echo $input->form_action,$inputAppend?>/?setintent=1', {id: exampleId, intent_id: $(this).val()}, function(data) {
+                $('#intent-edit-btn-'+exampleId).addClass('text-success');
+            });
+        });
+
+        $('#examples-table-rasa').on('click','.edit-intent', function() {
+            var exampleId = $(this).attr('data-id');
+            var intentId = $(this).attr('data-intent-id');
+            $.post('<?php echo $input->form_action,$inputAppend?>/?intentlist=1', {id: exampleId, intent_id: intentId}, function(data) {
+                $('#intent-list-'+exampleId).html(data);
+            });
+        });
+
         $('#examples-table-rasa').on('click','.verify-check,.active-check', function() {
             $.post('<?php echo $input->form_action,$inputAppend?>/?ajax=1',{id:
                     $(this).attr('data-id'),

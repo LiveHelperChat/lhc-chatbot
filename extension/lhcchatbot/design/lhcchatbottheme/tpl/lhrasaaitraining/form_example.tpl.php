@@ -9,7 +9,7 @@
         'css_class'      => 'form-control form-control-sm',
         'selected_id'    => $item->intent_id,
         'list_function'  => 'erLhcoreClassModelLHCChatBotRasaIntent::getList',
-        'list_function_params'  => array(),
+        'list_function_params'  => array('sort' => 'name ASC, intent ASC'),
     )); ?>
 </div>
 

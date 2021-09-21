@@ -1,5 +1,28 @@
 <?php
 
+if (isset($_GET['setintent'])) {
+    $item = erLhcoreClassModelLHCChatBotRasaExample::fetch($_POST['id']);
+    $item->intent_id = $_POST['intent_id'];
+    $item->updateThis(['update' => ['intent_id']]);
+    exit;
+}
+
+if (isset($_GET['intentlist'])) {
+    echo erLhcoreClassRenderHelper::renderCombobox( array (
+        'input_name'     => 'intent_id_'.(int)$_POST['id'],
+        'optional_field' =>  erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','Choose'),
+        'display_name'   => function($item) {
+            return $item->name . ' ' . ($item->intent);
+        },
+        'data_attr'      => 'data-id="' . (int)$_POST['id'] . '"',
+        'css_class'      => 'form-control form-control-sm intent-item-edit',
+        'selected_id'    => (isset($_POST['intent_id']) ? (int)$_POST['intent_id'] : 0),
+        'list_function'  => 'erLhcoreClassModelLHCChatBotRasaIntent::getList',
+        'list_function_params'  => array('sort' => 'name ASC, intent ASC'),
+    ));
+    exit;
+}
+
 $tpl = erLhcoreClassTemplate::getInstance( 'lhrasaaitraining/listexample.tpl.php');
 
 if (isset($_GET['doSearch'])) {

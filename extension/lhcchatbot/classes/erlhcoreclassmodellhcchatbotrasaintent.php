@@ -13,6 +13,8 @@ class erLhcoreClassModelLHCChatBotRasaIntent
 
     public static $dbSortOrder = 'DESC';
 
+    public static $dbDefaultSort = 'name ASC, intent ASC';
+
     public function getState()
     {
         $stateArray = array(
