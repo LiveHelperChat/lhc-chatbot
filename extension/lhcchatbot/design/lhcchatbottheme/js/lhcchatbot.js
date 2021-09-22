@@ -366,7 +366,7 @@ var lhcChatBot = {
 
         inst.attr('disabled','disabled').prepend('<span class="material-icons lhc-spin">autorenew</span>');
         setTimeout(function(){
-            inst.removeAttr('disabled').find('.lhc-spin').remove();
+            inst.removeAttr('disabled').parent().remove();
         },1000);
         textarea.focus();
     },
