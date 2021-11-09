@@ -14,7 +14,7 @@ CREATE TABLE `lhc_lhcchatbot_question` (
   KEY `was_used` (`was_used`),
   KEY `hash` (`hash`),
   KEY `confirmed` (`confirmed`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `lhc_lhcchatbot_context` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -22,7 +22,7 @@ CREATE TABLE `lhc_lhcchatbot_context` (
   `name` varchar(50) NOT NULL,
   `host` varchar(150) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `lhc_lhcchatbot_context_link_department` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -31,7 +31,7 @@ CREATE TABLE `lhc_lhcchatbot_context_link_department` (
   PRIMARY KEY (`id`),
   KEY `department_id` (`department_id`),
   KEY `context_id` (`context_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 CREATE TABLE `lhc_lhcchatbot_invalid` (
@@ -42,7 +42,7 @@ CREATE TABLE `lhc_lhcchatbot_invalid` (
 `hash` varchar(40) NOT NULL,
 `chat_id` bigint(20) NOT NULL DEFAULT '0',
 `context_id` bigint(20) NOT NULL DEFAULT '0',
-PRIMARY KEY (`id`), KEY `hash` (`hash`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+PRIMARY KEY (`id`), KEY `hash` (`hash`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `lhc_lhcchatbot_use` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -57,10 +57,10 @@ CREATE TABLE `lhc_lhcchatbot_use` (
   `type` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `context_id` (`context_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE `lhc_lhcchatbot_index` (  `chat_id` bigint(20) unsigned NOT NULL, UNIQUE KEY `chat_id` (`chat_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-CREATE TABLE `lhc_lhcchatbot_used` (  `chat_id` bigint(20) unsigned NOT NULL, UNIQUE KEY `chat_id` (`chat_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `lhc_lhcchatbot_index` (  `chat_id` bigint(20) unsigned NOT NULL, UNIQUE KEY `chat_id` (`chat_id`)) ENGINE=InnoDB CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `lhc_lhcchatbot_used` (  `chat_id` bigint(20) unsigned NOT NULL, UNIQUE KEY `chat_id` (`chat_id`)) ENGINE=InnoDB CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `lhc_lhcchatbot_rasa_intent` (
     `id`     int(11) NOT NULL AUTO_INCREMENT,
@@ -71,7 +71,7 @@ CREATE TABLE `lhc_lhcchatbot_rasa_intent` (
     PRIMARY KEY (`id`),
     KEY      `active` (`active`),
     KEY      `context_id` (`context_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `lhc_lhcchatbot_rasa_example` (
     `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -84,4 +84,4 @@ CREATE TABLE `lhc_lhcchatbot_rasa_example` (
     PRIMARY KEY (`id`),
     KEY `hash` (`hash`),
     KEY `intent_id` (`intent_id`),
-    KEY `active` (`active`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+    KEY `active` (`active`)) ENGINE=InnoDB CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
