@@ -14,7 +14,7 @@ nlu:\n";
 
 $item = erLhcoreClassModelLHCChatBotContext::fetch((int)$Params['user_parameters']['id']);
 
-foreach (erLhcoreClassModelLHCChatBotRasaIntent::getList(['filter' => ['verified' => 1, 'active' => 1, 'context_id' => $item->id]]) as $intent) {
+foreach (erLhcoreClassModelLHCChatBotRasaIntent::getList(['filter' => ['active' => 1, 'context_id' => $item->id]]) as $intent) {
     $nlu .="  - intent: {$intent->intent}\n    examples: |\n";
     foreach (erLhcoreClassModelLHCChatBotRasaExample::getList(['filter' => ['verified' => 1, 'intent_id' => $intent->id, 'active' => 1]]) as $examples) {
         foreach (explode("\n",$examples->example) as $example) {
