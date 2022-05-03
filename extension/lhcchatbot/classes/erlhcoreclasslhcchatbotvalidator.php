@@ -75,6 +75,9 @@ class erLhcoreClassExtensionLHCChatBotValidator
             'name' => new ezcInputFormDefinitionElement(
                 ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
             ),
+            'test_samples' => new ezcInputFormDefinitionElement(
+                ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
+            ),
             'active' => new ezcInputFormDefinitionElement(
                 ezcInputFormDefinitionElement::OPTIONAL, 'boolean'
             ),
@@ -96,6 +99,10 @@ class erLhcoreClassExtensionLHCChatBotValidator
             $item->name = $form->name;
         } else {
             $Errors[] =  erTranslationClassLhTranslation::getInstance()->getTranslation('xmppservice/operatorvalidator','Please enter a name!');
+        }
+
+        if ( $form->hasValidData( 'test_samples' ) ) {
+            $item->test_samples = $form->test_samples;
         }
 
         if ( $form->hasValidData( 'active' ) && $form->active == true ) {

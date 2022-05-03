@@ -35,6 +35,11 @@ $ViewList['editexample'] = array(
     'functions' => array('use_admin')
 );
 
+$ViewList['testconsole'] = array(
+    'params' => array(),
+    'functions' => array('use_admin')
+);
+
 $ViewList['deleteexample'] = array(
     'params' => array('id'),
     'uparams' => array('csfr'),

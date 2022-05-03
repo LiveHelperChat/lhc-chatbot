@@ -6,6 +6,8 @@
 
 <form action="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/new')?>" method="post" ng-non-bindable>
 
+    <?php include(erLhcoreClassDesign::designtpl('lhkernel/csfr_token.tpl.php'));?>
+    
 	<?php include(erLhcoreClassDesign::designtpl('lhcchatbot/question/form.tpl.php'));?>
 	
     <div class="btn-group" role="group" aria-label="...">

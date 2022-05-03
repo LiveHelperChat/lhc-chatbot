@@ -27,3 +27,8 @@
         <?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('rasatraining/form','Active')?>
     </label>
 </div>
+
+<div class="form-group" ng-non-bindable>
+    <label><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Test samples for verification');?></label>
+    <textarea rows="10" cols="" class="form-control form-control-sm" placeholder="<?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Each sample has to be to separate by a new line');?>" name="test_samples"><?php echo htmlspecialchars($item->test_samples)?></textarea>
+</div>

@@ -6,6 +6,8 @@
 
 <form action="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/editreport')?>/<?php echo $report->id?>" method="post" ng-non-bindable>
 
+    <?php include(erLhcoreClassDesign::designtpl('lhkernel/csfr_token.tpl.php'));?>
+    
     <p><b><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Question');?></b> - <?php echo htmlspecialchars($report->question)?></p>
     <p><b><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Answer');?></b> - <?php echo htmlspecialchars($report->answer)?></p>
 

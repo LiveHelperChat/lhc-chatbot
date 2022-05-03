@@ -23,6 +23,7 @@ class erLhcoreClassModelLHCChatBotRasaIntent
             'active' => $this->active,
             'name' => $this->name,
             'context_id' => $this->context_id,
+            'test_samples' => $this->test_samples,
         );
 
         return $stateArray;
@@ -59,6 +60,7 @@ class erLhcoreClassModelLHCChatBotRasaIntent
     public $intent = '';
     public $active = '';
     public $name = '';
+    public $test_samples = '';
     public $context_id = 0;
 
 }

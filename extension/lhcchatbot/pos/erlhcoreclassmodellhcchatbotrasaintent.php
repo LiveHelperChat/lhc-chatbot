@@ -29,4 +29,9 @@ $def->properties['active']->columnName   = 'active';
 $def->properties['active']->propertyName = 'active';
 $def->properties['active']->propertyType = ezcPersistentObjectProperty::PHP_TYPE_INT;
 
+$def->properties['test_samples'] = new ezcPersistentObjectProperty();
+$def->properties['test_samples']->columnName   = 'test_samples';
+$def->properties['test_samples']->propertyName = 'test_samples';
+$def->properties['test_samples']->propertyType = ezcPersistentObjectProperty::PHP_TYPE_STRING;
+
 return $def;

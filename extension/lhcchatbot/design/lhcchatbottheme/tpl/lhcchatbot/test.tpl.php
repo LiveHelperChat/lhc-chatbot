@@ -3,6 +3,8 @@
 
 <form action="" method="get" ng-non-bindable>
 
+    <?php include(erLhcoreClassDesign::designtpl('lhkernel/csfr_token.tpl.php'));?>
+    
     <div class="form-group">
         <label><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('xmppservice/form','Question');?></label>
         <input type="text" class="form-control" name="question"  value="<?php isset($_GET['question']) ? print htmlspecialchars($_GET['question']) : ''?>" />
