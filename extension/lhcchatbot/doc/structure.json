@@ -255,6 +255,14 @@
               "default": null,
               "extra": "",
               "collation": "utf8mb4_unicode_ci"
+            },
+            {
+              "field": "use_counter",
+              "type": "bigint(20) unsigned",
+              "null": "NO",
+              "key": "",
+              "default": null,
+              "extra": ""
             }
         ],
         "lhc_lhcchatbot_rasa_example": [
@@ -313,7 +321,7 @@
         "lhc_lhcchatbot_used" : "CREATE TABLE `lhc_lhcchatbot_used` (  `chat_id` bigint(20) unsigned NOT NULL, UNIQUE KEY `chat_id` (`chat_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;",
         "lhc_lhcchatbot_use" : "CREATE TABLE `lhc_lhcchatbot_use` (  `id` bigint(20) NOT NULL AUTO_INCREMENT,  `question` text NOT NULL, `answer` text NOT NULL, `context_id` int(11) NOT NULL, `type` tinyint(1) NOT NULL DEFAULT '0', `question_id` int(11) NOT NULL, `ctime` int(11) NOT NULL, `user_id` int(11) NOT NULL, `chat_id` bigint(20) NOT NULL, `dep_id` int(11) NOT NULL,  PRIMARY KEY (`id`),  KEY `context_id` (`context_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;",
         "lhc_lhcchatbot_invalid" : "CREATE TABLE `lhc_lhcchatbot_invalid` ( `id` int(11) NOT NULL AUTO_INCREMENT, `context_id` bigint(20) NOT NULL DEFAULT '0', `question` text NOT NULL,  `hash` varchar(40) NOT NULL, `answer` text NOT NULL, `counter` int(11) NOT NULL, `chat_id` bigint(20) NOT NULL DEFAULT '0', PRIMARY KEY (`id`),  KEY `hash` (`hash`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;",
-        "lhc_lhcchatbot_rasa_intent" : "CREATE TABLE `lhc_lhcchatbot_rasa_intent` (\n    `id`     int(11) NOT NULL AUTO_INCREMENT, `test_samples` text NOT NULL, `name` varchar(50) NOT NULL,\n    `intent` varchar(50) NOT NULL,\n    `active` tinyint(1) NOT NULL DEFAULT '0',\n    `context_id` int(11) unsigned NOT NULL DEFAULT '0',\n    PRIMARY KEY (`id`),\n    KEY      `active` (`active`),\n    KEY      `context_id` (`context_id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;",
+        "lhc_lhcchatbot_rasa_intent" : "CREATE TABLE `lhc_lhcchatbot_rasa_intent` (\n    `id`     int(11) NOT NULL AUTO_INCREMENT, `test_samples` text NOT NULL, `name` varchar(50) NOT NULL,\n    `intent` varchar(50) NOT NULL,\n    `active` tinyint(1) NOT NULL DEFAULT '0', `use_counter` bigint(20) unsigned NOT NULL DEFAULT '0'  ,\n    `context_id` int(11) unsigned NOT NULL DEFAULT '0',\n    PRIMARY KEY (`id`),\n    KEY      `active` (`active`),\n    KEY      `context_id` (`context_id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;",
         "lhc_lhcchatbot_rasa_example" : "CREATE TABLE `lhc_lhcchatbot_rasa_example` ( `id` int(11) unsigned NOT NULL AUTO_INCREMENT, `active` tinyint(1) unsigned NOT NULL DEFAULT '0', `verified` tinyint(1) unsigned NOT NULL DEFAULT '0', `intent_id` bigint(20) unsigned NOT NULL DEFAULT '0',`hash` varchar(40) NOT NULL, `example` text NOT NULL, `comment` text NOT NULL, PRIMARY KEY (`id`),  KEY `hash` (`hash`), KEY `intent_id` (`intent_id`), KEY `active` (`active`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;"
     }
 }

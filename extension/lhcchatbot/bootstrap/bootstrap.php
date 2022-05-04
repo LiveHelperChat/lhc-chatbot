@@ -62,6 +62,11 @@ class erLhcoreClassExtensionLhcchatbot
             'outOfScope'
         ));
 
+        $dispatcher->listen('chat.genericbot_rest_api_method.log_intent', array(
+            $this,
+            'logRasaIntent'
+        ));
+
         // Elastic Search store statistic regarding was bot used in particular chat
         if ($this->settings['elastic_enabled'] == true) {
 
@@ -75,7 +80,22 @@ class erLhcoreClassExtensionLhcchatbot
             $dispatcher->listen('statistic.process_tab', 'erLhcoreClassElasticSearchChatboxIndex::processTab');
         }
     }
-    
+
+    public function logRasaIntent($params)
+    {
+        if (isset($params['response']['content']) && trim($params['response']['content']) != '') {
+
+            $customARGS = '';
+            erLhcoreClassChatEventDispatcher::getInstance()->dispatch('lhcchatbot.log_rasa_intent', array('params' => $params, 'custom_filter' => & $customARGS));
+
+            //custom_args
+            $db = ezcDbInstance::get();
+            $stmt = $db->prepare("UPDATE `lhc_lhcchatbot_rasa_intent` SET `use_counter` = `use_counter` + 1 WHERE `intent` = :intent {$customARGS}");
+            $stmt->bindValue(':intent', trim($params['response']['content']),PDO::PARAM_STR);
+            $stmt->execute();
+        }
+    }
+
     /**
      * Checks automated hosting structure
      *

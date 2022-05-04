@@ -25,6 +25,11 @@ $ViewList['newexample'] = array(
     'functions' => array('use_admin')
 );
 
+$ViewList['dashboard'] = array(
+    'params' => array(),
+    'functions' => array('use_admin')
+);
+
 $ViewList['edit'] = array(
     'params' => array('id'),
     'functions' => array('use_admin')
@@ -53,6 +58,10 @@ $ViewList['delete'] = array(
 );
 
 $ViewList['download'] = array(
+    'params' => array('id')
+);
+
+$ViewList['downloadtest'] = array(
     'params' => array('id')
 );
 

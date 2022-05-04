@@ -17,7 +17,9 @@
     <?php foreach ($items as $item) : ?>
     <tr>
         <td><?php echo htmlspecialchars($item->name)?></td>
-        <td><a target="_blank" href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/download')?>/<?php echo $item->id?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Download');?></a> </td>
+        <td>
+            <a target="_blank" href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/download')?>/<?php echo $item->id?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Download');?></a> | <a target="_blank" href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/downloadtest')?>/<?php echo $item->id?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Download (test data)');?></a>
+        </td>
         <td nowrap>
           <div class="btn-group" role="group" aria-label="..." style="width:60px;">
             <a class="btn btn-secondary btn-xs" href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/editcontext')?>/<?php echo $item->id?>" ><i class="material-icons mr-0">edit</i></a>

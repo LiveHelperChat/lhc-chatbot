@@ -34,4 +34,9 @@ $def->properties['test_samples']->columnName   = 'test_samples';
 $def->properties['test_samples']->propertyName = 'test_samples';
 $def->properties['test_samples']->propertyType = ezcPersistentObjectProperty::PHP_TYPE_STRING;
 
+$def->properties['use_counter'] = new ezcPersistentObjectProperty();
+$def->properties['use_counter']->columnName   = 'use_counter';
+$def->properties['use_counter']->propertyName = 'use_counter';
+$def->properties['use_counter']->propertyType = ezcPersistentObjectProperty::PHP_TYPE_STRING;
+
 return $def;

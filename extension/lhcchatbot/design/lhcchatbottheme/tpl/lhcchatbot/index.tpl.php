@@ -21,6 +21,7 @@
         <?php endif; ?>
 
         <?php if (erLhcoreClassUser::instance()->hasAccessTo('lhrasaaitraining','use_admin')) : ?>
+            <li><a href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/dashboard')?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Rasa AI dashboard')?></a></li>
             <li><a href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/list')?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Rasa AI Intent list')?></a></li>
             <li><a href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/listexample')?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Rasa AI Intent examples list')?></a></li>
             <li><a href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/testconsole')?>"><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Rasa AI test console')?></a></li>

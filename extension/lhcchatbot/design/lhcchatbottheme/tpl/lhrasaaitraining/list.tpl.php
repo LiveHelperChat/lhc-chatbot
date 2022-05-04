@@ -11,6 +11,7 @@
             <tr>
                 <th><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Name');?></th>
                 <th><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Active');?></th>
+                <th><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Use counter');?></th>
                 <th width="1%"></th>
             </tr>
             </thead>
@@ -19,7 +20,12 @@
                     <td>
                         <a href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/edit')?>/<?php echo $item->id?>"><?php echo htmlspecialchars($item->name)?> (<?php echo htmlspecialchars($item->intent)?>)</a>
                     </td>
-                    <td><?php echo htmlspecialchars($item->active)?></td>
+                    <td>
+                        <?php echo htmlspecialchars($item->active);?>
+                    </td>
+                    <td>
+                        <?php echo htmlspecialchars($item->use_counter);?>
+                    </td>
                     <td nowrap>
                         <div class="btn-group" role="group" aria-label="..." style="width:60px;">
                             <a class="btn btn-secondary btn-xs" href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/edit')?>/<?php echo $item->id?>" ><i class="material-icons mr-0">&#xE254;</i></a>
