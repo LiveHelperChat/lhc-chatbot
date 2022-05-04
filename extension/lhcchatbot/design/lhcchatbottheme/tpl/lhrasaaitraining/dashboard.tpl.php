@@ -8,7 +8,7 @@
             if ((erLhcoreClassModelGenericBotTriggerEvent::getCount(['customfilter' => [
                 'pattern LIKE (' . $db->quote('%' . $itemIntent->intent . '%') .') OR pattern_exc LIKE (' . $db->quote('%' . $itemIntent->intent . '%') .')'
             ]])) > 0) : ?>
-                <a target="_blank" href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/edit')?>/<?php echo $itemIntent->id?>" class="btn btn-xs btn-info"><?php echo htmlspecialchars($itemIntent->intent)?></a>
+                <a target="_blank" href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/edit')?>/<?php echo $itemIntent->id?>" class="btn btn-xs btn-info m-1"><?php echo htmlspecialchars($itemIntent->intent . '|' . $itemIntent->context)?></a>
             <?php else : $intentsWithoutAction[] = $itemIntent;?>
             <?php endif; ?>
         <?php endforeach; ?>
@@ -16,7 +16,7 @@
     <div class="col-6">
         <h5><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Intent without actions');?></h5>
         <?php foreach ($intentsWithoutAction as $intentWithoutAction) : ?>
-            <a target="_blank" href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/edit')?>/<?php echo $itemIntent->id?>" class="btn btn-xs btn-info"><?php echo htmlspecialchars($itemIntent->intent)?></a>
+            <a target="_blank" href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/edit')?>/<?php echo $itemIntent->id?>" class="btn btn-xs btn-info m-1"><?php echo htmlspecialchars($itemIntent->intent . '|' . $itemIntent->context)?></a>
         <?php endforeach; ?>
     </div>
 </div>

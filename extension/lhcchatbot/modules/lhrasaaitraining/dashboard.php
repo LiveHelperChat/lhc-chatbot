@@ -1,7 +1,7 @@
 <?php
 
 $tpl = erLhcoreClassTemplate::getInstance( 'lhrasaaitraining/dashboard.tpl.php');
-$tpl->set('items',erLhcoreClassModelLHCChatBotRasaIntent::getList(['limit' => false, 'filter' => ['active' => 1]]));
+$tpl->set('items',erLhcoreClassModelLHCChatBotRasaIntent::getList(['sort' => '`context_id` ASC','limit' => false, 'filter' => ['active' => 1]]));
 
 $Result['content'] = $tpl->fetch();
 $Result['path'] = array(
