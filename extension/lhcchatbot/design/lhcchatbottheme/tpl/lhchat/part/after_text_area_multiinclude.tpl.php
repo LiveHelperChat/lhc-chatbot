@@ -1,5 +1,5 @@
 <?php
-if (erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->settings['enabled'] == true) {
+if (erLhcoreClassModule::getExtensionInstance('erLhcoreClassExtensionLhcchatbot')->settings['enabled'] == false) {
     echo "<script>lhcChatBot.disabled = true;</script>";
 } else {
     $lhcChatBotLast5Messages = array();
