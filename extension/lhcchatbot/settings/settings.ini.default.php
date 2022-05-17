@@ -26,6 +26,12 @@ return array(
             'access_key' => '',
             'secret_key' => ''
         )
+    ),
+    'template_settings' => array(
+        'event_template' => 'TemplateButton',
+        'trigger_template' => 'TemplateButton',
+        'bot_id' => 1,
+        'trigger_group_id' => 1,
     )
 );
 

@@ -32,6 +32,7 @@ $ViewList['dashboard'] = array(
 
 $ViewList['edit'] = array(
     'params' => array('id'),
+    'uparams' => array('action'),
     'functions' => array('use_admin')
 );
 
