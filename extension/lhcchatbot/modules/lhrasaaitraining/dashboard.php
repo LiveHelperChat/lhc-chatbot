@@ -3,6 +3,11 @@
 $tpl = erLhcoreClassTemplate::getInstance( 'lhrasaaitraining/dashboard.tpl.php');
 $tpl->set('items',erLhcoreClassModelLHCChatBotRasaIntent::getList(['sort' => '`context_id` ASC','limit' => false, 'filter' => ['active' => 1]]));
 
+$lhcchatboOptions = erLhcoreClassModelChatConfig::fetch('lhcchatbot_rasa_status');
+$data = (array)$lhcchatboOptions->data;
+
+$tpl->set('rasa_status',$data);
+
 $Result['content'] = $tpl->fetch();
 $Result['path'] = array(
     array (

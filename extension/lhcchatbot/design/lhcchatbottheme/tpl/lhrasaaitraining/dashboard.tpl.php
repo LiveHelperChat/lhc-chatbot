@@ -1,4 +1,19 @@
 <h1><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Dashboard');?></h1>
+
+<h5>Rasa last training status</h5>
+<ul>
+    <li>Data: <?php isset($rasa_status['date']) ? print date('Y-m-d H:i:s',$rasa_status['date']).', '. erLhcoreClassChat::formatSeconds(time()-$rasa_status['date']).' ago.' : print 'n/a' ?></li>
+    <li>Outcome:
+        <?php if (isset($rasa_status['outcome']) && $rasa_status['outcome'] === false) : ?>
+        <span class="badge badge-danger">failed</span>
+        <?php elseif (isset($rasa_status['outcome']) && $rasa_status['outcome'] === true) : ?>
+        <span class="badge badge-success">success</span>
+        <?php else : ?>
+            <span class="badge badge-secondary">no data</span>
+        <?php endif; ?>
+    </li>
+</ul>
+
 <div class="row">
     <div class="col-6">
         <h5><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Intent with actions');?></h5>
@@ -8,7 +23,7 @@
             if ((erLhcoreClassModelGenericBotTriggerEvent::getCount(['customfilter' => [
                 'pattern LIKE (' . $db->quote('%' . $itemIntent->intent . '%') .') OR pattern_exc LIKE (' . $db->quote('%' . $itemIntent->intent . '%') .')'
             ]])) > 0) : ?>
-                <div class="btn-group">
+                <div class="btn-group m-1">
                     <a target="_blank" href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/edit')?>/<?php echo $itemIntent->id?>" class="btn btn-xs btn-info"><?php echo htmlspecialchars($itemIntent->intent . '|' . $itemIntent->context)?></a>
                     <button type="button" class="btn btn-xs btn-secondary dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-expanded="false" data-reference="parent">
                         <span class="sr-only">Toggle Dropdown</span>

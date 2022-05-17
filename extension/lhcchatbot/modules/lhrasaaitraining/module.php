@@ -62,6 +62,10 @@ $ViewList['download'] = array(
     'params' => array('id')
 );
 
+$ViewList['informretrain'] = array(
+    'params' => array()
+);
+
 $ViewList['downloadtest'] = array(
     'params' => array('id')
 );
