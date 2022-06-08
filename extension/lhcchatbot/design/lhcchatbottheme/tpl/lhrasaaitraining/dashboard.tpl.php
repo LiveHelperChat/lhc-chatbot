@@ -51,8 +51,8 @@
         <h5><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Intent without actions');?></h5>
         <?php foreach ($intentsWithoutAction as $intentWithoutAction) : ?>
             <div class="btn-group m-1" role="group" aria-label="Basic example">
-                <a target="_blank" href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/edit')?>/<?php echo $itemIntent->id?>" class="btn btn-xs btn-info"><?php echo htmlspecialchars($itemIntent->intent . '|' . $itemIntent->context)?></a>
-                <a href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/edit')?>/<?php echo $itemIntent->id?>/(action)/addaction" class="btn btn-xs btn-secondary">Add action</a>
+                <a target="_blank" href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/edit')?>/<?php echo $intentWithoutAction->id?>" class="btn btn-xs btn-info"><?php echo htmlspecialchars($intentWithoutAction->intent . '|' . $intentWithoutAction->context)?></a>
+                <a href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/edit')?>/<?php echo $intentWithoutAction->id?>/(action)/addaction" class="btn btn-xs btn-secondary">Add action</a>
             </div>
         <?php endforeach; ?>
     </div>
