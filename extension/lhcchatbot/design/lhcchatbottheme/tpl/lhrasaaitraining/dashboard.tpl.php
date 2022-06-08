@@ -17,9 +17,8 @@
 <div class="row">
     <div class="col-6">
         <h5><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Intent with actions');?></h5>
-        <?php $db = ezcDbInstance::get(); foreach ($items as $itemIntent) : ?>
+        <?php $db = ezcDbInstance::get(); $intentsWithoutAction = []; foreach ($items as $itemIntent) : ?>
             <?php
-            $intentsWithoutAction = [];
             if ((erLhcoreClassModelGenericBotTriggerEvent::getCount(['customfilter' => [
                 'pattern LIKE (' . $db->quote('%' . $itemIntent->intent . '%') .') OR pattern_exc LIKE (' . $db->quote('%' . $itemIntent->intent . '%') .')'
             ]])) > 0) : ?>
