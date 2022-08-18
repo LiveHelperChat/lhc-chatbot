@@ -67,6 +67,10 @@ printf "\n";
 
 curl -H "X-Meili-API-Key: $2" "$1/indexes/lhc_suggest_$5/settings/filterable-attributes"
 
+printf "\nSetting stop words\n";
+
+curl -H "X-Meili-API-Key: $2" -X POST "$1/indexes/lhc_suggest_$5/settings/stop-words" --data "@doc/stop-words.json"
+
 printf "\nStoring new documents as hash completions\n"
 
 curl -H "X-Meili-API-Key: $2" -X POST "$1/indexes/lhc_suggest_$5/documents" --data "@train.json"
