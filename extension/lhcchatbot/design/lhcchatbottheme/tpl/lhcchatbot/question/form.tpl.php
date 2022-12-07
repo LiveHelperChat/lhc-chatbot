@@ -10,15 +10,24 @@
 
 <div class="form-group" ng-non-bindable>
     <label><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Canned message');?></label>
-    <?php echo erLhcoreClassRenderHelper::renderCombobox( array (
+    <?php echo erLhcoreClassRenderHelper::renderMultiDropdown( array (
         'input_name'     => 'canned_id',
-        'optional_field' =>  erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','Choose'),
+        'optional_field' => erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module', 'Canned message'),
+        'selected_id'    => [$question->canned_id],
+        'ajax'           => 'canned',
+        'data_prop'      => 'data-limit="1" data-type="radio" data-noselector="1"',
+        'css_class'      => 'form-control',
+        'type'           => 'radio',
         'display_name'   => 'title',
-        'css_class'      => 'form-control form-control-sm',
-        'selected_id'    => $question->canned_id,
+        'no_selector'    => true,
+        'list_function_params' => array('sort' => 'title ASC', 'limit' => 10, 'filter' => array('department_id' => 0)),
         'list_function'  => 'erLhcoreClassModelCannedMsg::getList',
-        'list_function_params'  => array('limit' => false,'filter' => array('department_id' => 0)),
     )); ?>
+    <script>
+        $(function() {
+            $('.btn-block-department').makeDropdown();
+        });
+    </script>
     <p><small><i><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Manually written answer has a higher priority than canned message.')?></i></small></p>
 </div>
 
