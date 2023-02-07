@@ -28,8 +28,8 @@
                     </td>
                     <td nowrap>
                         <div class="btn-group" role="group" aria-label="..." style="width:60px;">
-                            <a class="btn btn-secondary btn-xs" href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/edit')?>/<?php echo $item->id?>" ><i class="material-icons mr-0">&#xE254;</i></a>
-                            <a class="btn btn-danger btn-xs csfr-required" onclick="return confirm('<?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('kernel/messages','Are you sure?');?>')" href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/delete')?>/<?php echo $item->id?>" ><i class="material-icons mr-0">&#xE872;</i></a>
+                            <a class="btn btn-secondary btn-xs" href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/edit')?>/<?php echo $item->id?>" ><i class="material-icons me-0">&#xE254;</i></a>
+                            <a class="btn btn-danger btn-xs csfr-required" onclick="return confirm('<?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('kernel/messages','Are you sure?');?>')" href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/delete')?>/<?php echo $item->id?>" ><i class="material-icons me-0">&#xE872;</i></a>
                         </div>
                     </td>
                 </tr>

@@ -5,11 +5,11 @@
     <li>Data: <?php isset($rasa_status['date']) ? print date('Y-m-d H:i:s',$rasa_status['date']).', '. erLhcoreClassChat::formatSeconds(time()-$rasa_status['date']).' ago.' : print 'n/a' ?></li>
     <li>Outcome:
         <?php if (isset($rasa_status['outcome']) && $rasa_status['outcome'] === false) : ?>
-        <span class="badge badge-danger">failed</span>
+        <span class="badge bg-danger">failed</span>
         <?php elseif (isset($rasa_status['outcome']) && $rasa_status['outcome'] === true) : ?>
-        <span class="badge badge-success">success</span>
+        <span class="badge bg-success">success</span>
         <?php else : ?>
-            <span class="badge badge-secondary">no data</span>
+            <span class="badge bg-secondary">no data</span>
         <?php endif; ?>
     </li>
 </ul>
@@ -24,7 +24,7 @@
             ]])) > 0) : ?>
                 <div class="btn-group m-1">
                     <a target="_blank" href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/edit')?>/<?php echo $itemIntent->id?>" class="btn btn-xs btn-info"><?php echo htmlspecialchars($itemIntent->intent . '|' . $itemIntent->context)?></a>
-                    <button type="button" class="btn btn-xs btn-secondary dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-expanded="false" data-reference="parent">
+                    <button type="button" class="btn btn-xs btn-secondary dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-bs-toggle="dropdown" aria-expanded="false" data-reference="parent">
                         <span class="sr-only">Toggle Dropdown</span>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuReference">

@@ -24,8 +24,8 @@
                 <?php foreach ($items as $item) : ?>
                     <tr>
                         <td>
-                            <button title="Edit intent" data-intent-id="<?php echo $item->intent_id?>" data-id="<?php echo $item->id?>" type="button" id="intent-edit-btn-<?php echo $item->id?>" class="float-left edit-intent btn btn-xs btn-link"><span class="material-icons">&#xE254;</span></button>
-                            <span class="float-left" id="intent-list-<?php echo $item->id?>">
+                            <button title="Edit intent" data-intent-id="<?php echo $item->intent_id?>" data-id="<?php echo $item->id?>" type="button" id="intent-edit-btn-<?php echo $item->id?>" class="float-start edit-intent btn btn-xs btn-link"><span class="material-icons">&#xE254;</span></button>
+                            <span class="float-start" id="intent-list-<?php echo $item->id?>">
                                 <a href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/editexample')?>/<?php echo $item->id?>">
                                     <?php if ($item->intent instanceof erLhcoreClassModelLHCChatBotRasaIntent) : ?>
                                         <?php echo htmlspecialchars($item->intent->name . ' | ' . $item->intent); ?>
@@ -45,8 +45,8 @@
                         </td>
                         <td nowrap>
                             <div class="btn-group" role="group" aria-label="..." style="width:60px;">
-                                <a class="btn btn-secondary btn-xs" href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/editexample')?>/<?php echo $item->id?>" ><i class="material-icons mr-0">&#xE254;</i></a>
-                                <a class="btn btn-danger btn-xs csfr-required" onclick="return confirm('<?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('kernel/messages','Are you sure?');?>')" href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/deleteexample')?>/<?php echo $item->id?>" ><i class="material-icons mr-0">&#xE872;</i></a>
+                                <a class="btn btn-secondary btn-xs" href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/editexample')?>/<?php echo $item->id?>" ><i class="material-icons me-0">&#xE254;</i></a>
+                                <a class="btn btn-danger btn-xs csfr-required" onclick="return confirm('<?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('kernel/messages','Are you sure?');?>')" href="<?php echo erLhcoreClassDesign::baseurl('rasaaitraining/deleteexample')?>/<?php echo $item->id?>" ><i class="material-icons me-0">&#xE872;</i></a>
                             </div>
                         </td>
                     </tr>

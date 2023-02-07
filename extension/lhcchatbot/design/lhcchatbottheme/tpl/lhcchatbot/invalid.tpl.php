@@ -31,9 +31,9 @@
                     <td><?php echo htmlspecialchars($item->counter)?></td>
                     <td nowrap>
                         <div class="btn-group" role="group" aria-label="..." style="width:60px;">
-                            <a class="btn btn-info btn-xs" href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/editreport')?>/<?php echo $item->id?>" title="Edit training"><i class="material-icons mr-0">&#xE254;</i></a>
-                            <a class="btn btn-warning btn-xs csfr-required" href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/deletereport')?>/<?php echo $item->id?>" title="Only report will be deleted"><i class="material-icons mr-0">visibility_off</i></a>
-                            <a class="btn btn-danger btn-xs csfr-required" onclick="return confirm('<?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('kernel/messages','Are you sure?');?>')" title="Report and related bot training will be deleted" href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/deleteall')?>/<?php echo $item->id?>" ><i class="material-icons mr-0">&#xE872;</i></a>
+                            <a class="btn btn-info btn-xs" href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/editreport')?>/<?php echo $item->id?>" title="Edit training"><i class="material-icons me-0">&#xE254;</i></a>
+                            <a class="btn btn-warning btn-xs csfr-required" href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/deletereport')?>/<?php echo $item->id?>" title="Only report will be deleted"><i class="material-icons me-0">visibility_off</i></a>
+                            <a class="btn btn-danger btn-xs csfr-required" onclick="return confirm('<?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('kernel/messages','Are you sure?');?>')" title="Report and related bot training will be deleted" href="<?php echo erLhcoreClassDesign::baseurl('lhcchatbot/deleteall')?>/<?php echo $item->id?>" ><i class="material-icons me-0">&#xE872;</i></a>
                         </div>
                     </td>
                 </tr>

@@ -223,7 +223,7 @@ var lhcChatBot = {
 
                         var containerSuggest = $('#suggest-completer-' + chat_id);
                         if ($('#suggest-completer-' + chat_id).length == 0) {
-                            $('#suggest-container-' + chat_id+' > ul').prepend('<li class="list-inline-item pl-1 pb-1"><span class=" btn btn-sm btn-light btn-send-success text-left" id="suggest-completer-' + chat_id + '"></span></li>');
+                            $('#suggest-container-' + chat_id+' > ul').prepend('<li class="list-inline-item ps-1 pb-1"><span class=" btn btn-sm btn-light btn-send-success text-left" id="suggest-completer-' + chat_id + '"></span></li>');
                             $('#suggest-completer-' + chat_id).click(function () {
                                 // Replace workflow
                                 if (typeof elm.chatterBotReplace !== 'undefined' && elm.chatterBotReplace == true){
@@ -296,7 +296,7 @@ var lhcChatBot = {
                     $.each(item, function (i, itemSuggest) {
                         if ($('#' + chat_id + '-' + itemSuggest.aid).length == 0) {
                             messageArea.attr('placeholder',itemSuggest.a+' | →')[0].chatterBot = itemSuggest;
-                            var li = jQuery('<li class="list-inline-item pl-1 pb-1 suggestion" ><button type="button" class="btn btn-sm btn-light" title="Prefill message field" data-aid="' + itemSuggest.aid + '" data-ctx="' + itemSuggest.ctx + '" data-title="' + jQuery('<p/>').text(itemSuggest.a).html() + '" onclick="return lhcChatBot.prefill(' + chat_id + ',$(this))"><i class="material-icons mr-0 fs11">edit</i></button> <button id="' + chat_id + '-' + itemSuggest.aid + '" data-aid="' + itemSuggest.aid + '" onclick="lhcChatBot.sendSuggest(' + chat_id + ',$(this))" style="max-width: 300px" title="' + jQuery('<p/>').text(itemSuggest.a).html() + '" type="button" data-ctx="' + itemSuggest.ctx + '" data-aid="' + itemSuggest.aid + '" class="btn btn-sm btn-light border border-white text-truncate btn-send-success text-left">' + jQuery('<p/>').text(itemSuggest.a).html() + '</button> <button type="button" data-aid="' + itemSuggest.aid + '" data-ctx="' + itemSuggest.ctx + '" class="btn btn-xs btn-danger" title="' + jQuery('<p/>').text(itemSuggest.in_response).html() + '" onclick="return lhcChatBot.sendNegative(' + chat_id + ',$(this))"><i class="material-icons mr-0 fs11">delete</i></button></li>').attr('title', jQuery('<p/>').text(itemSuggest.q).html());
+                            var li = jQuery('<li class="list-inline-item ps-1 pb-1 suggestion" ><button type="button" class="btn btn-sm btn-light" title="Prefill message field" data-aid="' + itemSuggest.aid + '" data-ctx="' + itemSuggest.ctx + '" data-title="' + jQuery('<p/>').text(itemSuggest.a).html() + '" onclick="return lhcChatBot.prefill(' + chat_id + ',$(this))"><i class="material-icons me-0 fs11">edit</i></button> <button id="' + chat_id + '-' + itemSuggest.aid + '" data-aid="' + itemSuggest.aid + '" onclick="lhcChatBot.sendSuggest(' + chat_id + ',$(this))" style="max-width: 300px" title="' + jQuery('<p/>').text(itemSuggest.a).html() + '" type="button" data-ctx="' + itemSuggest.ctx + '" data-aid="' + itemSuggest.aid + '" class="btn btn-sm btn-light border border-white text-truncate btn-send-success text-left">' + jQuery('<p/>').text(itemSuggest.a).html() + '</button> <button type="button" data-aid="' + itemSuggest.aid + '" data-ctx="' + itemSuggest.ctx + '" class="btn btn-xs btn-danger" title="' + jQuery('<p/>').text(itemSuggest.in_response).html() + '" onclick="return lhcChatBot.sendNegative(' + chat_id + ',$(this))"><i class="material-icons me-0 fs11">delete</i></button></li>').attr('title', jQuery('<p/>').text(itemSuggest.q).html());
                             var completer = $('#suggest-completer-'+chat_id);
                             if (completer.length > 0) {
                                 completer.parent().after(li);
@@ -372,7 +372,7 @@ var lhcChatBot = {
     },
 
     addCombination: function (inst, chat_id, event) {
-        inst.parent().append('<form action="" onsubmit="return lhcChatBot.saveCombination(' + chat_id + ')"><i>&quot;' + jQuery('<p/>').text(lhcChatBot.selectedText).html() + '&quot;</i><div class="input-group mt-1"><input onclick="event.stopPropagation();" id="combination-chatter-' + chat_id + '" type="text" placeholder="Enter proposed answer" class="form-control form-control-sm" value=""><div class="input-group-prepend"><button onclick="lhcChatBot.saveCombination(' + chat_id + ')" class="btn btn-success btn-sm" type="button">Add</button></div></div></form>')
+        inst.parent().append('<form action="" onsubmit="return lhcChatBot.saveCombination(' + chat_id + ')"><i>&quot;' + jQuery('<p/>').text(lhcChatBot.selectedText).html() + '&quot;</i><div class="input-group mt-1"><input onclick="event.stopPropagation();" id="combination-chatter-' + chat_id + '" type="text" placeholder="Enter proposed answer" class="form-control form-control-sm" value=""><button onclick="lhcChatBot.saveCombination(' + chat_id + ')" class="btn btn-success btn-sm" type="button">Add</button></div></form>')
         event.stopPropagation();
         $('#combination-chatter-' + chat_id).focus();
         return false;
@@ -414,7 +414,7 @@ ee.addListener('quoteAction', function (params, chat_id) {
     if (lhcChatBot.unsupported.indexOf(chat_id) === -1 && lhcChatBot.disabled == false) {
         lhcChatBot.selectedText = lhinst.getSelectedTextPlain();
         var contentOriginal = params['content']();
-        params['content'] = function(){ return contentOriginal + ' | <a href="#" id="add-suggestion-popover-'+chat_id+'"><i class="material-icons mr-0">library_add</i></a>' }
+        params['content'] = function(){ return contentOriginal + ' | <a href="#" id="add-suggestion-popover-'+chat_id+'"><i class="material-icons me-0">library_add</i></a>' }
         // Add event listener
         setTimeout(function(){
             $('#add-suggestion-popover-'+chat_id).click(function (event){
