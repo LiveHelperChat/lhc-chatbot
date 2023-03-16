@@ -148,6 +148,9 @@ class erLhcoreClassExtensionLhcchatbot
                 'mHost' => $dataValue['msearch_host'],
                 'pKey' => $dataValue['public_key'],
             );
+
+            erLhcoreClassChatEventDispatcher::getInstance()->dispatch('lhcchatbot.loadinitialdata', array('params' => & $params));
+
         } else {
            $params['lists']['lhcchatbot'] = array('enabled' => false);
         }

@@ -201,16 +201,34 @@ var lhcChatBot = {
                     return;
                 }
 
-                lhcChatBot._currentRequest = $.ajax({
+                var argsRequest = {
                     dataType: "json",
                     cache: true,
                     beforeSend: function(xhr, settings) {
                         xhr.setRequestHeader("X-Meili-API-Key", lhcChatBot.autoComplete.pKey);
                     },
                     url: lhcChatBot.autoComplete.mHost + '/indexes/' + indexSearch + '/search?limit=1&attributesToHighlight=*&q=' + encodeURIComponent(lhcChatBot.lastQuery)
-                }).done(function(resp){
+                };
+
+                if (lhcChatBot.autoComplete.overrideType) {
+                    argsRequest.type = lhcChatBot.autoComplete.overrideType;
+                }
+
+                if (lhcChatBot.autoComplete.overrideData) {
+                    lhcChatBot.autoComplete.overrideData.text = lhcChatBot.lastQuery;
+                    argsRequest.data = JSON.stringify(lhcChatBot.autoComplete.overrideData);
+                    argsRequest.contentType = "application/json; charset=utf-8";
+                }
+
+                if (lhcChatBot.autoComplete.overrideHost) {
+                    argsRequest.url = lhcChatBot.autoComplete.overrideHost;
+                }
+
+                lhcChatBot._currentRequest = $.ajax(argsRequest).done(function(resp){
                     var chat_id = elm.getAttribute('id').replace('CSChatMessage-','');
                     var suggestionSet = false;
+
+                    ee.emitEvent('lhcchatbot.autocomplete_transform', [resp]);
 
                     if (resp.hits.length > 0) {
                         var responseText = resp.hits[0]['question'];
