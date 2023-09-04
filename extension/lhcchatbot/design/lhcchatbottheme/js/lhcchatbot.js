@@ -236,7 +236,7 @@ var lhcChatBot = {
                         var containerSuggest = $('#suggest-container-' + chat_id);
 
                         if ($('#suggest-container-' + chat_id).length == 0) {
-                            $('#CSChatMessage-' + chat_id).parent().after('<div id="suggest-container-' + chat_id + '"><ul class="lhcchatbot-list list-inline"></ul></div>');
+                            $('#CSChatMessage-' + chat_id).parent().after('<div id="suggest-container-' + chat_id + '"><ul class="lhcchatbot-list list-inline generic-small-res-hide"></ul></div>');
                         }
 
                         var containerSuggest = $('#suggest-completer-' + chat_id);
