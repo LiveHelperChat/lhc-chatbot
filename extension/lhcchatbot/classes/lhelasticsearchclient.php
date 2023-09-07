@@ -7,7 +7,7 @@ use GuzzleHttp\Ring\Future\CompletedFutureArray;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\ResponseInterface;
-
+#[\AllowDynamicProperties]
 class erLhcoreClassElasticChatbotClient {
 	
 	private static $handler = null;

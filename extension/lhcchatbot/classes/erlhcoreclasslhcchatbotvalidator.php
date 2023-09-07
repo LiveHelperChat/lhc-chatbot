@@ -1,5 +1,5 @@
 <?php
-
+#[\AllowDynamicProperties]
 class erLhcoreClassExtensionLHCChatBotValidator
 {
     public static function getContextFilter($userId) {

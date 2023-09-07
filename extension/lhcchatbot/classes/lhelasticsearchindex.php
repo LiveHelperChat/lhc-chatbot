@@ -1,5 +1,5 @@
 <?php
-
+#[\AllowDynamicProperties]
 class erLhcoreClassElasticSearchChatboxIndex
 {
     public static function indexChats($params)

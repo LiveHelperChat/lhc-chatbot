@@ -3,6 +3,7 @@
 /**
  * Direct integration with LHC ChatBot
  * */
+#[\AllowDynamicProperties]
 class erLhcoreClassExtensionLhcchatbot
 {
     private $configData = false;

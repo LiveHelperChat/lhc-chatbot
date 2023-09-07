@@ -1,5 +1,5 @@
 <?php
-
+#[\AllowDynamicProperties]
 class erLhcoreClassModelESChatbotQuestion
 {
     use erLhcoreClassElasticChatbotTrait;

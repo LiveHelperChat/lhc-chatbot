@@ -1,5 +1,5 @@
 <?php
-
+#[\AllowDynamicProperties]
 class erLhcoreClassElasticSearchChatbotUpdate
 {
     public static function getElasticStatus($definition)
