@@ -36,10 +36,11 @@
         ],
         "id": "tfidf_vec",
         "class_name": "sklearn_component",
-        "save_path": "{MODELS_PATH}/faq/mipt/en_mipt_faq_v4/tfidf.pkl",
-        "load_path": "{MODELS_PATH}/faq/mipt/en_mipt_faq_v4/tfidf.pkl",
+        "save_path": "{MODELS_PATH}/faq/mipt/en_mipt_faq_v5/tfidf.pkl",
+        "load_path": "{MODELS_PATH}/faq/mipt/en_mipt_faq_v5/tfidf.pkl",
         "model_class": "sklearn.feature_extraction.text:TfidfVectorizer",
-        "infer_method": "transform"
+        "infer_method": "transform",
+        "warm_start": true
       },
       {
         "id": "answers_vocab",
@@ -47,8 +48,8 @@
         "fit_on": [
           "y"
         ],
-        "save_path": "{MODELS_PATH}/faq/mipt/en_mipt_faq_v4/en_mipt_answers.dict",
-        "load_path": "{MODELS_PATH}/faq/mipt/en_mipt_faq_v4/en_mipt_answers.dict",
+        "save_path": "{MODELS_PATH}/faq/mipt/en_mipt_faq_v5/en_mipt_answers.dict",
+        "load_path": "{MODELS_PATH}/faq/mipt/en_mipt_faq_v5/en_mipt_answers.dict",
         "in": "y",
         "out": "y_ids"
       },
@@ -63,10 +64,11 @@
         ],
         "class_name": "sklearn_component",
         "main": true,
-        "save_path": "{MODELS_PATH}/faq/mipt/en_mipt_faq_v4/logreg.pkl",
-        "load_path": "{MODELS_PATH}/faq/mipt/en_mipt_faq_v4/logreg.pkl",
+        "save_path": "{MODELS_PATH}/faq/mipt/en_mipt_faq_v5/logreg.pkl",
+        "load_path": "{MODELS_PATH}/faq/mipt/en_mipt_faq_v5/logreg.pkl",
         "model_class": "sklearn.linear_model:LogisticRegression",
         "infer_method": "predict_proba",
+        "warm_start": true,
         "C": 1000,
         "penalty": "l2"
       },
@@ -74,9 +76,7 @@
         "in": "y_pred_proba",
         "out": "y_pred_ids",
         "class_name": "proba2labels",
-        "max_proba": true,
-        "top_n": 2,
-        "confident_threshold": 0.05
+        "top_n": 3
       },
       {
         "in": "y_pred_ids",
@@ -98,15 +98,9 @@
       "DOWNLOADS_PATH": "{ROOT_PATH}/downloads",
       "MODELS_PATH": "{ROOT_PATH}/models"
     },
-    "requirements": [
-      "{DEEPPAVLOV_PATH}/requirements/spacy.txt",
-      "{DEEPPAVLOV_PATH}/requirements/en_core_web_sm.txt",
-      "{DEEPPAVLOV_PATH}/requirements/kenlm.txt",
-      "{DEEPPAVLOV_PATH}/requirements/spelling.txt"
-    ],
     "download": [
       {
-        "url": "http://files.deeppavlov.ai/faq/mipt/en_mipt_faq_v4.tar.gz",
+        "url": "http://files.deeppavlov.ai/faq/mipt/en_mipt_faq_v5.tar.gz",
         "subdir": "{MODELS_PATH}/faq/mipt"
       },
       {

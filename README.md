@@ -145,6 +145,18 @@ To test does it works you can use CURL command
 curl -X POST "http://localhost:5000/model" -H  "accept: application/json" -H  "Content-Type: application/json" -d "{\"q\":[\"hi\"]}"
 ```
 
+To rebuild image
+
+```shell
+docker-compose -f docker-dp-compose.yml build --no-cache
+```
+
+To restart with forcing to recreate it
+
+```
+docker-compose -f docker-dp-compose.yml up --force-recreate
+```
+
 ### With spellchecker
 
 With spellchecker visitor messages before running against your questions will be checked against spelling errors.

@@ -514,7 +514,9 @@ class erLhcoreClassExtensionLHCChatBotValidator
 
                         if ($msgSearch != '')
                         {
+
                             $contextObject = erLhcoreClassModelLHCChatBotContext::fetch($contextId);
+
                             if ($contextObject->meili == 1 || class_exists('erLhcoreClassInstance')) {
                                 $answer = self::getAnswerMeili($contextObject->id, $msgSearch, $dataValue);
                             } else {
@@ -639,7 +641,7 @@ class erLhcoreClassExtensionLHCChatBotValidator
         $response = ['found' => false, 'msg' => ''];
 
         if (is_array($contentJSON)) {
-            if (isset($contentJSON[0][0][0])) {
+            if (isset($contentJSON[0][0][0]) && is_array($contentJSON[0][0])) {
                 $response['found'] = true;
                 $response['in_response'] = $question;
                 if ($debug === false) {
@@ -649,6 +651,17 @@ class erLhcoreClassExtensionLHCChatBotValidator
                     }
                 } else {
                     $response['msg'] = $contentJSON[0][0];
+                }
+            } elseif (isset($contentJSON[0][0]) && is_array($contentJSON[0])) {
+                $response['found'] = true;
+                $response['in_response'] = $question;
+                if ($debug === false) {
+                    $response['msg'] = explode('__', $contentJSON[0][0])[1];
+                    if (isset($contentJSON[0][1])) {
+                        $response['msg_alt'] = explode('__', $contentJSON[0][1])[1];
+                    }
+                } else {
+                    $response['msg'] = $contentJSON[0];
                 }
             }
         }

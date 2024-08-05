@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM python:3.7-slim-stretch as intermediate
+FROM python:3.9-slim-bullseye as intermediate
 
-ARG COMMIT=master
+ARG COMMIT=6e1036dbfcde1c293b50c742f0736a3965dd1e0d
 
 EXPOSE 5000
 
@@ -54,7 +54,7 @@ COPY config/train_tfidf_logreg_en_faq.json /base/config/train_tfidf_logreg_en_fa
 RUN python -m deeppavlov install /base/config/train_tfidf_logreg_en_faq.json
 RUN python -m deeppavlov download /base/config/train_tfidf_logreg_en_faq.json
 
-FROM python:3.7-slim-stretch
+FROM python:3.9-slim-bullseye
 
 COPY --from=intermediate /base /base
 
