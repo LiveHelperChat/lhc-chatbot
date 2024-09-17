@@ -551,9 +551,9 @@ class erLhcoreClassExtensionLHCChatBotValidator
                                         }
 
                                     } elseif ($contextObject->meili == 2) {
-                                        $rasaIntent = erLhcoreClassModelLHCChatBotRasaIntent::findOne(['filter' => ['context_id' => $contextObject->id, 'intent' => $answer['msg']]]);
+                                        $rasaIntent = erLhcoreClassModelLHCChatBotRasaIntent::findOne(['filter' => ['context_id' => $contextId, 'intent' => $answer['msg']]]);
                                         if ($rasaIntent instanceof erLhcoreClassModelLHCChatBotRasaIntent) {
-                                            $answerObj = erLhcoreClassModelLHCChatBotQuestion::findOne(array('filter' => array('context_id' =>  $contextObject->id, 'rasa_intent_id' => $rasaIntent->id)));
+                                            $answerObj = erLhcoreClassModelLHCChatBotQuestion::findOne(array('filter' => array('context_id' =>  $contextId, 'rasa_intent_id' => $rasaIntent->id)));
                                             if ($answerObj instanceof erLhcoreClassModelLHCChatBotQuestion) {
                                                 $suggestions[$msg->chat_id][] = array('a' => $answerObj->answer, 'ctx' => $contextId, 'q' => $msg->msg, 'in_response' => $answer['in_response'], 'aid' => $answerObj->hash);
                                             }
