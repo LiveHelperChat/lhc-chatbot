@@ -26,6 +26,7 @@ class erLhcoreClassModelLHCChatBotQuestion
             'confirmed' => $this->confirmed,
             'chat_id' => $this->chat_id,
             'user_id' => $this->user_id,
+            'rasa_intent_id' => $this->rasa_intent_id,
         );
 
         return $stateArray;
@@ -103,4 +104,5 @@ class erLhcoreClassModelLHCChatBotQuestion
     public $confirmed = 1;
     public $chat_id = 0;
     public $user_id = 0;
+    public $rasa_intent_id = 0;
 }

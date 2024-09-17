@@ -135,6 +135,9 @@ class erLhcoreClassExtensionLHCChatBotValidator
             'context_id' => new ezcInputFormDefinitionElement(
                 ezcInputFormDefinitionElement::OPTIONAL, 'int', array('min_range' => 1)
             ),
+            'rasa_intent_id' => new ezcInputFormDefinitionElement(
+                ezcInputFormDefinitionElement::OPTIONAL, 'int', array('min_range' => 1)
+            ),
             'canned_id' => new ezcInputFormDefinitionElement(
                 ezcInputFormDefinitionElement::OPTIONAL, 'int', array('min_range' => 1)
             )
@@ -155,6 +158,12 @@ class erLhcoreClassExtensionLHCChatBotValidator
             $question->canned_id = $form->canned_id;
         } else {
             $question->canned_id = 0;
+        }
+
+        if ( $form->hasValidData( 'rasa_intent_id' ) ) {
+            $question->rasa_intent_id = $form->rasa_intent_id;
+        } else {
+            $question->rasa_intent_id = 0;
         }
 
         if ($form->hasValidData( 'answer' ) && $form->answer != '') {
@@ -274,7 +283,7 @@ class erLhcoreClassExtensionLHCChatBotValidator
                 ezcInputFormDefinitionElement::OPTIONAL, 'unsafe_raw'
             ),
             'meili' => new ezcInputFormDefinitionElement(
-                ezcInputFormDefinitionElement::OPTIONAL, 'boolean'
+                ezcInputFormDefinitionElement::OPTIONAL, 'int', array('min_range' => 0,'max_range' => 2)
             )
         );
 
@@ -294,8 +303,8 @@ class erLhcoreClassExtensionLHCChatBotValidator
                 $Errors[] =  erTranslationClassLhTranslation::getInstance()->getTranslation('xmppservice/operatorvalidator','Please enter host!');
             }
 
-            if ( $form->hasValidData( 'meili' ) && $form->meili == true ) {
-                $context->meili = 1;
+            if ( $form->hasValidData( 'meili' )) {
+                $context->meili = $form->meili;
             } else {
                 $context->meili = 0;
             }
@@ -519,6 +528,8 @@ class erLhcoreClassExtensionLHCChatBotValidator
 
                             if ($contextObject->meili == 1 || class_exists('erLhcoreClassInstance')) {
                                 $answer = self::getAnswerMeili($contextObject->id, $msgSearch, $dataValue);
+                            } else if ($contextObject->meili == 2) {
+                                $answer = self::getAnswerRasa($contextObject->host, $msgSearch);
                             } else {
                                 $answer = self::getAnswer($contextObject->host, $msgSearch);
                             }
@@ -539,6 +550,14 @@ class erLhcoreClassExtensionLHCChatBotValidator
                                             }
                                         }
 
+                                    } elseif ($contextObject->meili == 2) {
+                                        $rasaIntent = erLhcoreClassModelLHCChatBotRasaIntent::findOne(['filter' => ['context_id' => $contextObject->id, 'intent' => $answer['msg']]]);
+                                        if ($rasaIntent instanceof erLhcoreClassModelLHCChatBotRasaIntent) {
+                                            $answerObj = erLhcoreClassModelLHCChatBotQuestion::findOne(array('filter' => array('context_id' =>  $contextObject->id, 'rasa_intent_id' => $rasaIntent->id)));
+                                            if ($answerObj instanceof erLhcoreClassModelLHCChatBotQuestion) {
+                                                $suggestions[$msg->chat_id][] = array('a' => $answerObj->answer, 'ctx' => $contextId, 'q' => $msg->msg, 'in_response' => $answer['in_response'], 'aid' => $answerObj->hash);
+                                            }
+                                        }
                                     } else {
                                         $answerObj = erLhcoreClassModelLHCChatBotQuestion::findOne(array('filter' => array('hash' => $answer['msg'])));
                                         if ($answerObj instanceof erLhcoreClassModelLHCChatBotQuestion) {
@@ -563,6 +582,41 @@ class erLhcoreClassExtensionLHCChatBotValidator
         }
 
         return $suggestions;
+    }
+
+    public static function getAnswerRasa($host, $question, $debug = false) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['text' => $question]));
+        curl_setopt($ch, CURLOPT_URL, $host);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+        @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+
+        $content = curl_exec($ch);
+
+        if (curl_errno($ch)) {
+            $http_error = curl_error($ch);
+        }
+
+        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        $contentJSON = json_decode($content, true);
+
+        $response = ['found' => false, 'msg' => ''];
+
+        if ($httpcode == 200 && !empty($contentJSON['intent'])) {
+            $response['found'] = true;
+            $response['in_response'] = $question;
+            $response['msg'] = $contentJSON['intent']['name'];
+        }
+
+        return $response;
+
     }
 
     public static function getAnswerMeili($context, $question, $params) {

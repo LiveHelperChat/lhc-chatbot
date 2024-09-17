@@ -44,6 +44,20 @@
 	)); ?>
 </div>
 
+<div class="form-group" ng-non-bindable>
+    <label><?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Intent if Rasa AI is used for FAQ');?></label>
+    <?php echo erLhcoreClassRenderHelper::renderCombobox(array(
+			'input_name'     => 'rasa_intent_id',
+			'optional_field' =>  erTranslationClassLhTranslation::getInstance()->getTranslation('department/edit','Choose'),
+			'display_name'   => 'intent',
+            'css_class'      => 'form-control form-control-sm',
+			'selected_id'    => $question->rasa_intent_id,
+			'list_function'  => 'erLhcoreClassModelLHCChatBotRasaIntent::getList',
+			'list_function_params'  => array('limit' => '1000000','filter' => array('context_id' => $question->context_id))
+	)); ?>
+</div>
+<p>Save question before choosing intent.</p>
+
 <div class="form-group">
     <label><input type="checkbox" name="confirmed" value="on" <?php $question->confirmed == 1 ? print 'checked="checked"' : ''; ?> > <?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('lhcchatbot/module','Confirmed')?></label>
 </div>

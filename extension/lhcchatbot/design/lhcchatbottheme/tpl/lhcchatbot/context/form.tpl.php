@@ -12,10 +12,11 @@
 </div>
 
 <div class="form-group">
-    <label>
-        <input type="checkbox" value="on" name="meili" <?php if ($context->meili == 1) : ?>checked="checked"<?php endif;?> />
-        <?php echo erTranslationClassLhTranslation::getInstance()->getTranslation('rasatraining/form','Use MeiliSearch instead of DeepPavlov')?>
-    </label>
+    <select class="form-control form-control-sm" name="meili">
+        <option value="0">DeepPavlov</option>
+        <option value="1" <?php if ($context->meili == 1) : ?>selected="selected"<?php endif;?>>Meili search</option>
+        <option value="2" <?php if ($context->meili == 2) : ?>selected="selected"<?php endif;?>>Rasa Intent</option>
+    </select>
 </div>
 
 <?php endif; ?>

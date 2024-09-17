@@ -19,6 +19,11 @@ $def->properties['hash']->columnName   = 'hash';
 $def->properties['hash']->propertyName = 'hash';
 $def->properties['hash']->propertyType = ezcPersistentObjectProperty::PHP_TYPE_STRING;
 
+$def->properties['rasa_intent_id'] = new ezcPersistentObjectProperty();
+$def->properties['rasa_intent_id']->columnName   = 'rasa_intent_id';
+$def->properties['rasa_intent_id']->propertyName = 'rasa_intent_id';
+$def->properties['rasa_intent_id']->propertyType = ezcPersistentObjectProperty::PHP_TYPE_INT;
+
 $def->properties['answer'] = new ezcPersistentObjectProperty();
 $def->properties['answer']->columnName   = 'answer';
 $def->properties['answer']->propertyName = 'answer';
