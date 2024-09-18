@@ -117,6 +117,10 @@ $ViewList['exportsuggestions'] = array(
     'params' => array(),
 );
 
+$ViewList['downloadtrain'] = array(
+    'params' => array('id')
+);
+
 $FunctionList['use'] = array('explain' => 'Allow to list questions and answers');
 $FunctionList['use_admin'] = array('explain' => 'Allow to manager bot');
 $FunctionList['use_test'] = array('explain' => 'Allow operator to use test environment');
