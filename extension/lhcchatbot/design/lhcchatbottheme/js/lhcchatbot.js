@@ -1,3 +1,4 @@
+
 var lhcChatBot = {
     disabled : false,
     _currentRequest : null,
@@ -16,14 +17,37 @@ var lhcChatBot = {
     lastQuery: null,
 
     replaceValue : function(elm, chat_id) {
-        var valueNext = elm.value.replace('#' + lhcChatBot.lastQuery,'' + elm.chatterBotComplete);
+
+        var presentValue = '';
+
+        if (elm.nodeName == 'LHC-EDITOR') {
+            let data = elm.getCaretPositionAndContent();
+            presentValue = data['content'];
+        } else {
+            presentValue = elm.value;
+        }
+
+        var valueNext = presentValue.replace('#' + lhcChatBot.lastQuery,'' + elm.chatterBotComplete);
+
         var valueOrig = elm.chatterBotComplete;
         Object.keys(lhcChatBot.chatData[chat_id]['placeholders']).forEach(function(key) {
             valueNext = valueNext.replace(key,lhcChatBot.chatData[chat_id]['placeholders'][key])
         });
-        elm.value = valueNext;
+
+        if (elm.nodeName == 'LHC-EDITOR') {
+            elm.replaceRange(valueNext);
+        } else {
+            elm.value = valueNext;
+        }
+
         elm.chatterBotComplete = null;
-        $('#suggest-completer-'+chat_id).text('...');
+
+        if (elm.nodeName == 'LHC-EDITOR') {
+            elm.removeSuggester();
+        } else {
+            $('#suggest-completer-'+chat_id).text('...');
+        }
+
 
         $.postJSON(WWW_DIR_JAVASCRIPT + 'lhcchatbot/suggestused/' + chat_id, {
             'answer': valueOrig,
@@ -63,19 +87,34 @@ var lhcChatBot = {
         if (typeof params['full'] === 'undefined' && max > 0) {
             sentenes = elm.chatterBotComplete.substring(0,max + 1);
             elm.chatterBotComplete = elm.chatterBotComplete.replace(sentenes,'');
-            $('#suggest-completer-'+chat_id).text(elm.chatterBotComplete == '' ? '...' : elm.chatterBotComplete);
+            if (elm.nodeName == 'LHC-EDITOR') {
+                elm.setSuggester(elm.chatterBotComplete);
+            } else {
+                $('#suggest-completer-'+chat_id).text(elm.chatterBotComplete == '' ? '...' : elm.chatterBotComplete);
+            }
         } else {
             elm.chatterBotComplete = null;
             $('#suggest-completer-'+chat_id).text('...');
         }
 
-        var valueNext = (elm.value + sentenes).replace('  ',' ');
+        if (elm.nodeName == 'LHC-EDITOR') {
+            let data = elm.getCaretPositionAndContent();
+            var valuePresent = data['content'];
+        } else {
+            var valuePresent = elm.value;
+        }
+
+        var valueNext = (valuePresent + sentenes).replace('  ',' ');
 
         Object.keys(lhcChatBot.chatData[chat_id]['placeholders']).forEach(function(key) {
             valueNext = valueNext.replace(key,lhcChatBot.chatData[chat_id]['placeholders'][key])
         });
 
-        elm.value = valueNext;
+        if (elm.nodeName == 'LHC-EDITOR') {
+            elm.replaceRange(valueNext);
+        } else {
+            elm.value = valueNext;
+        }
 
         $.postJSON(WWW_DIR_JAVASCRIPT + 'lhcchatbot/suggestused/' + chat_id, {
             'answer': lhcChatBot.lastQuery + senteceOriginal,
@@ -87,11 +126,36 @@ var lhcChatBot = {
 
     },
 
+    setValue : function(elm, value) {
+        if (elm.nodeName == 'LHC-EDITOR') {
+            elm.setContent(value,{"convert_bbcode" : true});
+        } else {
+            elm.value = value;
+        }
+    },
+
     addListener : function (evt) {
         var elm = evt.currentTarget;
+        var presentValue = "",caretPos = 0, originalTextLength = 0, newEditor = false;
 
-        if (evt.which == 39 && elm !== null && elm.value == '' && typeof elm.chatterBot !== 'undefined') {
-            elm.value = elm.chatterBot.a;
+        if (elm) {
+            if (elm.classList.contains('lhc-editor')) {
+                elm = elm.parentNode;
+                var data = elm.getCaretPositionAndContent();
+                var caretPos = data['caret'];
+                var presentValue = data['content'];
+                var originalTextLength = data['content'].length;
+                newEditor = true;
+            } else {
+                var presentValue = elm.value;
+                var caretPos = elm.selectionStart;
+                var originalTextLength = presentValue.length;
+                newEditor = false;
+            }
+        }
+
+        if (evt.which == 39 && elm !== null && presentValue == '' && typeof elm.chatterBot !== 'undefined') {
+            lhcChatBot.setValue(elm, elm.chatterBot.a);
             var chat_id = elm.getAttribute('id').replace('CSChatMessage-','');
             $.postJSON(WWW_DIR_JAVASCRIPT + 'lhcchatbot/suggestused/' + chat_id, {
                 'answer': elm.chatterBot.a,
@@ -100,13 +164,13 @@ var lhcChatBot = {
                 'aid': elm.chatterBot.aid,
                 'type': 1
             });
-        } else if ((evt.which == 39 || evt.which == 9) && elm !== null && elm.value != '') {
+        } else if ((evt.which == 39 || evt.which == 9) && elm !== null && presentValue != '') {
 
-            if (elm.value.length != elm.selectionStart) {
+            if ((newEditor === false && presentValue.length != caretPos) || (newEditor === true && !elm.isCursorAtEnd())) {
                 return;
             }
 
-            if (elm.value.length && elm.selectionStart && typeof elm.chatterBotComplete !== 'undefined' && elm.chatterBotComplete !== null && elm.chatterBotComplete !== '') {
+            if (originalTextLength && caretPos && typeof elm.chatterBotComplete !== 'undefined' && elm.chatterBotComplete !== null && elm.chatterBotComplete !== '') {
 
                 var chat_id = elm.getAttribute('id').replace('CSChatMessage-','');
 
@@ -138,16 +202,35 @@ var lhcChatBot = {
 
             clearTimeout(lhcChatBot.timeoutComplete);
 
+            if (lhcChatBot._currentRequest != null) {
+                lhcChatBot._currentRequest.abort();
+                lhcChatBot._currentRequest = null;
+
+                if (elm.nodeName == 'LHC-EDITOR') {
+                    elm.removeSuggester();
+                } else {
+                    $('#suggest-completer-'+chat_id).text('...');
+                }
+            }
+
             lhcChatBot.timeoutComplete = setTimeout(function () {
 
-                if (lhcChatBot._currentRequest != null) {
-                    lhcChatBot._currentRequest.abort();
-                    lhcChatBot._currentRequest = null;
+                let valueTemporary = "";
+
+                if (elm.nodeName == 'LHC-EDITOR') {
+                    let data = elm.getCaretPositionAndContent();
+                    valueTemporary = data['content'];
+                } else {
+                    valueTemporary = elm.value;
                 }
 
-                if (elm.value == '') {
+                if (valueTemporary == '') {
                     lhcChatBot.lastQuery = '';
-                    $('#suggest-completer-'+chat_id).text('...');
+                    if (elm.nodeName == 'LHC-EDITOR') {
+                        elm.removeSuggester();
+                    } else {
+                        $('#suggest-completer-'+chat_id).text('...');
+                    }
                     return;
                 }
 
@@ -156,7 +239,7 @@ var lhcChatBot = {
                     return;
                 }
 
-                var parts = elm.value.trim().split(' ').splice(-3);
+                var parts = valueTemporary.split(' ').splice(-3);
 
                 // Make sure first word does not end with .
                 if (parts[0].indexOf('.') !== -1 || parts[0].indexOf('!') !== -1 || parts[0].indexOf('?') !== -1) {
@@ -197,7 +280,11 @@ var lhcChatBot = {
                 lhcChatBot.lastQuery = newSearch;
 
                 if (lhcChatBot.lastQuery == '') {
-                    $('#suggest-completer-'+chat_id).text('...');
+                    if (elm.nodeName == 'LHC-EDITOR') {
+                        elm.removeSuggester();
+                    } else {
+                        $('#suggest-completer-'+chat_id).text('...');
+                    }
                     return;
                 }
 
@@ -233,28 +320,37 @@ var lhcChatBot = {
                     if (resp.hits.length > 0) {
                         var responseText = resp.hits[0]['question'];
 
-                        var containerSuggest = $('#suggest-container-' + chat_id);
+                        if (newEditor === false) {
+                            var containerSuggest = $('#suggest-container-' + chat_id);
 
-                        if ($('#suggest-container-' + chat_id).length == 0) {
-                            $('#CSChatMessage-' + chat_id).parent().after('<div id="suggest-container-' + chat_id + '"><ul class="lhcchatbot-list list-inline generic-small-res-hide"></ul></div>');
-                        }
+                            if ($('#suggest-container-' + chat_id).length == 0) {
+                                $('#CSChatMessage-' + chat_id).parent().after('<div id="suggest-container-' + chat_id + '"><ul class="lhcchatbot-list list-inline generic-small-res-hide"></ul></div>');
+                            }
 
-                        var containerSuggest = $('#suggest-completer-' + chat_id);
-                        if ($('#suggest-completer-' + chat_id).length == 0) {
-                            $('#suggest-container-' + chat_id+' > ul').prepend('<li class="list-inline-item ps-1 pb-1"><span class=" btn btn-sm btn-light text-secondary btn-send-success text-left" id="suggest-completer-' + chat_id + '"></span></li>');
-                            $('#suggest-completer-' + chat_id).click(function () {
-                                // Replace workflow
-                                if (typeof elm.chatterBotReplace !== 'undefined' && elm.chatterBotReplace == true){
-                                    lhcChatBot.replaceValue(elm, chat_id);
-                                } else {
-                                    lhcChatBot.appendCompletion(elm, chat_id, {full: true});
-                                }
-                                elm.focus();
-                            });
+                            var containerSuggest = $('#suggest-completer-' + chat_id);
+
+                            if ($('#suggest-completer-' + chat_id).length == 0) {
+                                $('#suggest-container-' + chat_id+' > ul').prepend('<li class="list-inline-item ps-1 pb-1"><span class=" btn btn-sm btn-light text-secondary btn-send-success text-left" id="suggest-completer-' + chat_id + '"></span></li>');
+                                $('#suggest-completer-' + chat_id).click(function () {
+                                    // Replace workflow
+                                    if (typeof elm.chatterBotReplace !== 'undefined' && elm.chatterBotReplace == true){
+                                        lhcChatBot.replaceValue(elm, chat_id);
+                                    } else {
+                                        lhcChatBot.appendCompletion(elm, chat_id, {full: true});
+                                    }
+                                    elm.focus();
+                                });
+                            }
                         }
 
                         if (fullSearch == true) {
-                            $('#suggest-completer-'+chat_id).text((typeof resp.hits[0]['title'] !== 'undefined' ? resp.hits[0]['title'] + ' | ' : '')+responseText).attr('title',responseText);
+
+                            if (newEditor === false) {
+                                $('#suggest-completer-'+chat_id).text((typeof resp.hits[0]['title'] !== 'undefined' ? resp.hits[0]['title'] + ' | ' : '')+responseText).attr('title',responseText);
+                            } else {
+                                elm.setSuggester(responseText);
+                            }
+
                             var textArea = document.getElementById('CSChatMessage-'+chat_id);
                             textArea.chatterBotComplete = responseText;
                             textArea.chatterBotReplace = true;
@@ -270,7 +366,12 @@ var lhcChatBot = {
 
                             if (indexStartReplace !== -1) {
                                 var complete = responseText.substring(indexStartReplace + stringReplace.length);
-                                $('#suggest-completer-'+chat_id).text(complete == '' ? '...' : complete).attr('title',responseText);
+                                if (newEditor === false) {
+                                    $('#suggest-completer-' + chat_id).text(complete == '' ? '...' : complete).attr('title', responseText);
+                                } else {
+                                    elm.setSuggester(complete);
+                                }
+
                                 var textArea = document.getElementById('CSChatMessage-'+chat_id);
                                 textArea.chatterBotComplete = complete;
                                 textArea.chatterBotReplace = false;
@@ -280,7 +381,11 @@ var lhcChatBot = {
                     }
 
                     if (suggestionSet === false) {
-                        $('#suggest-completer-'+chat_id).text('...');
+                        if (newEditor === false) {
+                            $('#suggest-completer-'+chat_id).text('...');
+                        } else {
+                            elm.removeSuggester();
+                        }
                     }
                 });
             }, 300);
@@ -342,7 +447,13 @@ var lhcChatBot = {
 
     prefill : function(chat_id,inst)
     {
-        $("#CSChatMessage-" + chat_id).val(inst.attr('data-title'));
+        var elm = $("#CSChatMessage-" + chat_id);
+
+        if (elm.prop('nodeName') == 'LHC-EDITOR') {
+            elm[0].setContent(inst.attr('data-title'),{"convert_bbcode" : true});
+        } else {
+            elm.val(inst.attr('data-title'));
+        }
 
         $.postJSON(WWW_DIR_JAVASCRIPT + 'lhcchatbot/suggestused/' + chat_id, {
             'answer': inst.attr('data-title'),
@@ -369,7 +480,12 @@ var lhcChatBot = {
     sendSuggest: function (chat_id, inst) {
         // Send message
         var textarea = $("#CSChatMessage-" + chat_id);
-        textarea.val(inst.text());
+
+        if (textarea.prop('nodeName') == 'LHC-EDITOR') {
+            textarea[0].setContent(inst.attr('data-title'),{"convert_bbcode" : true});
+        } else {
+            textarea.val(inst.attr('data-title'));
+        }
 
         lhinst.addmsgadmin(chat_id);
 
@@ -386,7 +502,10 @@ var lhcChatBot = {
         setTimeout(function(){
             inst.removeAttr('disabled').parent().remove();
         },1000);
-        textarea.focus();
+
+        if (textarea.prop('nodeName') != 'LHC-EDITOR') {
+            textarea.focus();
+        }
     },
 
     addCombination: function (inst, chat_id, event) {
@@ -423,8 +542,15 @@ ee.addListener('eventSyncAdmin', function (params) {
 
 ee.addListener('adminChatLoaded', function (chat_id) {
     var elm = document.getElementById('CSChatMessage-'+chat_id);
-    if (elm !== null) {
+    if (elm !== null && elm.nodeName !== 'LHC-EDITOR') {
         elm.addEventListener('keydown', lhcChatBot.addListener);
+    }
+})
+
+ee.addListener('adminChatEditorLoaded', function (chat_id, editor) {
+    var elm = document.getElementById('CSChatMessage-'+chat_id);
+    if (elm !== null) {
+        editor.addEventListener('keydown', lhcChatBot.addListener);
     }
 })
 
@@ -456,7 +582,11 @@ ee.addListener('removeSynchroChat', function(chat_id) {
     // Remove event listener
     var elm = document.getElementById('CSChatMessage-'+chat_id);
     if (elm !== null) {
-        elm.removeEventListener('keydown', lhcChatBot.addListener);
+        if (elm.nodeName == 'LHC-EDITOR') {
+            elm.getEditor().removeEventListener('keydown', lhcChatBot.addListener);
+        } else {
+            elm.removeEventListener('keydown', lhcChatBot.addListener);
+        }
     }
 });
 
