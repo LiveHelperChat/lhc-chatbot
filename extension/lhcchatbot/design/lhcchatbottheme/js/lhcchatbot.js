@@ -129,6 +129,7 @@ var lhcChatBot = {
     setValue : function(elm, value) {
         if (elm.nodeName == 'LHC-EDITOR') {
             elm.setContent(value,{"convert_bbcode" : true});
+            elm.setFocus();
         } else {
             elm.value = value;
         }
