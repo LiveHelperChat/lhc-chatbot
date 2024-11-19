@@ -452,8 +452,10 @@ var lhcChatBot = {
 
         if (elm.prop('nodeName') == 'LHC-EDITOR') {
             elm[0].setContent(inst.attr('data-title'),{"convert_bbcode" : true});
+            elm[0].setFocus();
         } else {
             elm.val(inst.attr('data-title'));
+            elm.focus();
         }
 
         $.postJSON(WWW_DIR_JAVASCRIPT + 'lhcchatbot/suggestused/' + chat_id, {
@@ -482,13 +484,7 @@ var lhcChatBot = {
         // Send message
         var textarea = $("#CSChatMessage-" + chat_id);
 
-        if (textarea.prop('nodeName') == 'LHC-EDITOR') {
-            textarea[0].setContent(inst.attr('data-title'),{"convert_bbcode" : true});
-        } else {
-            textarea.val(inst.attr('data-title'));
-        }
-
-        lhinst.addmsgadmin(chat_id);
+        lhinst.addmsgadmin(chat_id,inst.text());
 
         $.postJSON(WWW_DIR_JAVASCRIPT + 'lhcchatbot/suggestused/' + chat_id, {
             'answer': inst.text(),
@@ -506,6 +502,8 @@ var lhcChatBot = {
 
         if (textarea.prop('nodeName') != 'LHC-EDITOR') {
             textarea.focus();
+        } else {
+            textarea[0].setFocus();
         }
     },
 
