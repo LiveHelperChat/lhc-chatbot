@@ -144,9 +144,10 @@ var lhcChatBot = {
                 elm = elm.parentNode;
                 var data = elm.getCaretPositionAndContent();
                 var caretPos = data['caret'];
-                var presentValue = data['content'];
-                var originalTextLength = data['content'].length;
+                var presentValue = data['full_content'];
+                var originalTextLength = data['full_content'].length;
                 newEditor = true;
+                console.log(data);
             } else {
                 var presentValue = elm.value;
                 var caretPos = elm.selectionStart;
@@ -155,7 +156,7 @@ var lhcChatBot = {
             }
         }
 
-        if (evt.which == 39 && elm !== null && presentValue == '' && typeof elm.chatterBot !== 'undefined') {
+        if (evt.which == 39 && elm !== null && presentValue == '' && typeof elm.chatterBot !== 'undefined') { //  Right Arrow key
             lhcChatBot.setValue(elm, elm.chatterBot.a);
             var chat_id = elm.getAttribute('id').replace('CSChatMessage-','');
             $.postJSON(WWW_DIR_JAVASCRIPT + 'lhcchatbot/suggestused/' + chat_id, {
