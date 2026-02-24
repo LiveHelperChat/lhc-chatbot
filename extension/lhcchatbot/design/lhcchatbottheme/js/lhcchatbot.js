@@ -147,7 +147,6 @@ var lhcChatBot = {
                 var presentValue = data['full_content'];
                 var originalTextLength = data['full_content'].length;
                 newEditor = true;
-                console.log(data);
             } else {
                 var presentValue = elm.value;
                 var caretPos = elm.selectionStart;
